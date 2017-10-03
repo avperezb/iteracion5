@@ -61,7 +61,35 @@ public class DAORestaurantesZona {
 	}
 	
 	/**
-	 * RF3
+	 * GET por id de un Restaurante
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public Restaurante buscarRestaurantePorId(Long id) throws SQLException, Exception 
+	{
+		Restaurante restaurante = null;
+
+		String sql = "SELECT * FROM RESTAURANTES WHERE ID =" + id;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			Long id2 = rs.getLong("ID"); 
+			String nombre = rs.getString("NOMBRE"); 
+			Integer tipo = rs.getInt("TIPO"); 
+			String  urlPW = rs.getString("URL_PW"); 
+			Long idRepresentante = rs.getLong("ID_REPRESENTANTE"); 
+			restaurante = new Restaurante(id2, nombre, tipo, urlPW, idRepresentante); 
+		}
+		return restaurante;
+	}
+	
+	
+	/**
 	 * POST Restaurante
 	 * @param restaurante
 	 * @throws SQLException
@@ -105,7 +133,7 @@ public class DAORestaurantesZona {
 		return zonas;
 	}
 	/**
-	 * RFC2
+	 * GET zona por id
 	 * @param id
 	 * @return
 	 * @throws SQLException
@@ -128,12 +156,10 @@ public class DAORestaurantesZona {
 			String condicionesTecnicas = rs.getString("CONDICIONES_TECNICAS"); 
 			zona = new Zona(id2, capacidadPersonas, handicap, condicionesTecnicas);
 		}
-
 		return zona;
 	}
 	/**
-	 * RF7
-	 * PUT Zona
+	 * PUT zona
 	 * @param zona
 	 * @throws SQLException
 	 * @throws Exception
