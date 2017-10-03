@@ -22,8 +22,10 @@ import java.util.Properties;
 
 import dao.DAOProductosIngredientes;
 import dao.DAOTablaVideos;
+import dao.DAOUsuarios;
 import vos.Ingrediente;
 import vos.Producto;
+import vos.Usuario;
 import vos.Video;
 
 /**
@@ -237,36 +239,7 @@ public class RotondAndesTM {
 	 * @param video - el video a agregar. video != null
 	 * @throws Exception - cualquier error que se genere agregando el video
 	 */
-	public void addIngrediente(Ingrediente ingrediente) throws Exception {
-		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoIngredientes.setConn(conn);
-			daoIngredientes.addIngrediente(ingrediente);
-			conn.commit();
-
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoIngredientes.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-	}
+	
 	
 	public void addProducto(Producto producto) throws Exception {
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
@@ -405,6 +378,53 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daoVideos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void addIngrediente(Long id, Ingrediente ingrediente) throws Exception{
+		// TODO Auto-generated method stub
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		Usuario usuario = daoUsuarios.buscarUsuarioPorID(id);
+		if (usuario == null)
+		{
+			throw new Exception("el usuario con ese id no existe");
+		}
+		
+		if(usuario.getRol().equalsIgnoreCase("admin") == false)
+		{
+			throw new Exception("el usuario con ese id no tiene permisos para realizar esta transaccion");
+		}
+		
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn); 
+			
+			daoIngredientes.addIngrediente(ingrediente);
+			conn.commit();
+			
+			
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

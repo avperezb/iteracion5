@@ -37,7 +37,7 @@ import vos.Video;
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
  * @author Monitores 2017-20
  */
-@Path("ingredientes")
+@Path("servicios")
 public class RotondAndesServices {
 
 	/**
@@ -68,7 +68,7 @@ public class RotondAndesServices {
 	 */
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getImgredientes() {
+	public Response getIngredientes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		List<Ingrediente> ingredientes;
 		try {
@@ -134,12 +134,13 @@ public class RotondAndesServices {
      * @return Json con el video que agrego o Json con el error que se produjo
      */
 	@POST
+	@Path("usuarios/{id: \\d+}/ingredientes")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addIngrediente(Ingrediente ingrediente) {
+	public Response addIngrediente(@PathParam( "id" ) Long id,Ingrediente ingrediente) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addIngrediente(ingrediente);
+			tm.addIngrediente(id, ingrediente);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
