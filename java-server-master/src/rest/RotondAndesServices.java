@@ -30,13 +30,14 @@ import javax.ws.rs.core.Response;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
+import vos.Ingrediente;
 import vos.Video;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
  * @author Monitores 2017-20
  */
-@Path("videos")
+@Path("ingredientes")
 public class RotondAndesServices {
 
 	/**
@@ -67,15 +68,15 @@ public class RotondAndesServices {
 	 */
 	@GET
 	@Produces({ MediaType.APPLICATION_JSON })
-	public Response getVideos() {
+	public Response getImgredientes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Video> videos;
+		List<Ingrediente> ingredientes;
 		try {
-			videos = tm.darVideos();
+			ingredientes = tm.darIngredientes();
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(videos).build();
+		return Response.status(200).entity(ingredientes).build();
 	}
 
 	 /**

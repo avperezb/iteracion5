@@ -20,7 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import dao.DAOIngredientes;
 import dao.DAOTablaVideos;
+import vos.Ingrediente;
 import vos.Video;
 
 /**
@@ -120,15 +122,15 @@ public class RotondAndesTM {
 	 * @return ListaVideos - objeto que modela  un arreglo de videos. este arreglo contiene el resultado de la busqueda
 	 * @throws Exception -  cualquier error que se genere durante la transaccion
 	 */
-	public List<Video> darVideos() throws Exception {
-		List<Video> videos;
-		DAOTablaVideos daoVideos = new DAOTablaVideos();
+	public List<Ingrediente> darIngredientes() throws Exception {
+		List<Ingrediente> ingredientes;
+		DAOIngredientes daoIngredientes = new DAOIngredientes();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoVideos.setConn(conn);
-			videos = daoVideos.darVideos();
+			daoIngredientes.setConn(conn);
+			ingredientes = daoIngredientes.darIngredientes();
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -140,7 +142,7 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daoVideos.cerrarRecursos();
+				daoIngredientes.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -149,7 +151,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-		return videos;
+		return ingredientes;
 	}
 
 	/**
