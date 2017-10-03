@@ -105,7 +105,7 @@ public class DAORestaurantesZona {
 		return zonas;
 	}
 	/**
-	 * 
+	 * RFC2
 	 * @param id
 	 * @return
 	 * @throws SQLException
