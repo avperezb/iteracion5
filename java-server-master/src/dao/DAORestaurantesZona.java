@@ -104,6 +104,13 @@ public class DAORestaurantesZona {
 		}
 		return zonas;
 	}
+	/**
+	 * RF7
+	 * PUT Zona
+	 * @param zona
+	 * @throws SQLException
+	 * @throws Exception
+	 */
 	
 	public void addZona(Zona zona) throws SQLException, Exception {
 
