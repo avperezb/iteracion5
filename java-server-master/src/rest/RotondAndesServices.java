@@ -136,14 +136,14 @@ public class RotondAndesServices {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addVideo(Video video) {
+	public Response addIngrediente(Ingrediente ingrediente) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try {
-			tm.addVideo(video);
+			tm.addIngrediente(ingrediente);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		return Response.status(200).entity(video).build();
+		return Response.status(200).entity(ingrediente).build();
 	}
 	
     /**
@@ -166,43 +166,7 @@ public class RotondAndesServices {
 		return Response.status(200).entity(videos).build();
 	}
 	
-    /**
-     * Metodo que expone servicio REST usando PUT que actualiza el video que recibe en Json
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
-     * @param video - video a actualizar. 
-     * @return Json con el video que actualizo o Json con el error que se produjo
-     */
-	@PUT
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response updateVideo(Video video) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.updateVideo(video);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(video).build();
-	}
-	
-    /**
-     * Metodo que expone servicio REST usando DELETE que elimina el video que recibe en Json
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
-     * @param video - video a aliminar. 
-     * @return Json con el video que elimino o Json con el error que se produjo
-     */
-	@DELETE
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response deleteVideo(Video video) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.deleteVideo(video);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(video).build();
-	}
+
 
 
 }
