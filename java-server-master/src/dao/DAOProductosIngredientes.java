@@ -84,7 +84,7 @@ public class DAOProductosIngredientes {
 	public ArrayList<Producto> darProductos() throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
-		String sql = "SELECT * FROM INGREDIENTES";
+		String sql = "SELECT * FROM PRODUCTOS";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -128,7 +128,7 @@ public class DAOProductosIngredientes {
 	
 	public void addProducto(Producto producto) throws SQLException, Exception {
 
-		String sql = "INSERT INTO INGREDIENTES VALUES (";
+		String sql = "INSERT INTO PRODUCTOS VALUES (";
 		sql += producto.getId() + ",'";
 		sql += producto.getNombre() + "',";
 		sql += producto.getTiempoPreparacion() + "',";
