@@ -23,6 +23,7 @@ import java.util.Properties;
 import dao.DAOProductosIngredientes;
 import dao.DAOTablaVideos;
 import vos.Ingrediente;
+import vos.Producto;
 import vos.Video;
 
 /**
@@ -236,14 +237,14 @@ public class RotondAndesTM {
 	 * @param video - el video a agregar. video != null
 	 * @throws Exception - cualquier error que se genere agregando el video
 	 */
-	public void addVideo(Video video) throws Exception {
-		DAOTablaVideos daoVideos = new DAOTablaVideos();
+	public void addIngrediente(Ingrediente ingrediente) throws Exception {
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoVideos.setConn(conn);
-			daoVideos.addVideo(video);
+			daoIngredientes.setConn(conn);
+			daoIngredientes.addIngrediente(ingrediente);
 			conn.commit();
 
 		} catch (SQLException e) {
@@ -256,7 +257,38 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daoVideos.cerrarRecursos();
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public void addProducto(Producto producto) throws Exception {
+		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProductos.setConn(conn);
+			daoProductos.addProducto(producto);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProductos.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
