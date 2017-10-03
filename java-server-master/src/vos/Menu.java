@@ -12,7 +12,7 @@ public class Menu {
 	 * tiempo de preparación 
 	 */
 	@JsonProperty(value = "tiempoPreparacion")
-	private Long tiempoPreparacion; 
+	private int tiempoPreparacion; 
 	/**
 	 * descripcion en espaniol 
 	 */
@@ -39,7 +39,7 @@ public class Menu {
 	@JsonProperty(value = "costo")
 	private Double costo; 
 
-	public Menu(@JsonProperty(value = "id") Long id, @JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion,
+	public Menu(@JsonProperty(value = "id") Long id, @JsonProperty(value = "tiempoPreparacion") int tiempoPreparacion,
 			@JsonProperty(value = "descripcionEsp") String descripcionEsp, @JsonProperty(value = "descripcionEng") String descripcionEng,
 			@JsonProperty(value = "idRestaurante") Long idRestaurante, @JsonProperty(value = "precio") Double precio, 
 			@JsonProperty(value = "costo") Double costo){
@@ -59,11 +59,11 @@ public class Menu {
 		this.id = id;
 	}
 
-	public Long getTiempoPreparacion() {
+	public int getTiempoPreparacion() {
 		return tiempoPreparacion;
 	}
 
-	public void setTiempoPreparacion(Long tiempoPreparacion) {
+	public void setTiempoPreparacion(int tiempoPreparacion) {
 		this.tiempoPreparacion = tiempoPreparacion;
 	}
 
