@@ -105,6 +105,33 @@ public class DAORestaurantesZona {
 		return zonas;
 	}
 	/**
+	 * 
+	 * @param id
+	 * @return
+	 * @throws SQLException
+	 * @throws Exception
+	 */
+	public Zona buscarZonaPorId(Long id) throws SQLException, Exception 
+	{
+		Zona zona = null;
+
+		String sql = "SELECT * FROM ZONA WHERE ID =" + id;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		if(rs.next()) {
+			Long id2 = rs.getLong("ID"); 
+			Integer capacidadPersonas = rs.getInt("CAPACIDAD_PERSNS"); 
+			Boolean handicap = rs.getBoolean("HANDICAP"); 
+			String condicionesTecnicas = rs.getString("CONDICIONES_TECNICAS"); 
+			zona = new Zona(id2, capacidadPersonas, handicap, condicionesTecnicas);
+		}
+
+		return zona;
+	}
+	/**
 	 * RF7
 	 * PUT Zona
 	 * @param zona
