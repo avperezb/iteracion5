@@ -20,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
-import dao.DAOIngredientes;
+import dao.DAOProductosIngredientes;
 import dao.DAOTablaVideos;
 import vos.Ingrediente;
 import vos.Video;
@@ -124,7 +124,7 @@ public class RotondAndesTM {
 	 */
 	public List<Ingrediente> darIngredientes() throws Exception {
 		List<Ingrediente> ingredientes;
-		DAOIngredientes daoIngredientes = new DAOIngredientes();
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
 		try 
 		{
 			//////transaccion

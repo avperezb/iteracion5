@@ -33,26 +33,20 @@ public class Producto {
 	 * clasificacion de un producto
 	 */
 	@JsonProperty(value = "clasificacion")
-	private Integer clasificacion; 
+	private Long clasificacion; 
 	/**
 	 * tipo de producto
 	 */
 	@JsonProperty(value = "tipo")
-	private Integer tipo; 
-	/**
-	 * restaurante del producto
-	 */
-	@JsonProperty(value = "restaurante")
-	private Integer restaurante; 
+	private Long tipo; 
 
 	public Producto(@JsonProperty(value = "id") Long id, 
 			@JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion, 
 			@JsonProperty(value = "descripcionEsp") String descripcionEsp,
 			@JsonProperty(value = "descripcionEng") String descripcionEng, 
-			@JsonProperty(value = "clasificacion") Integer clasificacion,
-			@JsonProperty(value = "tipo") Integer tipo,
-			@JsonProperty(value = "restaurante") Integer restaurante){
+			@JsonProperty(value = "clasificacion") Long clasificacion,
+			@JsonProperty(value = "tipo") Long tipo){
 		this.id=id; 
 		this.nombre = nombre; 
 		this.tiempoPreparacion = tiempoPreparacion; 
@@ -60,7 +54,6 @@ public class Producto {
 		this.descripcionEng = descripcionEng; 
 		this.clasificacion  = clasificacion; 
 		this.tipo = tipo; 
-		this.restaurante = restaurante; 
 
 	}
 
@@ -104,29 +97,22 @@ public class Producto {
 		this.descripcionEng = descripcionEng;
 	}
 
-	public Integer getClasificacion() {
+	public Long getClasificacion() {
 		return clasificacion;
 	}
 
-	public void setClasificacion(Integer clasificacion) {
+	public void setClasificacion(Long clasificacion) {
 		this.clasificacion = clasificacion;
 	}
 
-	public Integer getTipo() {
+	public Long getTipo() {
 		return tipo;
 	}
 
-	public void setTipo(Integer tipo) {
+	public void setTipo(Long tipo) {
 		this.tipo = tipo;
 	}
 
-	public Integer getRestaurante() {
-		return restaurante;
-	}
-
-	public void setRestaurante(Integer restaurante) {
-		this.restaurante = restaurante;
-	}
 
 
 
