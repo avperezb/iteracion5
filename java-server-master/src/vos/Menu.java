@@ -38,7 +38,7 @@ public class Menu {
 	 */
 	@JsonProperty(value = "costo")
 	private Double costo; 
-	
+
 	public Menu(@JsonProperty(value = "id") Long id, @JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion,
 			@JsonProperty(value = "descripcionEsp") String descripcionEsp, @JsonProperty(value = "descripcionEng") String descripcionEng,
 			@JsonProperty(value = "idRestaurante") Long idRestaurante, @JsonProperty(value = "precio") Double precio, 
@@ -106,6 +106,6 @@ public class Menu {
 	public void setCosto(Double costo) {
 		this.costo = costo;
 	}
-	
+
 
 }

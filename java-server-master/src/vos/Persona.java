@@ -36,7 +36,7 @@ public class Persona {
 	 */
 	@JsonProperty(value = "apellidos")
 	private String apellidos; 
-	
+
 	public Persona(@JsonProperty(value = "id") Long id, 
 			@JsonProperty(value= "nombre") String nombre, 
 			@JsonProperty(value = "edad") Integer edad,
@@ -98,5 +98,5 @@ public class Persona {
 	public void setApellidos(String apellidos) {
 		this.apellidos = apellidos;
 	}
-	
+
 }

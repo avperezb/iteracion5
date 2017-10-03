@@ -3,7 +3,7 @@ package vos;
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Producto {
-	
+
 	/**
 	 * id de un producto
 	 */
@@ -44,7 +44,7 @@ public class Producto {
 	 */
 	@JsonProperty(value = "restaurante")
 	private Integer restaurante; 
-	
+
 	public Producto(@JsonProperty(value = "id") Long id, 
 			@JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion, 
@@ -61,7 +61,7 @@ public class Producto {
 		this.clasificacion  = clasificacion; 
 		this.tipo = tipo; 
 		this.restaurante = restaurante; 
-		
+
 	}
 
 	public Long getId() {
@@ -127,7 +127,7 @@ public class Producto {
 	public void setRestaurante(Integer restaurante) {
 		this.restaurante = restaurante;
 	}
-	
-	
+
+
 
 }
