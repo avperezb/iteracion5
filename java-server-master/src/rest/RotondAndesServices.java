@@ -1,5 +1,6 @@
 /**-------------------------------------------------------------------
  * $Id$
+
  * Universidad de los Andes (Bogotá - Colombia)
  * Departamento de Ingeniería de Sistemas y Computación
  *
@@ -12,6 +13,7 @@ package rest;
 
 
 import java.util.List;
+
 
 import javax.servlet.ServletContext;
 import javax.ws.rs.Consumes;
@@ -68,6 +70,7 @@ public class RotondAndesServices {
      * el error que se produjo
 	 */
 	@GET
+	@Path("/ingredientes")
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getIngredientes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
@@ -135,16 +138,20 @@ public class RotondAndesServices {
      * @return Json con el video que agrego o Json con el error que se produjo
      */
 	@POST
-	@Path("usuarios/{id: \\d+}/ingredientes")
+	@Path("/ingredientes")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addIngrediente(@PathParam( "id" ) Long id,Ingrediente ingrediente) {
+	public Response addIngrediente(Ingrediente ingrediente) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.addIngrediente(id, ingrediente);
-		} catch (Exception e) {
+		try 
+		{
+			tm.addIngrediente(ingrediente);
+		} 
+		catch (Exception e)
+		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
+		
 		return Response.status(200).entity(ingrediente).build();
 	}
 	

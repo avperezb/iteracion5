@@ -390,32 +390,17 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void addIngrediente(Long id, Ingrediente ingrediente) throws Exception{
+	public void addIngrediente( Ingrediente ingrediente) throws Exception{
 		// TODO Auto-generated method stub
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
-		DAOUsuarios daoUsuarios = new DAOUsuarios();
-		Usuario usuario = daoUsuarios.buscarUsuarioPorID(id);
-		if (usuario == null)
-		{
-			throw new Exception("el usuario con ese id no existe");
-		}
-		
-		if(usuario.getRol().equalsIgnoreCase("admin") == false)
-		{
-			throw new Exception("el usuario con ese id no tiene permisos para realizar esta transaccion");
-		}
 		
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoIngredientes.setConn(conn); 
-			
+			daoIngredientes.setConn(conn); 			
 			daoIngredientes.addIngrediente(ingrediente);
 			conn.commit();
-			
-			
-
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
