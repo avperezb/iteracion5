@@ -184,8 +184,8 @@ public class DAOPreferencias {
 
 	public void addPreferenciaPrecio(PreferenciaUsuarioPrecio pref) throws SQLException{
 		String sql = "INSERT INTO PREFERENCIA_USUARIO_PRECIO (USUARIO_ID, PRECIO) VALUES (";
-		sql += pref.getUsuarioID() + ",'";
-		sql += pref.getPrecio() + "')";
+		sql += pref.getUsuarioID() + ",";
+		sql += pref.getPrecio() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
