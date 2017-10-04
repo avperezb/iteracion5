@@ -80,9 +80,9 @@ public class DAOUsuarios {
 		String sql = "INSERT INTO USUARIO(ID, CORREO, ROL, INFO_ROL, NOMBRE) VALUES (";
 		sql += usuario.getId() + ",'";
 		sql += usuario.getCorreo() + "',";
-		sql += usuario.getRol() + ",";
-		sql += usuario.getInfoRol() + ",";
-		sql += usuario.getNombre() + ")";
+		sql += usuario.getRol() + "','";
+		sql += usuario.getInfoRol() + "','";
+		sql += usuario.getNombre() + "')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

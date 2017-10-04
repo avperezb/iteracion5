@@ -116,9 +116,9 @@ public class DAOProductosIngredientes {
 
 		String sql = "INSERT INTO INGREDIENTES VALUES (";
 		sql += ingrediente.getId() + ",'";
-		sql += ingrediente.getNombre() + "',";
-		sql += ingrediente.getDescricionEsp() + "',";
-		sql += ingrediente.getDescripcionEng() + ")";
+		sql += ingrediente.getNombre() + "','";
+		sql += ingrediente.getDescricionEsp() + "','";
+		sql += ingrediente.getDescripcionEng() + "')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

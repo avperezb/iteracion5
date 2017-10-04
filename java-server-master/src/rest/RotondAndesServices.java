@@ -33,6 +33,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Ingrediente;
+import vos.Usuario;
 import vos.Video;
 import vos.Zona;
 
@@ -191,6 +192,36 @@ public class RotondAndesServices {
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
+	}
+	
+	@GET
+	@Path("/usuarios")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsuarios(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Usuario> usuarios;
+		try
+		{
+			usuarios = tm.darUsuarios();
+			return Response.status( 200 ).entity( usuarios ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@POST
+	@Path("/usuarios")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addUsuario(Usuario usuario){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarUsuario(usuario);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuario).build();
 	}
 
 
