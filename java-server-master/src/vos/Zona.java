@@ -9,13 +9,13 @@ public class Zona {
 	@JsonProperty(value = "capacidadPersonas")
 	private Integer capacidadPersonas; 
 	@JsonProperty(value = "handicap")
-	private Boolean handicap; 
+	private char handicap; 
 	@JsonProperty(value = "condicionesTecnicas")
 	private String condicionesTecnicas; 
 
 	public Zona(@JsonProperty(value = "id") Long id,
 			@JsonProperty(value = "capacidadPersonas") Integer capacidadPersonas, 
-			@JsonProperty(value = "handicap") Boolean handicap, 
+			@JsonProperty(value = "handicap") char handicap, 
 			@JsonProperty(value = "condicionesTecnicas") String condicionesTecnicas){
 		this.id=id; 
 		this.capacidadPersonas = capacidadPersonas; 
@@ -39,11 +39,11 @@ public class Zona {
 		this.capacidadPersonas = capacidadPersonas;
 	}
 
-	public Boolean getHandicap() {
+	public char getHandicap() {
 		return handicap;
 	}
 
-	public void setHandicap(Boolean handicap) {
+	public void setHandicap(char handicap) {
 		this.handicap = handicap;
 	}
 

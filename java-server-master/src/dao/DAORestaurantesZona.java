@@ -126,7 +126,7 @@ public class DAORestaurantesZona {
 		while (rs.next()) {
 			Long id = rs.getLong("ID"); 
 			Integer capacidadPersonas = rs.getInt("CAPCIDAD_PERSNAS"); 
-			Boolean handicap = rs.getBoolean("HANDICAP"); 
+			char handicap = rs.getString("HANDICAP").charAt(0); 
 			String condicionesTecnicas = rs.getString("CONDICIONES_TECNICAS"); 
 			zonas.add(new Zona(id, capacidadPersonas, handicap, condicionesTecnicas)); 
 		}
@@ -152,7 +152,7 @@ public class DAORestaurantesZona {
 		if(rs.next()) {
 			Long id2 = rs.getLong("ID"); 
 			Integer capacidadPersonas = rs.getInt("CAPACIDAD_PERSNAS"); 
-			Boolean handicap = rs.getBoolean("HANDICAP"); 
+			char handicap = rs.getString("HANDICAP").charAt(0); 
 			String condicionesTecnicas = rs.getString("CONDICIONES_TECNICAS"); 
 			zona = new Zona(id2, capacidadPersonas, handicap, condicionesTecnicas);
 		}
