@@ -242,6 +242,39 @@ public class RotondAndesServices {
 		{
 			restaurantes = tm.darRestaurantes();
 			return Response.status( 200 ).entity( restaurantes ).build( );			
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+		
+	@GET
+	@Path("/usuarios/administradores")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getAdministradores(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Usuario> usuarios;
+		try
+		{
+			usuarios = tm.darAdministradores();
+			return Response.status( 200 ).entity( usuarios ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@GET
+	@Path("/usuarios/{id: \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsuarioPorID(@PathParam("id") Long id){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		Usuario usuario;
+		try
+		{
+			usuario = tm.buscarUsuarioPorID(id);
+			return Response.status( 200 ).entity( usuario ).build( );	
 		}
 		catch( Exception e )
 		{
@@ -261,5 +294,19 @@ public class RotondAndesServices {
 			Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(rest).build();
+	}
+
+	@POST
+	@Path("/usuarios/{id: \\d+}/usuarios")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addCliente(@PathParam("id") Long id, Usuario usuario){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarCliente(id, usuario);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuario).build();
 	}
 }

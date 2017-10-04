@@ -551,6 +551,107 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	public List<Usuario> darAdministradores() throws Exception{
+		List<Usuario> usuarios;
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn);
+			usuarios = daoUsuarios.darAdministradores();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
+	}
+	
+	public Usuario buscarUsuarioPorID(Long id) throws Exception {
+		Usuario usuario;
+		DAOUsuarios daoUsuario = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuario.setConnection(conn);
+			usuario = daoUsuario.buscarUsuarioPorID(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuario.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuario;
+	}
+	
+	public void agregarCliente(Long id, Usuario usuario) throws Exception{
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn); 			
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Admin")){
+				daoUsuarios.addUsuario(usuario);
+				conn.commit();
+			}else{
+				throw new Exception("No tiene permisos para realizar esta acción");
+			}
+			
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
 
 	public void agregarRestaurante(Restaurante rest) throws Exception{
 		DAORestaurantesZona daoRest = new DAORestaurantesZona();
