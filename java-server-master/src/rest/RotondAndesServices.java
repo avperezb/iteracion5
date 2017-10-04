@@ -466,9 +466,46 @@ public class RotondAndesServices {
 		return Response.status(200).entity(preferencia).build();
 	}
 	
-//	@PUT
-//	@Path("/usuarios/{id: \\d+}/preferencias/zonas")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	
+	@PUT
+	@Path("/usuarios/{id: \\d+}/preferencias/categorias/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePreferenciaCategoria(@PathParam("id") Long id, PreferenciaUsuarioCategoria preferencia){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.updatePreferenciaCategoria(id, preferencia);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(preferencia).build();
+	}
+	
+	@PUT
+	@Path("/usuarios/{id: \\d+}/preferencias/precio/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePreferenciaPrecio(@PathParam("id") Long id, PreferenciaUsuarioPrecio preferencia){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.updatePreferenciaPrecio(id, preferencia);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(preferencia).build();
+	}
+	
+	@PUT
+	@Path("/usuarios/{id: \\d+}/preferencias/zonas/")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response updatePreferenciaZona(@PathParam("id") Long id, PreferenciaUsuarioZona preferencia){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.updatePreferenciaZona(id, preferencia);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(preferencia).build();
+	}
+	
 }

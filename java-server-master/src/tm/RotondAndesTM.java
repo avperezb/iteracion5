@@ -826,14 +826,20 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void updatePreferenciaCategoria(PreferenciaUsuarioCategoria categoria) throws Exception {
+	public void updatePreferenciaCategoria(Long id,PreferenciaUsuarioCategoria categoria) throws Exception {
 		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoPreferencias.setConn(conn);
-			daoPreferencias.updatePreferenciaCategoria(categoria);
+			if(daoUsuarios.buscarUsuarioPorID(id).getInfoRol().equals("Admin")){
+				daoPreferencias.setConn(conn);
+				daoPreferencias.updatePreferenciaCategoria(categoria);
+			}
+			else{
+				throw new Exception("el usuario no tiene permisos");
+			}
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -1054,6 +1060,89 @@ public class RotondAndesTM {
 					this.conn.close();
 			} catch (SQLException exception){
 				System.err.println("SQLException closing resources: "+ exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	/**
+	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha actualizado el video que entra como parametro
+	 * @param video - Video a actualizar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+	public void updatePreferenciaPrecio(Long id, PreferenciaUsuarioPrecio preferencia) throws Exception {
+		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			if(daoUsuarios.buscarUsuarioPorID(id).getInfoRol().equals("Admin")){
+				daoPreferencias.setConn(conn);
+				daoPreferencias.updatePreferenciaPrecio(preferencia);
+			}
+			else{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPreferencias.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	/**
+	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
+	 * <b> post: </b> se ha actualizado el video que entra como parametro
+	 * @param video - Video a actualizar. video != null
+	 * @throws Exception - cualquier error que se genera actualizando los videos
+	 */
+	public void updatePreferenciaZona(Long id, PreferenciaUsuarioZona preferencia) throws Exception {
+		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			if(daoUsuarios.buscarUsuarioPorID(id).getInfoRol().equals("Admin")){
+				daoPreferencias.setConn(conn);
+				daoPreferencias.updatePreferenciaZona(preferencia);
+			}
+			else{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPreferencias.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
 				exception.printStackTrace();
 				throw exception;
 			}
