@@ -712,15 +712,27 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void agregarZona(Zona zona) throws Exception{
-		DAORestaurantesZona daoZonas = new DAORestaurantesZona(); 
+	public void agregarZona(Long id, Zona zona) throws Exception{
+		// TODO Auto-generated method stub
+		DAORestaurantesZona daoRestaurantes = new DAORestaurantesZona();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoZonas.setConn(conn); 			
-			daoZonas.addZona(zona);
-			conn.commit();
+			daoRestaurantes.setConn(conn); 	
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Admin"))
+			{
+				daoRestaurantes.addZona(zona);
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -731,7 +743,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daoZonas.cerrarRecursos();
+				daoRestaurantes.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -943,7 +956,7 @@ public class RotondAndesTM {
 				daoPreferencias.addPreferenciaCategoria(preferencia);
 				conn.commit();
 			}else{
-				throw new Exception("No tiene permisos para realizar esta acción");
+				throw new Exception("No tiene permisos para realizar esta acciï¿½n");
 			}
 		} catch(SQLException e){
 			System.err.println("SQLException: "+e.getMessage());
@@ -979,7 +992,7 @@ public class RotondAndesTM {
 				daoPreferencias.addPreferenciaPrecio(preferencia);
 				conn.commit();
 			}else{
-				throw new Exception("No tiene permisos para realizar esta acción");
+				throw new Exception("No tiene permisos para realizar esta acciï¿½n");
 			}
 		} catch(SQLException e){
 			System.err.println("SQLException: "+e.getMessage());
@@ -1015,7 +1028,7 @@ public class RotondAndesTM {
 				daoPreferencias.addPreferenciaZona(preferencia);
 				conn.commit();
 			}else{
-				throw new Exception("No tiene permisos para realizar esta acción");
+				throw new Exception("No tiene permisos para realizar esta acciï¿½n");
 			}
 		} catch(SQLException e){
 			System.err.println("SQLException: "+e.getMessage());

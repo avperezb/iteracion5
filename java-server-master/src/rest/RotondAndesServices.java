@@ -311,17 +311,22 @@ public class RotondAndesServices {
 		}
 	}
 
+
 	@POST
-	@Path("/zonas")
-	@Produces(MediaType.APPLICATION_JSON)
+	@Path("/usuarios/{id: \\d+}/zonas")
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addZona(Zona zona){
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addZona(@PathParam("id") Long id, Zona zona) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try{
-			tm.agregarZona(zona);
-		}catch(Exception e){
-			Response.status(500).entity(doErrorMessage(e)).build();
+		try 
+		{
+			tm.agregarZona(id, zona);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
+
 		return Response.status(200).entity(zona).build();
 	}
 	@GET
