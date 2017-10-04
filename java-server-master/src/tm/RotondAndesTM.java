@@ -29,6 +29,7 @@ import vos.Producto;
 import vos.Usuario;
 import vos.Video;
 import vos.Zona;
+import vos.Restaurante;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -157,6 +158,38 @@ public class RotondAndesTM {
 			}
 		}
 		return ingredientes;
+	}
+
+	public List<Producto> darProductos() throws Exception {
+		List<Producto> productos;
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn);
+			productos = daoIngredientes.darProductos();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos;
 	}
 
 	/**
@@ -487,6 +520,38 @@ public class RotondAndesTM {
 		return usuarios;
 	}
 
+	public List<Restaurante> darRestaurantes() throws Exception{
+		List<Restaurante> restaurantes;
+		DAORestaurantesZona daoRestaurantes = new DAORestaurantesZona();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRestaurantes.setConn(conn);
+			restaurantes = daoRestaurantes.darRestaurantes();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRestaurantes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return restaurantes;
+	}
+
 	public void agregarUsuario(Usuario usuario) throws Exception{
 		// TODO Auto-generated method stub
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -518,7 +583,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public List<Usuario> darAdministradores() throws Exception{
 		List<Usuario> usuarios;
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -550,7 +615,7 @@ public class RotondAndesTM {
 		}
 		return usuarios;
 	}
-	
+
 	public Usuario buscarUsuarioPorID(Long id) throws Exception {
 		Usuario usuario;
 		DAOUsuarios daoUsuario = new DAOUsuarios();
@@ -583,9 +648,13 @@ public class RotondAndesTM {
 		return usuario;
 	}
 
-	
+	public void agregarCliente(Long id, Usuario usuario) throws Exception{
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+	}
+
+
+
 	public void agregarZona(Zona zona) throws Exception{
-		// TODO Auto-generated method stub
 		DAORestaurantesZona daoZonas = new DAORestaurantesZona(); 
 		try 
 		{
@@ -614,7 +683,8 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
+
 	public List<Zona> darZonas() throws Exception{
 		List<Zona> zonas;
 		DAORestaurantesZona daoZonas = new DAORestaurantesZona();
@@ -645,6 +715,35 @@ public class RotondAndesTM {
 			}
 		}
 		return zonas;
+	}
+
+
+	public void agregarRestaurante(Restaurante rest) throws Exception{
+		DAORestaurantesZona daoRest = new DAORestaurantesZona();
+		try {
+			this.conn = darConexion();
+			daoRest.setConn(conn);
+			daoRest.addRestaurante(rest);
+			conn.commit();
+		} catch(SQLException e){
+			System.err.println("SQLException: "+e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException: "+ e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try{
+				daoRest.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception){
+				System.err.println("SQLException closing resources: "+ exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 
 }

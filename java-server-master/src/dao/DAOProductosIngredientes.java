@@ -131,9 +131,10 @@ public class DAOProductosIngredientes {
 		String sql = "INSERT INTO PRODUCTOS VALUES (";
 		sql += producto.getId() + ",'";
 		sql += producto.getNombre() + "',";
-		sql += producto.getTiempoPreparacion() + "',";
-		sql += producto.getDecripcionEsp() + "',";
-		sql += producto.getClasificacion() + "',";
+		sql += producto.getTiempoPreparacion() + ",'";
+		sql += producto.getDecripcionEsp() + "','";
+		sql += producto.getDescripcionEng() + "',";
+		sql += producto.getClasificacion() + ",";
 		sql += producto.getTipo() + ")";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
