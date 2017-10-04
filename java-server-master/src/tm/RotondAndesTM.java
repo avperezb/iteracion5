@@ -280,15 +280,68 @@ public class RotondAndesTM {
 	 */
 
 
-	public void addProducto(Producto producto) throws Exception {
+	public void addIngrediente(Long id, Ingrediente ingrediente) throws Exception{
+		// TODO Auto-generated method stub
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn); 	
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Restaurante"))
+			{
+				daoIngredientes.addIngrediente(ingrediente);
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void addProducto(Long id, Producto producto) throws Exception {
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
 			daoProductos.setConn(conn);
-			daoProductos.addProducto(producto);
-			conn.commit();
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Restaurante"))
+			{
+				daoProductos.addProducto(producto);
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -301,6 +354,7 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daoProductos.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -427,37 +481,6 @@ public class RotondAndesTM {
 		}
 	}
 
-	public void addIngrediente( Ingrediente ingrediente) throws Exception{
-		// TODO Auto-generated method stub
-		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
-
-		try 
-		{
-			//////transaccion
-			this.conn = darConexion();
-			daoIngredientes.setConn(conn); 			
-			daoIngredientes.addIngrediente(ingrediente);
-			conn.commit();
-		} catch (SQLException e) {
-			System.err.println("SQLException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} catch (Exception e) {
-			System.err.println("GeneralException:" + e.getMessage());
-			e.printStackTrace();
-			throw e;
-		} finally {
-			try {
-				daoIngredientes.cerrarRecursos();
-				if(this.conn!=null)
-					this.conn.close();
-			} catch (SQLException exception) {
-				System.err.println("SQLException closing resources:" + exception.getMessage());
-				exception.printStackTrace();
-				throw exception;
-			}
-		}
-	}
 
 	/*-------------------------------------------------------------------------------------------------- */
 	public Zona buscarZonaPorId(Long id) throws Exception {
@@ -842,7 +865,7 @@ public class RotondAndesTM {
 		}
 		return preferencias;
 	}
-	
+
 	public List<PreferenciaUsuarioPrecio> darPreferenciasPrecio() throws Exception{
 		List<PreferenciaUsuarioPrecio> preferencias;
 		DAOPreferencias daoPreferencias = new DAOPreferencias();
@@ -874,7 +897,7 @@ public class RotondAndesTM {
 		}
 		return preferencias;
 	}
-	
+
 	public List<PreferenciaUsuarioZona> darPreferenciasZona() throws Exception{
 		List<PreferenciaUsuarioZona> preferencias;
 		DAOPreferencias daoPreferencias = new DAOPreferencias();
@@ -919,7 +942,7 @@ public class RotondAndesTM {
 			if(usuario.getId() == preferencia.getUsuarioID()){
 				daoPreferencias.addPreferenciaCategoria(preferencia);
 				conn.commit();
-				}else{
+			}else{
 				throw new Exception("No tiene permisos para realizar esta acción");
 			}
 		} catch(SQLException e){
@@ -942,7 +965,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void agregarPreferenciaPrecio(Long id, PreferenciaUsuarioPrecio preferencia) throws Exception{
 		DAOPreferencias daoPreferencias = new DAOPreferencias();
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -955,7 +978,7 @@ public class RotondAndesTM {
 			if(usuario.getId() == preferencia.getUsuarioID()){
 				daoPreferencias.addPreferenciaPrecio(preferencia);
 				conn.commit();
-				}else{
+			}else{
 				throw new Exception("No tiene permisos para realizar esta acción");
 			}
 		} catch(SQLException e){
@@ -978,7 +1001,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void agregarPreferenciaZona(Long id, PreferenciaUsuarioZona preferencia) throws Exception{
 		DAOPreferencias daoPreferencias = new DAOPreferencias();
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -991,7 +1014,7 @@ public class RotondAndesTM {
 			if(usuario.getId() == preferencia.getUsuarioID()){
 				daoPreferencias.addPreferenciaZona(preferencia);
 				conn.commit();
-				}else{
+			}else{
 				throw new Exception("No tiene permisos para realizar esta acción");
 			}
 		} catch(SQLException e){

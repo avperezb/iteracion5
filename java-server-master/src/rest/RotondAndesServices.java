@@ -151,21 +151,15 @@ public class RotondAndesServices {
 	}
 
 
-	/**
-	 * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
-	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
-	 * @param video - video a agregar
-	 * @return Json con el video que agrego o Json con el error que se produjo
-	 */
 	@POST
-	@Path("/ingredientes")
+	@Path("/usuarios/{id: \\d+}/ingredientes")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addIngrediente(Ingrediente ingrediente) {
+	public Response addIngrediente(@PathParam("id") Long id, Ingrediente ingrediente) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try 
 		{
-			tm.addIngrediente(ingrediente);
+			tm.addIngrediente(id, ingrediente);
 		} 
 		catch (Exception e)
 		{	
@@ -176,14 +170,14 @@ public class RotondAndesServices {
 	}
 
 	@POST
-	@Path("/productos")
+	@Path("/usuarios/{id: \\d+}/productos")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addProductos(Producto producto) {
+	public Response addProductos(@PathParam("id") Long id, Producto producto) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try 
 		{
-			tm.addProducto(producto);
+			tm.addProducto(id, producto);
 		} 
 		catch (Exception e)
 		{	
@@ -192,7 +186,6 @@ public class RotondAndesServices {
 
 		return Response.status(200).entity(producto).build();
 	}
-
 	/**
 	 * Metodo que expone servicio REST usando POST que agrega los videos que recibe en Json
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/varios
