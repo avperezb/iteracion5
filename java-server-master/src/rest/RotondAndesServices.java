@@ -349,10 +349,10 @@ public class RotondAndesServices {
 	@Path("/usuarios/administradores/{id: \\d+}/restaurantes")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public Response addRestaurante(Restaurante rest){
+	public Response addRestaurante(@PathParam("id") Long id, Restaurante rest){
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try{
-			tm.agregarRestaurante(rest);
+			tm.agregarRestaurante(id,rest);
 		}catch(Exception e){
 			Response.status(500).entity(doErrorMessage(e)).build();
 		}

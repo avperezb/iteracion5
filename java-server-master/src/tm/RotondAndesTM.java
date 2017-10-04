@@ -789,13 +789,22 @@ public class RotondAndesTM {
 	}
 
 
-	public void agregarRestaurante(Restaurante rest) throws Exception{
+	public void agregarRestaurante(Long id, Restaurante rest) throws Exception{
 		DAORestaurantesZona daoRest = new DAORestaurantesZona();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		try {
 			this.conn = darConexion();
 			daoRest.setConn(conn);
-			daoRest.addRestaurante(rest);
-			conn.commit();
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Admin"))
+			{
+				daoRest.addRestaurante(rest);
+				conn.commit();			
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
 		} catch(SQLException e){
 			System.err.println("SQLException: "+e.getMessage());
 			e.printStackTrace();
