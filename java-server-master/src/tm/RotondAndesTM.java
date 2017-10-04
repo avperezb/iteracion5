@@ -159,6 +159,38 @@ public class RotondAndesTM {
 		}
 		return ingredientes;
 	}
+	
+	public List<Producto> darProductos() throws Exception {
+		List<Producto> productos;
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn);
+			productos = daoIngredientes.darProductos();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos;
+	}
 
 	/**
 	 * Metodo que modela la transaccion que busca el/los videos en la base de datos con el nombre entra como parametro.

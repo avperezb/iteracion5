@@ -33,6 +33,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Ingrediente;
+import vos.Producto;
 import vos.Usuario;
 import vos.Video;
 import vos.Zona;
@@ -83,6 +84,20 @@ public class RotondAndesServices {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(ingredientes).build();
+	}
+	
+	@GET
+	@Path("/productos")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getProductos() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Producto> productos;
+		try {
+			productos = tm.darProductos();
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(productos).build();
 	}
 
 	 /**
@@ -155,6 +170,24 @@ public class RotondAndesServices {
 		}
 		
 		return Response.status(200).entity(ingrediente).build();
+	}
+	
+	@POST
+	@Path("/productos")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addProductos(Producto producto) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.addProducto(producto);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		
+		return Response.status(200).entity(producto).build();
 	}
 	
     /**
