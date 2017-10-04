@@ -67,7 +67,7 @@ public class RotondAndesTM {
 	 * Atributo que guarda el driver que se va a usar para conectarse a la base de datos.
 	 */
 	private String driver;
-	
+
 	/**
 	 * conexion a la base de datos
 	 */
@@ -196,7 +196,7 @@ public class RotondAndesTM {
 		}
 		return videos;
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que busca el video en la base de datos con el id que entra como parametro.
 	 * @param name - Id del video a buscar. name != null
@@ -234,15 +234,15 @@ public class RotondAndesTM {
 		}
 		return video;
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que agrega un solo video a la base de datos.
 	 * <b> post: </b> se ha agregado el video que entra como parametro
 	 * @param video - el video a agregar. video != null
 	 * @throws Exception - cualquier error que se genere agregando el video
 	 */
-	
-	
+
+
 	public void addProducto(Producto producto) throws Exception {
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
 		try 
@@ -273,7 +273,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que agrega los videos que entran como parametro a la base de datos.
 	 * <b> post: </b> se han agregado los videos que entran como parametro
@@ -293,7 +293,7 @@ public class RotondAndesTM {
 			{
 				daoVideos.addVideo(it.next());
 			}
-			
+
 			conn.commit();
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -317,7 +317,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/**
 	 * Metodo que modela la transaccion que actualiza el video que entra como parametro a la base de datos.
 	 * <b> post: </b> se ha actualizado el video que entra como parametro
@@ -393,7 +393,7 @@ public class RotondAndesTM {
 	public void addIngrediente( Ingrediente ingrediente) throws Exception{
 		// TODO Auto-generated method stub
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
-		
+
 		try 
 		{
 			//////transaccion
@@ -421,7 +421,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	/*-------------------------------------------------------------------------------------------------- */
 	public Zona buscarZonaPorId(Long id) throws Exception {
 		Zona zona;
@@ -432,7 +432,7 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daoZonas.setConn(conn);
 			zona = daoZonas.buscarZonaPorId(id);
-			
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -454,7 +454,7 @@ public class RotondAndesTM {
 		}
 		return zona;
 	}
-	
+
 	public List<Usuario> darUsuarios() throws Exception{
 		List<Usuario> usuarios;
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -486,29 +486,25 @@ public class RotondAndesTM {
 		}
 		return usuarios;
 	}
-	
+
 	public void agregarUsuario(Usuario usuario) throws Exception{
+		// TODO Auto-generated method stub
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
-		
+
 		try 
 		{
-			//////transaccion - ACID Example
+			//////transaccion
 			this.conn = darConexion();
-			conn.setAutoCommit(false);
-			daoUsuarios.setConnection(conn);
+			daoUsuarios.setConnection(conn); 			
 			daoUsuarios.addUsuario(usuario);
-			conn.commit();
-			
 			conn.commit();
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
-			conn.rollback();
 			throw e;
 		} catch (Exception e) {
 			System.err.println("GeneralException:" + e.getMessage());
 			e.printStackTrace();
-			conn.rollback();
 			throw e;
 		} finally {
 			try {

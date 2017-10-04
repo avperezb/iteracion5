@@ -213,6 +213,7 @@ public class RotondAndesServices {
 	
 	@POST
 	@Path("/usuarios")
+	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
 	public Response addUsuario(Usuario usuario){
 		RotondAndesTM tm = new RotondAndesTM(getPath());

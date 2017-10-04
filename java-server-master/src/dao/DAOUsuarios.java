@@ -79,7 +79,7 @@ public class DAOUsuarios {
 	public void addUsuario(Usuario usuario) throws SQLException{
 		String sql = "INSERT INTO USUARIO(ID, CORREO, ROL, INFO_ROL, NOMBRE) VALUES (";
 		sql += usuario.getId() + ",'";
-		sql += usuario.getCorreo() + "',";
+		sql += usuario.getCorreo() + "','";
 		sql += usuario.getRol() + "','";
 		sql += usuario.getInfoRol() + "','";
 		sql += usuario.getNombre() + "')";
