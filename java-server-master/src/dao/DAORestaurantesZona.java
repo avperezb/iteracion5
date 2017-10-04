@@ -54,7 +54,7 @@ public class DAORestaurantesZona {
 			String nombre = rs.getString("NOMBRE"); 
 			Integer tipo = rs.getInt("TIPO"); 
 			String urlPW = rs.getString("URL_PW"); 
-			Long idRepresentante = rs.getLong("ID_RPRESENTANTE"); 
+			Long idRepresentante = rs.getLong("ID_REPRESENTANTE"); 
 			restaurantes.add(new Restaurante(id, nombre, tipo, urlPW, idRepresentante)); 
 		}
 		return restaurantes;

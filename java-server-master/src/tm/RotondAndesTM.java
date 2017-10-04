@@ -29,6 +29,7 @@ import vos.Producto;
 import vos.Usuario;
 import vos.Video;
 import vos.Zona;
+import vos.Restaurante;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -487,6 +488,38 @@ public class RotondAndesTM {
 		return usuarios;
 	}
 
+	public List<Restaurante> darRestaurantes() throws Exception{
+		List<Restaurante> restaurantes;
+		DAORestaurantesZona daoRestaurantes = new DAORestaurantesZona();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRestaurantes.setConn(conn);
+			restaurantes = daoRestaurantes.darRestaurantes();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRestaurantes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return restaurantes;
+	}
+	
 	public void agregarUsuario(Usuario usuario) throws Exception{
 		// TODO Auto-generated method stub
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -519,4 +552,31 @@ public class RotondAndesTM {
 		}
 	}
 
+	public void agregarRestaurante(Restaurante rest) throws Exception{
+		DAORestaurantesZona daoRest = new DAORestaurantesZona();
+		try {
+			this.conn = darConexion();
+			daoRest.setConn(conn);
+			daoRest.addRestaurante(rest);
+			conn.commit();
+		} catch(SQLException e){
+				System.err.println("SQLException: "+e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} catch (Exception e) {
+				System.err.println("GeneralException: "+ e.getMessage());
+				e.printStackTrace();
+				throw e;
+			} finally {
+				try{
+					daoRest.cerrarRecursos();
+					if(this.conn!=null)
+						this.conn.close();
+				} catch (SQLException exception){
+					System.err.println("SQLException closing resources: "+ exception.getMessage());
+					exception.printStackTrace();
+					throw exception;
+				}
+			}
+		}
 }

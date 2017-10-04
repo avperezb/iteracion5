@@ -36,6 +36,7 @@ import vos.Ingrediente;
 import vos.Usuario;
 import vos.Video;
 import vos.Zona;
+import vos.Restaurante;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
@@ -225,5 +226,40 @@ public class RotondAndesServices {
 		return Response.status(200).entity(usuario).build();
 	}
 
-
+	/**
+	 * Metodo que expone servicio REST usando GET que da todos los videos de la base de datos.
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
+	 * @return Json con todos los videos de la base de datos o json con 
+     * el error que se produjo
+	 */
+	@GET
+	@Path("/restaurantes")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getRestaurantes() {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Restaurante> restaurantes;
+		try
+		{
+			restaurantes = tm.darRestaurantes();
+			return Response.status( 200 ).entity( restaurantes ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@POST
+	@Path("/usuarios/administradores/{id: \\d+}/restaurantes")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addRestaurante(Restaurante rest){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarRestaurante(rest);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(rest).build();
+	}
 }
