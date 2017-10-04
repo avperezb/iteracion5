@@ -21,12 +21,14 @@ import java.util.List;
 import java.util.Properties;
 
 import dao.DAOProductosIngredientes;
+import dao.DAORestaurantesZona;
 import dao.DAOTablaVideos;
 import dao.DAOUsuarios;
 import vos.Ingrediente;
 import vos.Producto;
 import vos.Usuario;
 import vos.Video;
+import vos.Zona;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -433,6 +435,39 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+	}
+	
+	/*-------------------------------------------------------------------------------------------------- */
+	public Zona buscarZonaPorId(Long id) throws Exception {
+		Zona zona;
+		DAORestaurantesZona daoZonas = new DAORestaurantesZona(); 
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoZonas.setConn(conn);
+			zona = daoZonas.buscarZonaPorId(id);
+			
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoZonas.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return zona;
 	}
 
 }

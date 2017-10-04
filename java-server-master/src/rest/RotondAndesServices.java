@@ -32,6 +32,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import tm.RotondAndesTM;
 import vos.Ingrediente;
 import vos.Video;
+import vos.Zona;
 
 /**
  * Clase que expone servicios REST con ruta base: http://"ip o nombre de host":8080/VideoAndes/rest/videos/...
@@ -167,7 +168,23 @@ public class RotondAndesServices {
 		return Response.status(200).entity(videos).build();
 	}
 	
-
+	/*---------------------------------------------------------------------------------------------------------------------*/
+	@GET
+	@Path("zonas/{id: \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getZona( @PathParam( "id" ) Long id )
+	{
+		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
+		try
+		{
+			Zona z = tm.buscarZonaPorId(id);
+			return Response.status( 200 ).entity( z ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 
 
 }
