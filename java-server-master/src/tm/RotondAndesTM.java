@@ -20,11 +20,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
+import dao.DAOPreferencias;
 import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
 import dao.DAOTablaVideos;
 import dao.DAOUsuarios;
 import vos.Ingrediente;
+import vos.PreferenciaUsuarioCategoria;
 import vos.Producto;
 import vos.Usuario;
 import vos.Video;
@@ -651,38 +653,38 @@ public class RotondAndesTM {
 	public void agregarCliente(Long id, Usuario usuario) throws Exception{
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 
- 		try 
- 		{
- 			//////transaccion
- 			this.conn = darConexion();
- 			daoUsuarios.setConnection(conn); 			
- 			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
- 			if(encargado.getRol().equals("Admin")){
- 				daoUsuarios.addUsuario(usuario);
- 				conn.commit();
- 			}else{
- 				throw new Exception("No tiene permisos para realizar esta acción");
- 			}
- 			
- 		} catch (SQLException e) {
- 			System.err.println("SQLException:" + e.getMessage());
- 			e.printStackTrace();
- 			throw e;
- 		} catch (Exception e) {
- 			System.err.println("GeneralException:" + e.getMessage());
- 			e.printStackTrace();
- 			throw e;
- 		} finally {
- 			try {
- 				daoUsuarios.cerrarRecursos();
- 				if(this.conn!=null)
- 					this.conn.close();
- 			} catch (SQLException exception) {
- 				System.err.println("SQLException closing resources:" + exception.getMessage());
- 				exception.printStackTrace();
- 				throw exception;
- 			}
- 		}
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn); 			
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Admin")){
+				daoUsuarios.addUsuario(usuario);
+				conn.commit();
+			}else{
+				throw new Exception("No tiene permisos para realizar esta acción");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 
 	public void agregarZona(Zona zona) throws Exception{
@@ -767,6 +769,104 @@ public class RotondAndesTM {
 		} finally {
 			try{
 				daoRest.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception){
+				System.err.println("SQLException closing resources: "+ exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void updatePreferenciaCategoria(PreferenciaUsuarioCategoria categoria) throws Exception {
+		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPreferencias.setConn(conn);
+			daoPreferencias.updatePreferenciaCategoria(categoria);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPreferencias.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public List<PreferenciaUsuarioCategoria> darPreferenciasCategoria() throws Exception{
+		List<PreferenciaUsuarioCategoria> preferencias;
+		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoPreferencias.setConn(conn);
+			preferencias = daoPreferencias.darPreferenciasCategorias();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPreferencias.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return preferencias;
+	}
+
+	public void agregarPreferenciaCategoria(Long id, PreferenciaUsuarioCategoria preferencia) throws Exception{
+		DAOPreferencias daoPreferencias = new DAOPreferencias();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try {
+			this.conn = darConexion();
+			daoPreferencias.setConn(conn);
+			daoUsuarios.setConnection(conn);
+
+			Usuario usuario = daoUsuarios.buscarUsuarioPorID(id);
+			if(usuario.getId() == preferencia.getUsuarioID()){
+				daoPreferencias.addPreferenciaCategoria(preferencia);
+				conn.commit();
+				}else{
+				throw new Exception("No tiene permisos para realizar esta acci�n");
+			}
+		} catch(SQLException e){
+			System.err.println("SQLException: "+e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException: "+ e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try{
+				daoPreferencias.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception){

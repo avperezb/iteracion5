@@ -33,6 +33,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 
 import tm.RotondAndesTM;
 import vos.Ingrediente;
+import vos.PreferenciaUsuarioCategoria;
 import vos.Producto;
 import vos.Usuario;
 import vos.Video;
@@ -59,18 +60,18 @@ public class RotondAndesServices {
 	private String getPath() {
 		return context.getRealPath("WEB-INF/ConnectionData");
 	}
-	
-	
+
+
 	private String doErrorMessage(Exception e){
 		return "{ \"ERROR\": \""+ e.getMessage() + "\"}" ;
 	}
-	
+
 
 	/**
 	 * Metodo que expone servicio REST usando GET que da todos los videos de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
 	 * @return Json con todos los videos de la base de datos o json con 
-     * el error que se produjo
+	 * el error que se produjo
 	 */
 	@GET
 	@Path("/ingredientes")
@@ -85,7 +86,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(ingredientes).build();
 	}
-	
+
 	@GET
 	@Path("/productos")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -100,13 +101,13 @@ public class RotondAndesServices {
 		return Response.status(200).entity(productos).build();
 	}
 
-	 /**
-     * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
-     * @param name - Nombre del video a buscar que entra en la URL como parametro 
-     * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-     * el error que se produjo
-     */
+	/**
+	 * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
+	 * @param name - Nombre del video a buscar que entra en la URL como parametro 
+	 * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
+	 * el error que se produjo
+	 */
 	@GET
 	@Path( "{id: \\d+}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
@@ -124,13 +125,13 @@ public class RotondAndesServices {
 		}
 	}
 
-    /**
-     * Metodo que expone servicio REST usando GET que busca el video con el nombre que entra como parametro
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/nombre/nombre?nombre=<<nombre>>" para la busqueda"
-     * @param name - Nombre del video a buscar que entra en la URL como parametro 
-     * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-     * el error que se produjo
-     */
+	/**
+	 * Metodo que expone servicio REST usando GET que busca el video con el nombre que entra como parametro
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/nombre/nombre?nombre=<<nombre>>" para la busqueda"
+	 * @param name - Nombre del video a buscar que entra en la URL como parametro 
+	 * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
+	 * el error que se produjo
+	 */
 	@GET
 	@Path( "{nombre}" )
 	@Produces( { MediaType.APPLICATION_JSON } )
@@ -148,12 +149,12 @@ public class RotondAndesServices {
 	}
 
 
-    /**
-     * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
-     * @param video - video a agregar
-     * @return Json con el video que agrego o Json con el error que se produjo
-     */
+	/**
+	 * Metodo que expone servicio REST usando POST que agrega el video que recibe en Json
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/video
+	 * @param video - video a agregar
+	 * @return Json con el video que agrego o Json con el error que se produjo
+	 */
 	@POST
 	@Path("/ingredientes")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -168,10 +169,10 @@ public class RotondAndesServices {
 		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		
+
 		return Response.status(200).entity(ingrediente).build();
 	}
-	
+
 	@POST
 	@Path("/productos")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -186,16 +187,16 @@ public class RotondAndesServices {
 		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		
+
 		return Response.status(200).entity(producto).build();
 	}
-	
-    /**
-     * Metodo que expone servicio REST usando POST que agrega los videos que recibe en Json
-     * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/varios
-     * @param videos - videos a agregar. 
-     * @return Json con el video que agrego o Json con el error que se produjo
-     */
+
+	/**
+	 * Metodo que expone servicio REST usando POST que agrega los videos que recibe en Json
+	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/varios
+	 * @param videos - videos a agregar. 
+	 * @return Json con el video que agrego o Json con el error que se produjo
+	 */
 	@POST
 	@Path("/varios")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -209,7 +210,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(videos).build();
 	}
-	
+
 	/*---------------------------------------------------------------------------------------------------------------------*/
 	@GET
 	@Path("zonas/{id: \\d+}")
@@ -227,7 +228,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@GET
 	@Path("/usuarios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -244,7 +245,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/usuarios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -263,7 +264,7 @@ public class RotondAndesServices {
 	 * Metodo que expone servicio REST usando GET que da todos los videos de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
 	 * @return Json con todos los videos de la base de datos o json con 
-     * el error que se produjo
+	 * el error que se produjo
 	 */
 	@GET
 	@Path("/restaurantes")
@@ -280,7 +281,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-		
+
 	@GET
 	@Path("/usuarios/administradores")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -297,7 +298,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@GET
 	@Path("/usuarios/{id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -314,7 +315,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/zonas")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -370,5 +371,36 @@ public class RotondAndesServices {
 			Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(usuario).build();
+	}
+
+	@GET
+	@Path("/preferencias")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getPreferencias(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<PreferenciaUsuarioCategoria> preferencias;
+		try
+		{
+			preferencias = tm.darPreferenciasCategoria();
+			return Response.status( 200 ).entity( preferencias ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@POST
+	@Path("/usuarios/{id: \\d+}/preferencias")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addPreferenciaCategoria(@PathParam("id") Long id, PreferenciaUsuarioCategoria preferencia){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarPreferenciaCategoria(id, preferencia);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(preferencia).build();
 	}
 }
