@@ -258,5 +258,19 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	@POST
+	@Path("/usuarios/{id: \\d+}/usuarios")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addCliente(@PathParam("id") Long id, Usuario usuario){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarCliente(id, usuario);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(usuario).build();
+	}
 
 }
