@@ -54,7 +54,7 @@ public class DAORestaurantesZona {
 			String nombre = rs.getString("NOMBRE"); 
 			Integer tipo = rs.getInt("TIPO"); 
 			String urlPW = rs.getString("URL_PW"); 
-			Long idRepresentante = rs.getLong("ID_RPRESENTANTE"); 
+			Long idRepresentante = rs.getLong("ID_REPRESENTANTE"); 
 			restaurantes.add(new Restaurante(id, nombre, tipo, urlPW, idRepresentante)); 
 		}
 		return restaurantes;
@@ -125,7 +125,7 @@ public class DAORestaurantesZona {
 
 		while (rs.next()) {
 			Long id = rs.getLong("ID"); 
-			Integer capacidadPersonas = rs.getInt("CAPCIDAD_PERSNAS"); 
+			Integer capacidadPersonas = rs.getInt("CAPACIDAD_PERSNAS"); 
 			char handicap = rs.getString("HANDICAP").charAt(0); 
 			String condicionesTecnicas = rs.getString("CONDICIONES_TECNICAS"); 
 			zonas.add(new Zona(id, capacidadPersonas, handicap, condicionesTecnicas)); 
@@ -167,11 +167,11 @@ public class DAORestaurantesZona {
 	
 	public void addZona(Zona zona) throws SQLException, Exception {
 
-		String sql = "INSERT INTO ZONA VALUES (";
+		String sql = "INSERT INTO ZONA(ID, CAPACIDAD_PERSNAS, HANDICAP, CONDICIONES_TECNICAS) VALUES (";
 		sql += zona.getId() + ",'";
-		sql += zona.getCapacidadPersonas() + "',";
-		sql += zona.getHandicap() + "',"; 
-		sql += zona.getCondicionesTecnicas() + ")";
+		sql += zona.getCapacidadPersonas() + "','";
+		sql += zona.getHandicap() + "','"; 
+		sql += zona.getCondicionesTecnicas() + "')";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);

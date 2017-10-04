@@ -258,5 +258,35 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
+	
+	@POST
+	@Path("/zonas")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response addZona(Zona zona){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try{
+			tm.agregarZona(zona);
+		}catch(Exception e){
+			Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(zona).build();
+	}
+	@GET
+	@Path("/zonas")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getZonas(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Zona> zonas;
+		try
+		{
+			zonas = tm.darZonas();
+			return Response.status( 200 ).entity( zonas ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 
 }
