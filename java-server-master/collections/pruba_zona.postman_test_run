@@ -1,0 +1,210 @@
+{
+	"id": "9d253923-c83b-9a6c-652b-4d52d70d5183",
+	"name": "pruba_zona",
+	"allTests": [],
+	"timestamp": 1507161746591,
+	"collection_id": "844e5db2-ff74-e2bb-d0bc-e009c6153a22",
+	"folder_id": 0,
+	"target_type": "collection",
+	"environment_id": "0",
+	"data": null,
+	"delay": 0,
+	"count": 1,
+	"collection": {
+		"id": "844e5db2-ff74-e2bb-d0bc-e009c6153a22",
+		"name": "pruba_zona",
+		"description": "",
+		"order": [
+			"1b9a812d-54d5-cd83-3a92-8b3e83199a14",
+			"31e57328-2c58-ba8d-dccd-02c7fe3cf530",
+			"e013c122-b213-63d5-6cc4-9e5c7a44f2b5",
+			"08307369-a738-44b0-16d5-34374b1804d5"
+		],
+		"folders": [],
+		"folders_order": [],
+		"requests": [
+			{
+				"id": "08307369-a738-44b0-16d5-34374b1804d5",
+				"headers": "Content-Type: application/json\n",
+				"headerData": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"enabled": true
+					}
+				],
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/zonas",
+				"queryParams": [],
+				"preRequestScript": null,
+				"pathVariables": {},
+				"pathVariableData": [],
+				"method": "POST",
+				"data": "{\n    \"id\": 10,\n    \"capacidadPersonas\": 72,\n    \"handicap\": \"N\",\n    \"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, luces de neon extremas\"\n}",
+				"dataMode": "raw",
+				"version": 2,
+				"tests": "",
+				"currentHelper": "normal",
+				"helperAttributes": {},
+				"time": 1507162471887,
+				"name": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/zonas",
+				"description": "",
+				"collectionId": "844e5db2-ff74-e2bb-d0bc-e009c6153a22",
+				"responses": []
+			},
+			{
+				"id": "1b9a812d-54d5-cd83-3a92-8b3e83199a14",
+				"headers": "Content-Type: application/json\n",
+				"headerData": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"enabled": true
+					}
+				],
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/zonas",
+				"queryParams": [],
+				"preRequestScript": null,
+				"pathVariables": {},
+				"pathVariableData": [],
+				"method": "GET",
+				"data": "{\n    \"id\": 9,\n    \"capacidadPersonas\": 72,\n    \"handicap\": \"N\",\n    \"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, luces de neon extremas\"\n}",
+				"dataMode": "raw",
+				"version": 2,
+				"tests": "",
+				"currentHelper": "normal",
+				"helperAttributes": {},
+				"time": 1507162480275,
+				"name": "http://localhost:8080/VideoAndes/rest/servicios/zonas",
+				"description": "",
+				"collectionId": "844e5db2-ff74-e2bb-d0bc-e009c6153a22"
+			},
+			{
+				"id": "31e57328-2c58-ba8d-dccd-02c7fe3cf530",
+				"headers": "Content-Type: application/json\n",
+				"headerData": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"enabled": true
+					}
+				],
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/4/zonas",
+				"queryParams": [],
+				"preRequestScript": null,
+				"pathVariables": {},
+				"pathVariableData": [],
+				"method": "POST",
+				"data": "{\n    \"id\": 9,\n    \"capacidadPersonas\": 72,\n    \"handicap\": \"N\",\n    \"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, luces de neon extremas\"\n}",
+				"dataMode": "raw",
+				"version": 2,
+				"tests": "",
+				"currentHelper": "normal",
+				"helperAttributes": {},
+				"time": 1507162486594,
+				"name": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/4/zonas",
+				"description": "",
+				"collectionId": "844e5db2-ff74-e2bb-d0bc-e009c6153a22"
+			},
+			{
+				"id": "e013c122-b213-63d5-6cc4-9e5c7a44f2b5",
+				"headers": "Content-Type: application/json\n",
+				"headerData": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": "",
+						"enabled": true
+					}
+				],
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/zonas/2",
+				"queryParams": [],
+				"preRequestScript": null,
+				"pathVariables": {},
+				"pathVariableData": [],
+				"method": "GET",
+				"data": "{\n    \"id\": 9,\n    \"capacidadPersonas\": 72,\n    \"handicap\": \"N\",\n    \"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, droga, baretica\"\n}",
+				"dataMode": "raw",
+				"version": 2,
+				"tests": "",
+				"currentHelper": "normal",
+				"helperAttributes": {},
+				"time": 1507162493148,
+				"name": "http://localhost:8080/VideoAndes/rest/servicios/zonas/2",
+				"description": "",
+				"collectionId": "844e5db2-ff74-e2bb-d0bc-e009c6153a22"
+			}
+		],
+		"timestamp": 1507161693140,
+		"synced": false,
+		"syncedFilename": "",
+		"remote_id": 0,
+		"remoteLink": "",
+		"remoteLinkUpdatedAt": null,
+		"public": false,
+		"owner": "2881222",
+		"subscribed": false,
+		"createdAt": 1507161693140,
+		"updatedAt": 1507162028616,
+		"write": true,
+		"published": false,
+		"favorite": true,
+		"permissions": {},
+		"syncedPermissions": {},
+		"sharedWithTeam": false
+	},
+	"folder": null,
+	"environment": null,
+	"globals": [],
+	"results": [
+		{
+			"id": "790420f8-c283-8427-508f-0986e5c14857",
+			"name": "pruebas_zonas",
+			"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/zonas",
+			"totalTime": 0,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error",
+				"detail": "A generic error message, given when no more specific message is suitable."
+			},
+			"tests": {},
+			"testPassFailCounts": {},
+			"times": [
+				10836
+			],
+			"allTests": [
+				{}
+			],
+			"time": 10836,
+			"totalRequestTime": 10836,
+			"iterationResults": {}
+		}
+	],
+	"totalPass": 0,
+	"totalFail": 0,
+	"totalTime": 10836,
+	"lifecycle": "idle",
+	"willStop": false,
+	"requests": [
+		{
+			"name": "pruebas_zonas",
+			"id": "790420f8-c283-8427-508f-0986e5c14857",
+			"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/zonas",
+			"time": 10836,
+			"responseCode": {
+				"code": 500,
+				"name": "Internal Server Error",
+				"detail": "A generic error message, given when no more specific message is suitable."
+			},
+			"testPassFailCounts": {},
+			"gridTitles": [],
+			"gridData": [
+				[]
+			],
+			"tests": {}
+		}
+	],
+	"synced": false
+}
