@@ -11,6 +11,7 @@
 package tm;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,7 +24,6 @@ import java.util.Properties;
 import dao.DAOPreferencias;
 import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
-import dao.DAOTablaVideos;
 import dao.DAOUsuarios;
 import vos.Ingrediente;
 import vos.PreferenciaUsuarioCategoria;
