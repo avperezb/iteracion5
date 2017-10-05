@@ -1,0 +1,91 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Pruebas RF4 y RF5",
+		"_postman_id": "97e76a1f-9f42-ace7-00a0-5c0760afa48e",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 20,\n        \"nombre\": \"Cerdo a la cazadora\",\n        \"tiempoPreparacion\": 20,\n        \"descripcionEsp\": \"La carne a la plancha, es una de las formas de cocción más sencillas y saludables. La carne de cerdo en especial es muy noble.\",\n        \"descripcionEng\": \"Grilled meat is one of the simplest and healthiest cooking methods. Pork especially is very noble.\",\n        \"clasificacion\": 2,\n        \"tipo\": 2,\n        \"decripcionEsp\": \"La carne a la plancha, es una de las formas de cocción más sencillas y saludables. La carne de cerdo en especial es muy noble.\"\n}\n\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/3/productos",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/3/productos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"id\": 260,\n        \"nombre\": \"Cerdo a la cazadora\",\n        \"tiempoPreparacion\": 20,\n        \"descripcionEsp\": \"La carne a la plancha, es una de las formas de cocción más sencillas y saludables. La carne de cerdo en especial es muy noble.\",\n        \"descripcionEng\": \"Grilled meat is one of the simplest and healthiest cooking methods. Pork especially is very noble.\",\n        \"clasificacion\": 2,\n        \"tipo\": 2,\n        \"decripcionEsp\": \"La carne a la plancha, es una de las formas de cocción más sencillas y saludables. La carne de cerdo en especial es muy noble.\"\n}\n\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/3/ingredientes",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/3/ingredientes",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"id\": 61,\n        \"nombre\": \"Tomilludo\",\n        \"descripcionEsp\": null,\n        \"descripcionEng\": null,\n        \"descricionEsp\": null\n    }\n\n"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/ingredientes",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/ingredientes",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " {\n        \"id\": 60,\n        \"nombre\": \"Tomilludo\",\n        \"descripcionEsp\": null,\n        \"descripcionEng\": null,\n        \"descricionEsp\": null\n        \n \t\n }\n\n"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

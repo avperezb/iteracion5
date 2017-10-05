@@ -1,0 +1,55 @@
+{
+	"variables": [],
+	"info": {
+		"name": "pruebas RFC1",
+		"_postman_id": "87f08ab6-dc92-2074-25da-0395bfc6baf8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos/restaurantes/1",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos/restaurantes/1",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos/categorias/2",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos/categorias/2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos/precio/20000/39000",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos/precio/20000/39000",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
