@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Usuario;
+import vos.UsuarioClientePref;
 
 public class DAOUsuarios {
 
@@ -51,6 +52,29 @@ public class DAOUsuarios {
 			String nombre = rs.getString("NOMBRE");
 
 			usuarios.add(new Usuario(idUsuario, correo, rol, infoRol, nombre));
+		}
+		return usuarios;
+	}
+	
+	public ArrayList<UsuarioClientePref> darUsuarioPreferencias() throws SQLException, Exception{
+
+		ArrayList<UsuarioClientePref> usuarios = new ArrayList<>();
+
+		String sql = "SELECT * FROM USUARIO INNER JOIN PREFERENCIA_USUARIO_PRECIO ON USUARIO.ROL = 'Cliente'";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			Long idUsuario = (Long) rs.getLong("ID");
+			String correo = rs.getString("CORREO");
+			String rol = rs.getString("ROL");
+			String infoRol = rs.getString("INFO_ROL");
+			String nombre = rs.getString("NOMBRE");
+			Long preferencia = (Long) rs.getLong("PRECIO");
+
+			usuarios.add(new UsuarioClientePref(idUsuario, correo, rol, infoRol, nombre, preferencia));
 		}
 		return usuarios;
 	}

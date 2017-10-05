@@ -38,6 +38,7 @@ import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
 import vos.Usuario;
+import vos.UsuarioClientePref;
 import vos.Video;
 import vos.Zona;
 import vos.Restaurante;
@@ -210,6 +211,22 @@ public class RotondAndesServices {
 		try
 		{
 			usuarios = tm.darUsuarios();
+			return Response.status( 200 ).entity( usuarios ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	@GET
+	@Path("/usuariosPref")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response getUsuariosPreferencias(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<UsuarioClientePref> usuarios;
+		try
+		{
+			usuarios = tm.darUsuarioPreferencias();
 			return Response.status( 200 ).entity( usuarios ).build( );			
 		}
 		catch( Exception e )

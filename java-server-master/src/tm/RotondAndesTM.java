@@ -31,6 +31,7 @@ import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
 import vos.Usuario;
+import vos.UsuarioClientePref;
 import vos.Video;
 import vos.Zona;
 import vos.Restaurante;
@@ -518,6 +519,38 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daoUsuarios.setConnection(conn);
 			usuarios = daoUsuarios.darAdministradores();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return usuarios;
+	}
+	
+	public List<UsuarioClientePref> darUsuarioPreferencias() throws Exception{
+		List<UsuarioClientePref> usuarios;
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn);
+			usuarios = daoUsuarios.darUsuarioPreferencias();
 
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
