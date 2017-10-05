@@ -12,7 +12,7 @@ import vos.Video;
 
 public class DAOProductosIngredientes {
 
-	
+
 	/**
 	 * Arraylits de recursos que se usan para la ejecución de sentencias SQL
 	 */
@@ -80,7 +80,7 @@ public class DAOProductosIngredientes {
 		}
 		return ingredientes;
 	}
-	
+
 	public ArrayList<Producto> darProductos() throws SQLException, Exception {
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
@@ -98,7 +98,7 @@ public class DAOProductosIngredientes {
 			String descripcionEng = rs.getString("DESCRIPCION_ENG");
 			Long clasificacion = rs.getLong("CLASIFICACION");
 			Long tipo = rs.getLong("TIPO");
-			
+
 			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
 		}
 		return productos;
@@ -125,7 +125,7 @@ public class DAOProductosIngredientes {
 		prepStmt.executeQuery();
 
 	}
-	
+
 	public void addProducto(Producto producto) throws SQLException, Exception {
 
 		String sql = "INSERT INTO PRODUCTOS VALUES (";
@@ -140,8 +140,33 @@ public class DAOProductosIngredientes {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
-
 	}
-	
+
+	public ArrayList<Producto> RFC4() throws SQLException, Exception{
+		ArrayList<Producto> respuesta = new ArrayList<>();
+
+		String sql = "SELECT * FROM (SELECT ID_PRODUCTO, MAX(CANTIDAD_SERVIDO)"
+				+ " FROM (SELECT ID_PRODUCTO, COUNT(ID_RESTAURANTE)AS CANTIDAD_SERVIDO"
+				+ " FROM (SELECT A.ID AS ID_PRODUCTO, REST.ID_RESTAURANTE FROM PRODUCTOS"
+				+ " A INNER JOIN RESTAURANTES_PRODUCTOS REST ON A.ID = REST.ID_PRODUCTO)"
+				+ " GROUP BY ID_PRODUCTO) GROUP BY ID_PRODUCTO) INNER JOIN PRODUCTOS ON ID_PRODUCTO = PRODUCTOS.ID";
+		System.out.println(sql);
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
 		
+
+		while (rs.next()) {
+			Long idProducto = rs.getLong("ID");
+			String name = rs.getString("NOMBRE");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			respuesta.add(new Producto(idProducto, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		return respuesta;
+	}
 }

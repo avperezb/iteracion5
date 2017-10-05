@@ -1148,5 +1148,36 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	public List<Producto> darPoductosMasOfrecidos() throws Exception{
+		List<Producto> ofrecidos;
+		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProductos.setConn(conn);
+			ofrecidos = daoProductos.RFC4();
 
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProductos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return ofrecidos;
+	}
 }

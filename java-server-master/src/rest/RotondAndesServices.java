@@ -508,4 +508,21 @@ public class RotondAndesServices {
 		return Response.status(200).entity(preferencia).build();
 	}
 	
+	@GET
+	@Path("/productos/mas-ofrecidos")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getProductosMasOfrecidos(){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Producto> ofrecidos;
+		try
+		{
+			ofrecidos = tm.darPoductosMasOfrecidos();
+			return Response.status( 200 ).entity( ofrecidos ).build( );			
+		}
+		catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
 }
