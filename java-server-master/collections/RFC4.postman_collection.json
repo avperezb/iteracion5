@@ -1,0 +1,33 @@
+{
+	"variables": [],
+	"info": {
+		"name": "RFC4",
+		"_postman_id": "fd8f25e2-769a-62b8-6c87-0e91b05ac494",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/productos/mas-ofrecidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"StatusCodeis200\"]=responseCode.code==200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/productos/mas-ofrecidos",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "RFC4"
+			},
+			"response": []
+		}
+	]
+}
