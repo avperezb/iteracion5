@@ -1,0 +1,115 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Pruebas Usuarios",
+		"_postman_id": "9c9538aa-efc8-09e3-27a3-9391e475a27f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET de usuarios",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de usuario",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"id\": 9,\n    \"correo\": \"casa@casa.com\",\n    \"rol\": \"Cliente\",\n    \"infoRol\": \"Es un cliente de la rotonda\",\n    \"nombre\": \"Carlito Lito\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de usuario creado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/9",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de un cliente",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/4/usuarios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\": 10,\n    \"correo\": \"casa@casa.com\",\n    \"rol\": \"Cliente\",\n    \"infoRol\": \"Es un cliente de la rotonda\",\n    \"nombre\": \"Maki Maki\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de cliente creado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/10",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de un cliente a través de alguien no admin",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/5/usuarios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"id\": 11,\n    \"correo\": \"casa@casa.com\",\n    \"rol\": \"Cliente\",\n    \"infoRol\": \"Es un cliente de la rotonda\",\n    \"nombre\": \"Maki Maki\"}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de cliente no creado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/11",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
