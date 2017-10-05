@@ -1,0 +1,230 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Pruebas Preferencias",
+		"_postman_id": "a81fe4be-89c6-d864-678d-545e82143fca",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GET Preferencias zonas",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/zonas",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Preferencias categorias",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/categorias",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Preferencias precios",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/precios",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia zona",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/preferencias/zonas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"usuarioID\": 2,\n        \"zonaID\": 5\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias zonas con la nueva preferencia",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/zonas",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia precio",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/preferencias/precios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"usuarioID\": 2,\n        \"precio\": 50000\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias precios con la nueva preferencia",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/precios",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia categoria",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/preferencias/categorias",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"usuarioID\": 2,\n        \"calsificacionID\": 3\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias categorias con la nueva preferencia",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/categorias",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia categoria no autorizado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/1/preferencias/categorias",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"usuarioID\": 2,\n        \"calsificacionID\": 3\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias categorias con la nueva preferencia NO AUTORIZADO",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/categorias",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia zona no autorizado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/1/preferencias/zonas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n        \"usuarioID\": 2,\n        \"zonaID\": 4\n\t\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias zonas con la nueva preferencia NO AUTORIZADO",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/zonas",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST de preferencia precio no autorizado",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/1/preferencias/precios",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\n        \"usuarioID\": 2,\n        \"precio\": 500\n    }"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET de preferencias precios con la nueva preferencia NO AUTORIZADO",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/preferencias/precios",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
