@@ -145,52 +145,6 @@ public class RotondAndesServices {
 		return Response.status(200).entity(productos).build();
 	}
 
-	/**
-	 * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
-	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
-	 * @param name - Nombre del video a buscar que entra en la URL como parametro 
-	 * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-	 * el error que se produjo
-	 */
-	@GET
-	@Path( "{id: \\d+}" )
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getVideo( @PathParam( "id" ) Long id )
-	{
-		RotondAndesTM tm = new RotondAndesTM( getPath( ) );
-		try
-		{
-			Video v = tm.buscarVideoPorId( id );
-			return Response.status( 200 ).entity( v ).build( );			
-		}
-		catch( Exception e )
-		{
-			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
-		}
-	}
-
-	/**
-	 * Metodo que expone servicio REST usando GET que busca el video con el nombre que entra como parametro
-	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/nombre/nombre?nombre=<<nombre>>" para la busqueda"
-	 * @param name - Nombre del video a buscar que entra en la URL como parametro 
-	 * @return Json con el/los videos encontrados con el nombre que entra como parametro o json con 
-	 * el error que se produjo
-	 */
-	@GET
-	@Path( "{nombre}" )
-	@Produces( { MediaType.APPLICATION_JSON } )
-	public Response getVideoName( @QueryParam("nombre") String name) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Video> videos;
-		try {
-			if (name == null || name.length() == 0)
-				throw new Exception("Nombre del video no valido");
-			videos = tm.buscarVideosPorName(name);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(videos).build();
-	}
 
 
 	@POST
@@ -227,25 +181,6 @@ public class RotondAndesServices {
 		}
 
 		return Response.status(200).entity(producto).build();
-	}
-	/**
-	 * Metodo que expone servicio REST usando POST que agrega los videos que recibe en Json
-	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/varios
-	 * @param videos - videos a agregar. 
-	 * @return Json con el video que agrego o Json con el error que se produjo
-	 */
-	@POST
-	@Path("/varios")
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response addVideo(List<Video> videos) {
-		RotondAndesTM tm = new RotondAndesTM(getPath());
-		try {
-			tm.addVideos(videos);
-		} catch (Exception e) {
-			return Response.status(500).entity(doErrorMessage(e)).build();
-		}
-		return Response.status(200).entity(videos).build();
 	}
 
 	/*---------------------------------------------------------------------------------------------------------------------*/
