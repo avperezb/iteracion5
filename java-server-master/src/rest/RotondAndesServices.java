@@ -103,6 +103,48 @@ public class RotondAndesServices {
 		return Response.status(200).entity(productos).build();
 	}
 
+	@GET
+	@Path("/productos/restaurantes/{id: \\d+}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getProductosRestaurante(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Producto> productos;
+		try {
+			productos = tm.darProductosRestaurante(id);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(productos).build();
+	}
+
+	@GET
+	@Path("/productos/categorias/{id: \\d+}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getProductosCategoria(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Producto> productos;
+		try {
+			productos = tm.darProductosCategoria(id);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(productos).build();
+	}
+
+	@GET
+	@Path("/productos/precio/{precioMenor: \\d+}/{precioMayor: \\d+}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getProductosPrecios(@PathParam("precioMenor") Long pMenor, @PathParam("precioMayor") Long pMayor) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Producto> productos;
+		try {
+			productos = tm.darProductosPrecio(pMenor, pMayor);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(productos).build();
+	}
+
 	/**
 	 * Metodo que expone servicio REST usando GET que busca el video con el id que entra como parametro
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos/<<id>>" para la busqueda"
@@ -389,7 +431,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@GET
 	@Path("/preferencias/precios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -406,7 +448,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@GET
 	@Path("/preferencias/zonas")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -423,7 +465,7 @@ public class RotondAndesServices {
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/preferencias/categorias")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -437,7 +479,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/preferencias/precios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -451,7 +493,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/preferencias/zonas")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -465,7 +507,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@PUT
 	@Path("/usuarios/{id: \\d+}/preferencias/categorias/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -479,7 +521,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@PUT
 	@Path("/usuarios/{id: \\d+}/preferencias/precio/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -493,7 +535,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@PUT
 	@Path("/usuarios/{id: \\d+}/preferencias/zonas/")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -507,7 +549,7 @@ public class RotondAndesServices {
 		}
 		return Response.status(200).entity(preferencia).build();
 	}
-	
+
 	@GET
 	@Path("/productos/mas-ofrecidos")
 	@Produces(MediaType.APPLICATION_JSON)

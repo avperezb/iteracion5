@@ -195,6 +195,102 @@ public class RotondAndesTM {
 		}
 		return productos;
 	}
+	
+	public List<Producto> darProductosRestaurante(Long id) throws Exception {
+		List<Producto> productos;
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn);
+			productos = daoIngredientes.darProductosRestaurante(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos;
+	}
+	
+	public List<Producto> darProductosCategoria(Long id) throws Exception {
+		List<Producto> productos;
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn);
+			productos = daoIngredientes.darProductosCategoria(id);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos;
+	}
+	
+	public List<Producto> darProductosPrecio(Long pMenor,Long pMayor) throws Exception {
+		List<Producto> productos;
+		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoIngredientes.setConn(conn);
+			productos = daoIngredientes.darProductosPrecios(pMenor, pMayor);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoIngredientes.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return productos;
+	}
 
 	/**
 	 * Metodo que modela la transaccion que busca el/los videos en la base de datos con el nombre entra como parametro.

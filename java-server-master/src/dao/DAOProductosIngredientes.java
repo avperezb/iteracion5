@@ -104,6 +104,74 @@ public class DAOProductosIngredientes {
 		return productos;
 	}
 
+	public ArrayList<Producto> darProductosRestaurante(Long idRes) throws SQLException, Exception {
+		ArrayList<Producto> productos = new ArrayList<Producto>();
+
+		String sql = "SELECT ID_PRODUCTO, COSTO, PRECIO, NOMBRE, TIEMPO_PREPARACIO, DESCRIPCION_ESP, DESCRIPCION_ENG,CLASIFICACION,TIPO FROM (SELECT * FROM RESTAURANTES_PRODUCTOS A INNER JOIN PRODUCTOS P ON A.ID_PRODUCTO = P.ID) WHERE ID_RESTAURANTE = "+idRes;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID_PRODUCTO");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		return productos;
+	}
+
+	public ArrayList<Producto> darProductosCategoria(Long idCat) throws SQLException, Exception {
+		ArrayList<Producto> productos = new ArrayList<Producto>();
+
+		String sql = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+idCat;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		return productos;
+	}
+
+	public ArrayList<Producto> darProductosPrecios(Long pMenor, Long pMayor) throws SQLException, Exception {
+		ArrayList<Producto> productos = new ArrayList<Producto>();
+
+		String sql = "SELECT ID_PRODUCTO, COSTO, PRECIO, NOMBRE, TIEMPO_PREPARACIO, DESCRIPCION_ESP, DESCRIPCION_ENG,CLASIFICACION,TIPO FROM (SELECT * FROM RESTAURANTES_PRODUCTOS A INNER JOIN PRODUCTOS P ON A.ID_PRODUCTO = P.ID) WHERE PRECIO >" +pMenor+ "AND PRECIO <"+pMayor;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID_PRODUCTO");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		return productos;
+	}
 	/**
 	 * Metodo que agrega el video que entra como parametro a la base de datos.
 	 * @param video - el video a agregar. video !=  null
@@ -154,7 +222,7 @@ public class DAOProductosIngredientes {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
-		
+
 
 		while (rs.next()) {
 			Long idProducto = rs.getLong("ID");
