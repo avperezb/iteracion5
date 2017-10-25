@@ -1,0 +1,5 @@
+Para poder ejecutar el proyecto y consumir todos los recursos que ofrece se debe seguir esta serie de pasos.:
+1. Descargar el código fuente de la aplicación e importarla a eclipse.
+2. Desplegar la aplicación en el servidor a través de WildFly en su versión 10.0.x
+3. Consumir los recursos a través de la ventana de eclipse llamada RotondAndesHome o a través del navegador con la extensión Postman de Chrome. Para esto debemos realizar diferentes pruebas alternando en los tipos de peticiones diferentes que nos permite Postman (GET, POST, PUT, DELETE).
+4. Para hacer las pruebas completas de todos los recursos con todos sus escenarios posibles debe importar los archivos de la carpeta Collections a la aplicación Postman. De esta forma se asegura que funcionan correctamente todos los requerimientos desarrollados.

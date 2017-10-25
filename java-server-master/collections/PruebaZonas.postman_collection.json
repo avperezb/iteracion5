@@ -1,0 +1,117 @@
+{
+	"variables": [],
+	"info": {
+		"name": "PruebaZonas",
+		"_postman_id": "cb6d73e3-c246-4014-6a6c-be7f76d00025",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "POST Zona 500",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"StatusCodeis200\"]=responseCode.code==500"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/2/zonas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \"id\": 10,\n\"capacidadPersonas\": 72, \n\"handicap\": \"N\",  \n\"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, luces de neon extremas\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "POST Zona 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"StatusCodeis200\"]=responseCode.code==200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/4/zonas",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{    \"id\": 10,\n\"capacidadPersonas\": 72, \n\"handicap\": \"N\",  \n\"condicionesTecnicas\": \"Aire ahcondicionado, aseadores, extractores, luces de neon extremas\"\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Zonas 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"StatusCodeis200\"]=responseCode.code==200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/zonas",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "GET Zonas ID 200",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"StatusCodeis200\"]=responseCode.code==200"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/zonas/2",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
