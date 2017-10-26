@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import vos.Ingrediente;
+import vos.Pedido;
 import vos.Producto;
 import vos.Video;
 
@@ -236,5 +237,17 @@ public class DAOProductosIngredientes {
 			respuesta.add(new Producto(idProducto, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
 		}
 		return respuesta;
+	}
+	
+	public void addPedido(Pedido pedido)throws SQLException, Exception{
+		String sql = "INSERT INTO PEDIDOS VALUES (";
+		sql += ingrediente.getId() + ",'";
+		sql += ingrediente.getNombre() + "','";
+		sql += ingrediente.getDescricionEsp() + "','";
+		sql += ingrediente.getDescripcionEng() + "')";
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
 	}
 }
