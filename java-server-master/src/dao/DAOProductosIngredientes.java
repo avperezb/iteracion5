@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import jdk.net.NetworkPermission;
 import vos.Ingrediente;
 import vos.Pedido;
 import vos.Producto;
@@ -209,6 +210,57 @@ public class DAOProductosIngredientes {
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
+	}
+	
+	public void addEquivalenciaProducto(Long idProductoEquivalente, Long idProducto) throws SQLException, Exception {
+
+		ArrayList<Producto> productos = new ArrayList<Producto>();
+
+		String sql = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+idProducto;
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		
+		String sqlDos = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+idProducto;
+
+		PreparedStatement prepStmtDos = conn.prepareStatement(sqlDos);
+		recursos.add(prepStmtDos);
+		ResultSet rsDos = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID");
+			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			Long clasificacion = rs.getLong("CLASIFICACION");
+			Long tipo = rs.getLong("TIPO");
+
+			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+		}
+		
+		if (productos.get(0).getClasificacion() == productos.get(1).getClasificacion())
+		{
+			String sqlTres = "INSERT INTO EQUIVALENCIAS_PRODUCTOS (ID_PRODUCTO1, ID_PRODUCTO2) VALUES ("+idProducto+", "+idProductoEquivalente+")";
+
+			PreparedStatement prepStmtTres = conn.prepareStatement(sqlTres);
+			recursos.add(prepStmtTres);
+			ResultSet rsTres = prepStmt.executeQuery();
+		}
+		
 	}
 
 	public ArrayList<Producto> RFC4() throws SQLException, Exception{
