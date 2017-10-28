@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jdk.net.NetworkPermission;
+import vos.CantidadProductoRestaurante;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
@@ -291,6 +292,19 @@ public class DAOProductosIngredientes {
 			throw new Exception("no se puede registrar la equivalencia porque los productos no son de la misma categoria");
 		}
 		
+	}
+	
+	
+	public void addCantidadProducto (CantidadProductoRestaurante infoCantidad) throws SQLException, Exception
+	{
+		String sql = "UPDATE RESTAURANTES_PRODUCTOS " + 
+				" SET CANTIDAD = "+infoCantidad.getCantidad()+ 
+				" WHERE ID_RESTAURANTE = "+ infoCantidad.getIdRestaurante()+ " AND ID_PRODUCTO = "+infoCantidad.getIdProducto(); 
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		prepStmt.executeQuery();
+	
 	}
 
 	public ArrayList<Producto> RFC4() throws SQLException, Exception{
