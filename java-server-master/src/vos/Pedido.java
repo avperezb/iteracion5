@@ -10,11 +10,11 @@ public class Pedido {
 	 */
 	@JsonProperty(value = "id")
 	private Long id;
-	/**
-	 * fecha del pedido 
-	 */
-	@JsonProperty(value = "fecha")
-	private Date fecha; 
+//	/**
+//	 * fecha del pedido 
+//	 */
+//	@JsonProperty(value = "fecha")
+//	private Date fecha; 
 
 	/**
 	 * id del restaurante
@@ -27,18 +27,36 @@ public class Pedido {
 	@JsonProperty(value = "idUsuario")
 	private Long idUsuario; 
 	/**
+	 * id del producto
+	 */
+	@JsonProperty(value = "idProducto")
+	private Long idProducto;
+	/**
+	 * id del menu
+	 */
+	@JsonProperty(value = "idMenu")
+	private Long idMenu; 
+	/**
 	 * cantidad del pedido
 	 */
 	@JsonProperty(value = "cantidad")
-	private int cantidad; 
+	private Integer cantidad; 
 	
-	public Pedido(@JsonProperty(value = "id") Long id, @JsonProperty(value = "fecha") Date fecha, @JsonProperty(value = "idRestaurante") Long idRestaurante,
-	@JsonProperty(value = "idUsuario") Long idUsuario, @JsonProperty(value = "cantidad") int cantidad){
+	public Pedido(
+			@JsonProperty(value = "id") Long id, 
+//			@JsonProperty(value = "fecha") Date fecha,
+			@JsonProperty(value = "idRestaurante") Long idRestaurante,
+			@JsonProperty(value = "idUsuario") Long idUsuario, 
+			@JsonProperty(value = "cantidad") int cantidad, 
+			@JsonProperty(value = "idProducto") Long idProducto, 
+			@JsonProperty(value = "idMenu") Long idMenu){
 		this.id = id; 
-		this.fecha = fecha;
+//		this.fecha = fecha;
 		this.idRestaurante = idRestaurante;
 		this.idUsuario = idUsuario;
 		this.cantidad = cantidad;
+		this.idProducto = idProducto;
+		this.idMenu = idMenu;
 	}
 
 	public Long getId() {
@@ -49,13 +67,13 @@ public class Pedido {
 		this.id = id;
 	}
 
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
+//	public Date getFecha() {
+//		return fecha;
+//	}
+//
+//	public void setFecha(Date fecha) {
+//		this.fecha = fecha;
+//	}
 
 	public Long getIdRestaurante() {
 		return idRestaurante;
@@ -73,12 +91,28 @@ public class Pedido {
 		this.idUsuario = idUsuario;
 	}
 
-	public int getCantidad() {
+	public Integer getCantidad() {
 		return cantidad;
 	}
 
-	public void setCantidad(int cantidad) {
+	public void setCantidad(Integer cantidad) {
 		this.cantidad = cantidad;
+	}
+
+	public Long getIdProducto() {
+		return idProducto;
+	}
+
+	public void setIdProducto(Long idProducto) {
+		this.idProducto = idProducto;
+	}
+
+	public Long getIdMenu() {
+		return idMenu;
+	}
+
+	public void setIdMenu(Long idMenu) {
+		this.idMenu = idMenu;
 	}
 	
 	

@@ -14,6 +14,7 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesTM;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
+import vos.Pedido;
 import vos.Producto;
 
 @Path("servicios")
@@ -111,6 +112,24 @@ public class ProductosResource extends RotondAndesServices{
 		}
 
 		return Response.status(200).entity(ingrediente).build();
+	}
+	
+	@POST
+	@Path("/pedidos")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedido(Pedido pedido) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.addPedido(pedido);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		
+		return Response.status(200).entity(pedido).build();
 	}
 
 	@POST

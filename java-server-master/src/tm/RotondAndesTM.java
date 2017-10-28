@@ -27,6 +27,7 @@ import dao.DAORestaurantesZona;
 import dao.DAOUsuarios;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
+import vos.Pedido;
 import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
@@ -1156,5 +1157,35 @@ public class RotondAndesTM {
 			}
 		}
 		return ofrecidos;
+	}
+	
+	public void addPedido(Pedido pedido) throws Exception {
+		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProductos.setConn(conn);
+			daoProductos.addPedido(pedido);
+			conn.commit();
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProductos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
 	}
 }
