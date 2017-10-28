@@ -25,6 +25,7 @@ import dao.DAOPreferencias;
 import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
 import dao.DAOUsuarios;
+import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
@@ -377,6 +378,51 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	
+	
+	public void agregarEquivalencia(Long id, EquivalenciaProducto equi) throws Exception
+	{
+		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProductos.setConn(conn);
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Restaurante"))
+			{
+				daoProductos.addEquivalenciaProducto(equi);
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProductos.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
 
 	
 

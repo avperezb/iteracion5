@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jdk.net.NetworkPermission;
+import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
 import vos.Producto;
@@ -212,11 +213,11 @@ public class DAOProductosIngredientes {
 		prepStmt.executeQuery();
 	}
 	
-	public void addEquivalenciaProducto(Long idProductoEquivalente, Long idProducto) throws SQLException, Exception {
+	public void addEquivalenciaProducto(EquivalenciaProducto equivalencia) throws SQLException, Exception {
 
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
-		String sql = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+idProducto;
+		String sql = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+equivalencia.getIdProducto();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -234,31 +235,42 @@ public class DAOProductosIngredientes {
 			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
 		}
 		
-		String sqlDos = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+idProducto;
+		
+		
+		String sqlDos = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+equivalencia.getIdEquivalencia();
 
 		PreparedStatement prepStmtDos = conn.prepareStatement(sqlDos);
 		recursos.add(prepStmtDos);
 		ResultSet rsDos = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			String name = rs.getString("NOMBRE");
-			Long id = rs.getLong("ID");
-			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
-			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
-			String descripcionEng = rs.getString("DESCRIPCION_ENG");
-			Long clasificacion = rs.getLong("CLASIFICACION");
-			Long tipo = rs.getLong("TIPO");
+			String name = rsDos.getString("NOMBRE");
+			Long id = rsDos.getLong("ID");
+			Long tiempoPreparacion = rsDos.getLong("TIEMPO_PREPARACIO");
+			String descipcionEsp = rsDos.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rsDos.getString("DESCRIPCION_ENG");
+			Long clasificacion = rsDos.getLong("CLASIFICACION");
+			Long tipo = rsDos.getLong("TIPO");
 
 			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
 		}
 		
+		if(productos.size() > 1)
+		{
+			throw new Exception("uno de los productos no existe");
+		}
+		
 		if (productos.get(0).getClasificacion() == productos.get(1).getClasificacion())
 		{
-			String sqlTres = "INSERT INTO EQUIVALENCIAS_PRODUCTOS (ID_PRODUCTO1, ID_PRODUCTO2) VALUES ("+idProducto+", "+idProductoEquivalente+")";
+			String sqlTres = "INSERT INTO EQUIVALENCIAS_PRODUCTOS (ID_PRODUCTO1, ID_PRODUCTO2) VALUES ("+equivalencia.getIdProducto()+", "+equivalencia.getIdEquivalencia() +")";
 
 			PreparedStatement prepStmtTres = conn.prepareStatement(sqlTres);
 			recursos.add(prepStmtTres);
-			ResultSet rsTres = prepStmt.executeQuery();
+			prepStmt.executeQuery();
+		}
+		else
+		{
+			throw new Exception("no se puede registrar la equivalencia porque los productos no son de la misma categoria");
 		}
 		
 	}

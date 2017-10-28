@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Producto;
 
@@ -128,6 +129,24 @@ public class ProductosResource extends RotondAndesServices{
 		}
 
 		return Response.status(200).entity(producto).build();
+	}
+	
+	@POST
+	@Path("/usuarios/{id: \\\\d+}/productos/equivalencia")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response agregarEquivalenciaProductos(@PathParam("id") Long id, EquivalenciaProducto equi) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.agregarEquivalencia(id, equi);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+
+		return Response.status(200).entity(equi).build();
 	}
 	
 	@GET
