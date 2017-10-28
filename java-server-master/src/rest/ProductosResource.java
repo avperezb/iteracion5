@@ -12,6 +12,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
@@ -115,6 +116,24 @@ public class ProductosResource extends RotondAndesServices{
 	}
 	
 	@POST
+	@Path("/usuarios/{id: \\d+}/ingredientes/equivalencia")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response agregarEquivalenciaIngrediente(@PathParam("id") Long id, EquivalenciaIngrediente equi) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.agregarEquivalenciaIngrediente(id, equi);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+
+		return Response.status(200).entity(equi).build();
+	}
+	
+	@POST
 	@Path("/pedidos")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
@@ -151,14 +170,14 @@ public class ProductosResource extends RotondAndesServices{
 	}
 	
 	@POST
-	@Path("/usuarios/{id: \\\\d+}/productos/equivalencia")
+	@Path("/usuarios/{id: \\d+}/productos/equivalencia")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response agregarEquivalenciaProductos(@PathParam("id") Long id, EquivalenciaProducto equi) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try 
 		{
-			tm.agregarEquivalencia(id, equi);
+			tm.agregarEquivalenciaProducto(id, equi);
 		} 
 		catch (Exception e)
 		{	

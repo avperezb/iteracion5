@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import jdk.net.NetworkPermission;
+import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
@@ -213,11 +214,46 @@ public class DAOProductosIngredientes {
 		prepStmt.executeQuery();
 	}
 	
+	public void addEquivalenciaIngrediente(EquivalenciaIngrediente equivalencia) throws SQLException, Exception {
+
+		ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
+
+		String sql = "SELECT * FROM INGREDIENTES WHERE ID = "+equivalencia.getIdIngrediente()+" OR ID = "+equivalencia.getIdEquiIngrediente();
+
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+
+		while (rs.next()) {
+			String name = rs.getString("NOMBRE");
+			Long id = rs.getLong("ID");
+			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
+			String descripcionEng = rs.getString("DESCRIPCION_ENG");
+			ingredientes.add(new Ingrediente(id, name, descipcionEsp, descripcionEng));
+		}
+		
+		
+		
+		if(ingredientes.size() < 1)
+		{
+			throw new Exception("uno de los ingredientes no existe");
+		}
+		else
+		{
+			String sqlTres = "INSERT INTO EQUIVALENCIAS_PRODUCTOS (ID_PRODUCTO1, ID_PRODUCTO2) VALUES ("+equivalencia.getIdIngrediente()+", "+equivalencia.getIdEquiIngrediente() +")";
+
+			PreparedStatement prepStmtTres = conn.prepareStatement(sqlTres);
+			recursos.add(prepStmtTres);
+			prepStmt.executeQuery();
+		}
+		
+	}
+	
 	public void addEquivalenciaProducto(EquivalenciaProducto equivalencia) throws SQLException, Exception {
 
 		ArrayList<Producto> productos = new ArrayList<Producto>();
 
-		String sql = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+equivalencia.getIdProducto();
+		String sql = "SELECT * FROM PRODUCTOS WHERE ID ="+equivalencia.getIdProducto()+" OR ID = "+equivalencia.getIdEquivalencia();
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -237,25 +273,7 @@ public class DAOProductosIngredientes {
 		
 		
 		
-		String sqlDos = "SELECT * FROM PRODUCTOS WHERE CLASIFICACION ="+equivalencia.getIdEquivalencia();
-
-		PreparedStatement prepStmtDos = conn.prepareStatement(sqlDos);
-		recursos.add(prepStmtDos);
-		ResultSet rsDos = prepStmt.executeQuery();
-
-		while (rs.next()) {
-			String name = rsDos.getString("NOMBRE");
-			Long id = rsDos.getLong("ID");
-			Long tiempoPreparacion = rsDos.getLong("TIEMPO_PREPARACIO");
-			String descipcionEsp = rsDos.getString("DESCRIPCION_ESP");			
-			String descripcionEng = rsDos.getString("DESCRIPCION_ENG");
-			Long clasificacion = rsDos.getLong("CLASIFICACION");
-			Long tipo = rsDos.getLong("TIPO");
-
-			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
-		}
-		
-		if(productos.size() > 1)
+		if(productos.size() < 1)
 		{
 			throw new Exception("uno de los productos no existe");
 		}
@@ -315,7 +333,7 @@ public class DAOProductosIngredientes {
 		sql += "SYSDATE,";
 		sql += "'N')";
 		
-		if()
+	
 		String sql2 = "INSERT INTO ";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
