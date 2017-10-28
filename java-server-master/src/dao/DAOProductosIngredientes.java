@@ -292,11 +292,19 @@ public class DAOProductosIngredientes {
 	}
 	
 	public void addPedido(Pedido pedido)throws SQLException, Exception{
+//		String sql = "INSERT INTO PEDIDOS VALUES (";
+//		sql += pedido.getId() + ",'";
+//		sql += "SYSDATE" + "',";
+//		sql += pedido.getIdProducto() + ",";
+//		sql += pedido.getIdMenu() + ")";
+		
 		String sql = "INSERT INTO PEDIDOS VALUES (";
-		sql += ingrediente.getId() + ",'";
-		sql += ingrediente.getNombre() + "','";
-		sql += ingrediente.getDescricionEsp() + "','";
-		sql += ingrediente.getDescripcionEng() + "')";
+		sql += pedido.getId() + ",";
+		sql += "SYSDATE,";
+		sql += "'N')";
+		
+		if()
+		String sql2 = "INSERT INTO ";
 
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
