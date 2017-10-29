@@ -345,15 +345,33 @@ public class DAOProductosIngredientes {
 			menuJson = true;
 
 		if(productoJson || menuJson) {
-//			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<1");
-			String sql = "INSERT INTO PEDIDOS VALUES (";
-			sql += pedido.getId() + ",";
-			sql += "SYSDATE,";
-			sql += "'N')";
-			PreparedStatement prepStmt = conn.prepareStatement(sql);
-			recursos.add(prepStmt);
-			prepStmt.executeQuery();
+			boolean existePedido = true;
+			
+			String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getId();
 
+
+			PreparedStatement prepStmtConsulta = conn.prepareStatement(sqlExiste);
+			recursos.add(prepStmtConsulta);
+			ResultSet rsconsulta = prepStmtConsulta.executeQuery();
+			while (rsconsulta.next()) {
+				
+				Long id = rsconsulta.getLong("ID");
+				existePedido = (id == null);
+			}
+			
+			
+			if (existePedido)
+			{
+				String sql = "INSERT INTO PEDIDOS VALUES (";
+				sql += pedido.getId() + ",";
+				sql += "SYSDATE,";
+				sql += "'N')";
+				
+				PreparedStatement prepStmt = conn.prepareStatement(sql);
+				recursos.add(prepStmt);
+				prepStmt.executeQuery();
+			}
+				
 			if(productoJson) {
 //				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2");
 				String sqlHallarCantidadDelProductoRestaurante ="select CANTIDAD from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
@@ -404,7 +422,7 @@ public class DAOProductosIngredientes {
 				}
 				else {
 					// elimina el pedido que se creó en vano
-					String sqlEliminarPedido = "DELETE FROM PEDIDOS WHERE ID= " + pedido.getId();
+					String sqlEliminarPedido = "ROLLBACK;";
 					PreparedStatement prepStmtDelete = conn.prepareStatement(sqlEliminarPedido);
 					recursos.add(prepStmtDelete);
 					prepStmtDelete.executeQuery();
@@ -487,5 +505,6 @@ public class DAOProductosIngredientes {
 			addPedido(pedido);
 		}
 	}
+	
 	
 }
