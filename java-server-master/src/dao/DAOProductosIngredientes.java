@@ -12,6 +12,7 @@ import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
+import vos.PedidoMesa;
 import vos.Producto;
 import vos.Video;
 
@@ -467,4 +468,24 @@ public class DAOProductosIngredientes {
 			throw new Exception("No está enviando productos ni menús para pedir");
 		}
 	}
+
+	
+	//-------------------------------------------------------
+	//--------RF15
+	
+	public void addPedidoMesa(PedidoMesa pedidoMesa)throws SQLException, Exception {
+		int tamañoArray = pedidoMesa.getIdsProductos().size();
+		ArrayList<Long> arrayProductos = pedidoMesa.getIdsProductos();
+		ArrayList<Integer> arrayCantidades = pedidoMesa.getCantidades();
+		ArrayList<Long> arrayMenus = pedidoMesa.getIdsMenus();
+		Long idInicial = pedidoMesa.getId();
+		Long idRestaurante = pedidoMesa.getIdRestaurante();
+		Long idUsuario = pedidoMesa.getIdUsuario();
+		
+		for(int i=0; i<tamañoArray; i++) {
+			Pedido pedido = new Pedido(idInicial+i, idRestaurante, idUsuario, arrayCantidades.get(i), arrayProductos.get(i), arrayMenus.get(i));
+			addPedido(pedido);
+		}
+	}
+	
 }

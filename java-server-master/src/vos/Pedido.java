@@ -25,7 +25,8 @@ public class Pedido {
 	 * id del usuario que pidió
 	 */
 	@JsonProperty(value = "idUsuario")
-	private Long idUsuario; 
+	private Long idUsuario;
+	
 	/**
 	 * id del producto
 	 */
@@ -40,7 +41,7 @@ public class Pedido {
 	 * cantidad del pedido
 	 */
 	@JsonProperty(value = "cantidad")
-	private Integer cantidad; 
+	private Integer cantidad;
 	
 	public Pedido(
 			@JsonProperty(value = "id") Long id, 

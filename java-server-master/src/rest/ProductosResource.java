@@ -19,6 +19,7 @@ import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
+import vos.PedidoMesa;
 import vos.Producto;
 import vos.Servido;
 
@@ -259,7 +260,22 @@ public class ProductosResource extends RotondAndesServices{
 		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-
 	}
-
+	
+	@POST
+	@Path("/pedidos/mesa")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response addPedidoMesa(PedidoMesa pedidoMesa) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.addPedidoMesa(pedidoMesa);
+			return Response.status( 200 ).entity( pedidoMesa ).build( );			
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
 }

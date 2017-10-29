@@ -5,8 +5,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import vos.Cancelado;
+import vos.Pedido;
+import vos.PedidoMesa;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 
@@ -218,24 +221,24 @@ public class DAOUsuarios {
 				recursos.add(prepStmt5);
 				prepStmt5.executeQuery();
 				
-//				//.-------------------sumar existencias
-//				
-//				if(menuOProd.equals("P")) {
-//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
-//
-//				String sqlSumarExistenciasProd = "UPDATE RESTAURANTES_PRODUCTOS SET CANTIDAD= CANTIDAD+"+ cantidadAReestablecer + " WHERE ID="+ a.get(0);
-//				PreparedStatement prepStmtSumarProd = conn.prepareStatement(sqlSumarExistenciasProd);
-//				recursos.add(prepStmtSumarProd);
-//				prepStmtSumarProd.executeQuery();
-//				}
-//				if(menuOProd.equals("M")) {
-//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<16");
-//
-//					String sqlSumarExistenciasMenu = "UPDATE MENUS SET CANTIDAD= CANTIDAD+"+ cantidadAReestablecer + " WHERE ID="+ aa.get(0);
-//					PreparedStatement prepStmtSumarMenu = conn.prepareStatement(sqlSumarExistenciasMenu);
-//					recursos.add(prepStmtSumarMenu);
-//					prepStmtSumarMenu.executeQuery();
-//				}
+			/**	//.-------------------sumar existencias
+				
+				if(menuOProd.equals("P")) {
+					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
+
+				String sqlSumarExistenciasProd = "UPDATE RESTAURANTES_PRODUCTOS SET CANTIDAD= CANTIDAD+"+ cantidadAReestablecer + " WHERE ID="+ a.get(0);
+				PreparedStatement prepStmtSumarProd = conn.prepareStatement(sqlSumarExistenciasProd);
+				recursos.add(prepStmtSumarProd);
+				prepStmtSumarProd.executeQuery();
+				}
+				if(menuOProd.equals("M")) {
+					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<16");
+
+					String sqlSumarExistenciasMenu = "UPDATE MENUS SET CANTIDAD= CANTIDAD+"+ cantidadAReestablecer + " WHERE ID="+ aa.get(0);
+					PreparedStatement prepStmtSumarMenu = conn.prepareStatement(sqlSumarExistenciasMenu);
+					recursos.add(prepStmtSumarMenu);
+					prepStmtSumarMenu.executeQuery();
+				}**/
 			}
 			else {
 				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
@@ -246,8 +249,5 @@ public class DAOUsuarios {
 			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<16");
 			throw new Exception("Usuario sin permisos para cancelar pedido");
 		}
-
-
-
 	}
 }

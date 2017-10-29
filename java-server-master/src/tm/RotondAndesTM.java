@@ -32,6 +32,7 @@ import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
+import vos.PedidoMesa;
 import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
@@ -1338,6 +1339,35 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public void addPedidoMesa(PedidoMesa pedidoMesa) throws Exception{
+		DAOProductosIngredientes daoProductosIngredientes = new DAOProductosIngredientes();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoProductosIngredientes.setConn(conn);
+			daoProductosIngredientes.addPedidoMesa(pedidoMesa);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoProductosIngredientes.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
