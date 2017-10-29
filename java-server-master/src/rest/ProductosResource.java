@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -12,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.CantidadProductoRestaurante;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
@@ -203,6 +205,24 @@ public class ProductosResource extends RotondAndesServices{
 		}
 
 		return Response.status(200).entity(equi).build();
+	}
+	
+	@PUT
+	@Path("/usuarios/{id: \\d+}/productos/cantidad")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response agregarCantidadProductos(@PathParam("id") Long id, CantidadProductoRestaurante canti) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.agregarCantidadProducto(id, canti);
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+
+		return Response.status(200).entity(canti).build();
 	}
 	
 	@GET
