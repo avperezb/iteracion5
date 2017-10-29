@@ -13,19 +13,14 @@ public class Servido {
 	private Long usuarioID; 
 	
 	@JsonProperty(value = "restauranteID")
-	private Long restauranteID; 
-	
-	@JsonProperty(value = "fecha")
-	private Date fecha; 
+	private Long restauranteID;  
 	
 	public Servido(@JsonProperty(value = "id") Long id,
 			@JsonProperty(value = "usuarioID") Long usuarioID, 
-			@JsonProperty(value = "restauranteID") Long restauranteID,
-			@JsonProperty(value = "fecha") Date fecha){
+			@JsonProperty(value = "restauranteID") Long restauranteID){
 		this.id = id; 
 		this.usuarioID = usuarioID; 
 		this.restauranteID = restauranteID; 
-		this.fecha = fecha; 
 	}
 
 	public Long getId() {
@@ -51,14 +46,4 @@ public class Servido {
 	public void setRestauranteID(Long restauranteID) {
 		this.restauranteID = restauranteID;
 	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-	
-	
 }

@@ -52,60 +52,82 @@ public class DAOServidos {
 		this.conn = con;
 	}
 
-	public ArrayList<Servido> darServidos() throws SQLException{
-		ArrayList<Servido> servidos = new ArrayList<>();
-
-		String sql = "SELECT * FROM MENUS";
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-
-		while (rs.next()) {
-			Long id = Long.parseLong(rs.getString("ID"));
-			Long idUsuario = rs.getLong("USUARIOS_ID");
-			Long idRestaurante = rs.getLong("RESTAURANTES_ID");
-			Date fecha = rs.getDate("FECHA");
-			servidos.add(new Servido(id, idUsuario, idRestaurante, fecha));
-		}
-		return servidos;
-	}
+//	public ArrayList<Servido> darServidos() throws SQLException{
+//		ArrayList<Servido> servidos = new ArrayList<>();
+//
+//		String sql = "SELECT * FROM MENUS";
+//
+//		PreparedStatement prepStmt = conn.prepareStatement(sql);
+//		recursos.add(prepStmt);
+//		ResultSet rs = prepStmt.executeQuery();
+//
+//		while (rs.next()) {
+//			Long id = Long.parseLong(rs.getString("ID"));
+//			Long idUsuario = rs.getLong("USUARIOS_ID");
+//			Long idRestaurante = rs.getLong("RESTAURANTES_ID");
+//			Date fecha = rs.getDate("FECHA");
+//			servidos.add(new Servido(id, idUsuario, idRestaurante));
+//		}
+//		return servidos;
+//	}
 	
-	public void addServido(Servido servido) throws SQLException, Exception {
-
-		String sql = "INSERT INTO SERVIDOS(ID, USUARIOS_ID, RESTAURANTES_ID, FECHA) VALUES (";
-		sql += servido.getId() + ",";
-		sql += servido.getUsuarioID() + ",";
-		sql += servido.getRestauranteID() + ",";
-		sql += "TO_DATE(" + servido.getFecha().getDay() + "/" + servido.getFecha().getMonth() + "/" + servido.getFecha().getYear() + ", 'DD/MM/YYYY'))";
-		
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
-
-	}
+//	public void addServido(Servido servido) throws SQLException, Exception {
+//
+//		String sql = "INSERT INTO SERVIDOS(ID, USUARIOS_ID, RESTAURANTES_ID, FECHA) VALUES (";
+//		sql += servido.getId() + ",";
+//		sql += servido.getUsuarioID() + ",";
+//		sql += servido.getRestauranteID() + ",";
+//		sql += "TO_DATE(" + servido.getFecha().getDay() + "/" + servido.getFecha().getMonth() + "/" + servido.getFecha().getYear() + ", 'DD/MM/YYYY'))";
+//		
+//
+//		PreparedStatement prepStmt = conn.prepareStatement(sql);
+//		recursos.add(prepStmt);
+//		prepStmt.executeQuery();
+//
+//	}
 	
-	public Servido darServido(Long idBuscado) throws SQLException{
-		
-		Servido servido = null;
-		String sql = "SELECT * FROM SERVIDOS WHERE ID = " + idBuscado;
-
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		ResultSet rs = prepStmt.executeQuery();
-		
-		while (rs.next()) {
-			Long id = Long.parseLong(rs.getString("ID"));
-			Long idUsuario = rs.getLong("USUARIOS_ID");
-			Long idRestaurante = rs.getLong("RESTAURANTES_ID");
-			Date fecha = rs.getDate("FECHA");
-			servido = new Servido(id, idUsuario, idRestaurante, fecha);
-		}
-		return servido;
-	}
+//	public Servido darServido(Long idBuscado) throws SQLException{
+//		
+//		Servido servido = null;
+//		String sql = "SELECT * FROM SERVIDOS WHERE ID = " + idBuscado;
+//
+//		PreparedStatement prepStmt = conn.prepareStatement(sql);
+//		recursos.add(prepStmt);
+//		ResultSet rs = prepStmt.executeQuery();
+//		
+//		while (rs.next()) {
+//			Long id = Long.parseLong(rs.getString("ID"));
+//			Long idUsuario = rs.getLong("USUARIOS_ID");
+//			Long idRestaurante = rs.getLong("RESTAURANTES_ID");
+//			Date fecha = rs.getDate("FECHA");
+//			servido = new Servido(id, idUsuario, idRestaurante, fecha);
+//		}
+//		return servido;
+//	}
 	
-	public void servirPedido(Servido servido) {
-		String sqlBorrar = "DELETE FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO=286";
+	public void servirPedido(Servido servido)throws SQLException {
+		String sqlBorrarProd = "DELETE FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO=" + servido.getId();
+		
+		PreparedStatement prepStmt1 = conn.prepareStatement(sqlBorrarProd);
+		recursos.add(prepStmt1);
+		prepStmt1.executeQuery();
+		
+		String sqlBorrarMenu = "DELETE FROM USUARIO_PEDIDOS_MENUS WHERE ID_PEDIDO=" + servido.getId();
+		
+		PreparedStatement prepStmt2 = conn.prepareStatement(sqlBorrarMenu);
+		recursos.add(prepStmt2);
+		prepStmt2.executeQuery();
+		
+		String sqlActualizarServido = "UPDATE PEDIDOS SET SERVIDO='S' WHERE ID = "+servido.getId();
+		
+		PreparedStatement prepStmt3 = conn.prepareStatement(sqlActualizarServido);
+		recursos.add(prepStmt3);
+		prepStmt3.executeQuery();
+		
+//		String sqlInsertarServido = "INSERT INTO SERVIDOS VALUES (";
+//			sqlInsertarServido += servido.getId() + ",";
+//			sqlInsertarServido += servido.get
+		
+		
 	}
 }

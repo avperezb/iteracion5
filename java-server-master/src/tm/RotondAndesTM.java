@@ -1292,6 +1292,10 @@ public class RotondAndesTM {
 				daoServidos.servirPedido(servido);
 				conn.commit();
 			}
+			else 
+			{
+				throw new Exception("El usuario no tiene permisos");
+			}
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
