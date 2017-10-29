@@ -24,6 +24,7 @@ import java.util.Properties;
 import dao.DAOPreferencias;
 import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
+import dao.DAOServidos;
 import dao.DAOUsuarios;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
@@ -38,6 +39,7 @@ import vos.UsuarioClientePref;
 import vos.Video;
 import vos.Zona;
 import vos.Restaurante;
+import vos.Servido;
 
 /**
  * Transaction Manager de la aplicacion (TM)
@@ -1222,6 +1224,41 @@ public class RotondAndesTM {
 		} finally {
 			try {
 				daoProductos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public void servirPedido(Servido servido, Long id) throws Exception{
+		DAOServidos daoServidos = new DAOServidos();
+		DAOUsuarios daoUsuario = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoServidos.setConn(conn);
+			daoUsuario.setConnection(conn);
+			if(daoUsuario.buscarUsuarioPorID(id).getRol().equals("Restaurante")) {
+				daoServidos.servirPedido(servido);
+				conn.commit();
+			}
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoServidos.cerrarRecursos();
+				daoUsuario.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {

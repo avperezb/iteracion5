@@ -17,6 +17,7 @@ import vos.EquivalenciaProducto;
 import vos.Ingrediente;
 import vos.Pedido;
 import vos.Producto;
+import vos.Servido;
 
 @Path("servicios")
 public class ProductosResource extends RotondAndesServices{
@@ -150,6 +151,23 @@ public class ProductosResource extends RotondAndesServices{
 		
 		return Response.status(200).entity(pedido).build();
 	}
+	
+	@POST
+	@Path("/pedidos/{id: \\d+}/")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response servirPedido(@PathParam("id")Long id, Servido servido) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try {
+			tm.servirPedido(servido, id);
+		}
+		catch(Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(servido).build();
+
+	}
+	
 
 	@POST
 	@Path("/usuarios/{id: \\d+}/productos")

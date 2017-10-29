@@ -104,4 +104,8 @@ public class DAOServidos {
 		}
 		return servido;
 	}
+	
+	public void servirPedido(Servido servido) {
+		String sqlBorrar = "DELETE FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO=286";
+	}
 }

@@ -213,7 +213,7 @@ public class DAOProductosIngredientes {
 		recursos.add(prepStmt);
 		prepStmt.executeQuery();
 	}
-	
+
 	public void addEquivalenciaIngrediente(EquivalenciaIngrediente equivalencia) throws SQLException, Exception {
 
 		ArrayList<Ingrediente> ingredientes = new ArrayList<Ingrediente>();
@@ -231,9 +231,9 @@ public class DAOProductosIngredientes {
 			String descripcionEng = rs.getString("DESCRIPCION_ENG");
 			ingredientes.add(new Ingrediente(id, name, descipcionEsp, descripcionEng));
 		}
-		
-		
-		
+
+
+
 		if(ingredientes.size() < 1)
 		{
 			throw new Exception("uno de los ingredientes no existe");
@@ -246,9 +246,9 @@ public class DAOProductosIngredientes {
 			recursos.add(prepStmtTres);
 			prepStmt.executeQuery();
 		}
-		
+
 	}
-	
+
 	public void addEquivalenciaProducto(EquivalenciaProducto equivalencia) throws SQLException, Exception {
 
 		ArrayList<Producto> productos = new ArrayList<Producto>();
@@ -270,14 +270,14 @@ public class DAOProductosIngredientes {
 
 			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
 		}
-		
-		
-		
+
+
+
 		if(productos.size() < 1)
 		{
 			throw new Exception("uno de los productos no existe");
 		}
-		
+
 		if (productos.get(0).getClasificacion() == productos.get(1).getClasificacion())
 		{
 			String sqlTres = "INSERT INTO EQUIVALENCIAS_PRODUCTOS (ID_PRODUCTO1, ID_PRODUCTO2) VALUES ("+equivalencia.getIdProducto()+", "+equivalencia.getIdEquivalencia() +")";
@@ -290,7 +290,7 @@ public class DAOProductosIngredientes {
 		{
 			throw new Exception("no se puede registrar la equivalencia porque los productos no son de la misma categoria");
 		}
-		
+
 	}
 
 	public ArrayList<Producto> RFC4() throws SQLException, Exception{
@@ -320,24 +320,137 @@ public class DAOProductosIngredientes {
 		}
 		return respuesta;
 	}
-	
-	public void addPedido(Pedido pedido)throws SQLException, Exception{
-//		String sql = "INSERT INTO PEDIDOS VALUES (";
-//		sql += pedido.getId() + ",'";
-//		sql += "SYSDATE" + "',";
-//		sql += pedido.getIdProducto() + ",";
-//		sql += pedido.getIdMenu() + ")";
-		
-		String sql = "INSERT INTO PEDIDOS VALUES (";
-		sql += pedido.getId() + ",";
-		sql += "SYSDATE,";
-		sql += "'N')";
-		
-	
-		String sql2 = "INSERT INTO ";
 
-		PreparedStatement prepStmt = conn.prepareStatement(sql);
-		recursos.add(prepStmt);
-		prepStmt.executeQuery();
+	public void addPedido(Pedido pedido)throws SQLException, Exception{
+		boolean productoJson = false;
+		if(pedido.getIdProducto()!=null)
+			productoJson = true;
+		boolean menuJson = false;
+		if(pedido.getIdMenu()!=null)
+			menuJson = true;
+
+		if(productoJson || menuJson) {
+//			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<1");
+			String sql = "INSERT INTO PEDIDOS VALUES (";
+			sql += pedido.getId() + ",";
+			sql += "SYSDATE,";
+			sql += "'N')";
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+
+			if(productoJson) {
+//				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2");
+				String sqlHallarCantidadDelProductoRestaurante ="select CANTIDAD from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
+				//--------------------------------------
+				// Hace consulta para saber las existencias del producto que quiere pedir
+				PreparedStatement prepStmtCantidad = conn.prepareStatement(sqlHallarCantidadDelProductoRestaurante);
+				recursos.add(prepStmtCantidad);
+				ResultSet rs = prepStmtCantidad.executeQuery();
+				ArrayList<Integer> a = new ArrayList<Integer>();
+				while(rs.next()) {
+					Integer cantidad = rs.getInt("CANTIDAD");
+					a.add(cantidad);
+				}
+//				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<3");
+				//------------------------------------
+				if(a.get(0)>=pedido.getCantidad()) { //compara si hay existencias suficientes
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<4");
+					String sqlHallarIDDelProductoRestaurante ="select ID from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
+					PreparedStatement prepStmt1 = conn.prepareStatement(sqlHallarIDDelProductoRestaurante);
+					recursos.add(prepStmt1);
+					ResultSet rs1 = prepStmt1.executeQuery();
+					ArrayList<Integer> aa = new ArrayList<Integer>();
+					while(rs1.next()) {
+						Integer id = rs1.getInt("ID");
+						aa.add(id);
+					}
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<5");
+					//------------------------------
+					// Inserta el pedido del producto
+					String sql2 = "INSERT INTO USUARIO_PEDIDO_PRODUCTOS VALUES(";
+					sql2 += pedido.getId()+",";
+					sql2 += aa.get(0) + ",";
+					sql2 += pedido.getIdUsuario()+",";
+					sql2 += pedido.getCantidad()+")";
+
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<6");
+					PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+					recursos.add(prepStmt2);
+					prepStmt2.executeQuery();
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<7");
+					//---------------------------
+					// Restar existencias
+					String sqlRestarExistencias = "UPDATE RESTAURANTES_PRODUCTOS SET CANTIDAD= "+(a.get(0)-pedido.getCantidad()) + " WHERE ID="+ aa.get(0);
+					PreparedStatement prepStmtRestar = conn.prepareStatement(sqlRestarExistencias);
+					recursos.add(prepStmtRestar);
+					prepStmtRestar.executeQuery();
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<8");
+				}
+				else {
+					// elimina el pedido que se creó en vano
+					String sqlEliminarPedido = "DELETE FROM PEDIDOS WHERE ID= " + pedido.getId();
+					PreparedStatement prepStmtDelete = conn.prepareStatement(sqlEliminarPedido);
+					recursos.add(prepStmtDelete);
+					prepStmtDelete.executeQuery();
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<9");
+				}
+			}
+			//-----------------------------------------------------------
+			// ahora mira a ver si hay menús en el pedido
+			if(menuJson) {
+//				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<10");
+				String sqlHallarCantidadDelMenu ="select CANTIDAD from MENUS WHERE ID = "+pedido.getIdMenu();
+				PreparedStatement prepStmtMenu1 = conn.prepareStatement(sqlHallarCantidadDelMenu);
+				recursos.add(prepStmtMenu1);
+				ResultSet rsMenu = prepStmtMenu1.executeQuery();
+//				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<11");
+				ArrayList<Integer> aaa = new ArrayList<Integer>();
+				while(rsMenu.next()) {
+					Integer cantidad = rsMenu.getInt("CANTIDAD");
+					aaa.add(cantidad);
+				}
+//				System.out.println(aaa.get(0)+"<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<CANTIDAD QUE HAY EN ESE ID");
+				if(aaa.get(0)>=pedido.getCantidad()) {
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<12");
+					//------------------------------
+					// Inserta el pedido del producto
+					String sqlInsertarMenu = "INSERT INTO USUARIO_PEDIDOS_MENUS VALUES(";
+					sqlInsertarMenu += pedido.getIdUsuario()+",";
+					sqlInsertarMenu += pedido.getId() + ",";
+					sqlInsertarMenu += pedido.getIdMenu()+",";
+					sqlInsertarMenu += pedido.getCantidad()+")";
+
+					PreparedStatement prepStmtInsertarMenu = conn.prepareStatement(sqlInsertarMenu);
+					recursos.add(prepStmtInsertarMenu);
+					prepStmtInsertarMenu.executeQuery();
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<13");
+
+
+					//---------------------------
+					// Restar existencias
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<"+(aaa.get(0)-pedido.getCantidad())+"nuevA CANTIDAD");
+					Integer nuevaCantidad = (aaa.get(0)-pedido.getCantidad());
+					String sqlRestarExistenciasMenu = "UPDATE MENUS SET CANTIDAD= "+ nuevaCantidad + " WHERE ID="+ pedido.getIdMenu();
+					PreparedStatement prepStmtRestarMenu = conn.prepareStatement(sqlRestarExistenciasMenu);
+					recursos.add(prepStmtRestarMenu);
+					prepStmtRestarMenu.executeQuery();
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<14");
+
+				}
+				else {
+//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
+
+					// elimina el pedido que se creó en vano
+					String sqlEliminarPedidoMenu = "DELETE FROM PEDIDOS WHERE ID= " + pedido.getId();
+					PreparedStatement prepStmtDeleteMenu = conn.prepareStatement(sqlEliminarPedidoMenu);
+					recursos.add(prepStmtDeleteMenu);
+					prepStmtDeleteMenu.executeQuery();
+				}
+			}
+		}
+		else {
+			throw new Exception("No está enviando productos ni menús para pedir");
+		}
 	}
 }
