@@ -13,6 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
+import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
@@ -241,6 +242,24 @@ public class ProductosResource extends RotondAndesServices{
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
+	}
+	
+	@PUT
+	@Path("/pedidos/cancelar/{id: \\d+}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response cancelarPedido(@PathParam("id") Long id, Cancelado cancelado) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.cancelarPedido(id, cancelado);
+			return Response.status( 200 ).entity( cancelado ).build( );			
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+
 	}
 
 }

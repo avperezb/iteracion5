@@ -126,8 +126,6 @@ public class DAOServidos {
 		
 //		String sqlInsertarServido = "INSERT INTO SERVIDOS VALUES (";
 //			sqlInsertarServido += servido.getId() + ",";
-//			sqlInsertarServido += servido.get
-		
-		
+//			sqlInsertarServido += servido.get	
 	}
 }

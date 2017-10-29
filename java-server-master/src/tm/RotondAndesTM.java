@@ -26,6 +26,7 @@ import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
 import dao.DAOServidos;
 import dao.DAOUsuarios;
+import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
@@ -202,7 +203,7 @@ public class RotondAndesTM {
 		}
 		return productos;
 	}
-	
+
 	public List<Producto> darProductosRestaurante(Long id) throws Exception {
 		List<Producto> productos;
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
@@ -234,7 +235,7 @@ public class RotondAndesTM {
 		}
 		return productos;
 	}
-	
+
 	public List<Producto> darProductosCategoria(Long id) throws Exception {
 		List<Producto> productos;
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
@@ -266,7 +267,7 @@ public class RotondAndesTM {
 		}
 		return productos;
 	}
-	
+
 	public List<Producto> darProductosPrecio(Long pMenor,Long pMayor) throws Exception {
 		List<Producto> productos;
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
@@ -383,7 +384,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void agregarEquivalenciaIngrediente(Long id, EquivalenciaIngrediente equi) throws Exception
 	{
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
@@ -426,7 +427,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void agregarEquivalenciaProducto(Long id, EquivalenciaProducto equi) throws Exception
 	{
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
@@ -469,8 +470,8 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
-	
+
+
 	public void agregarCantidadProducto(Long id, CantidadProductoRestaurante canti) throws Exception
 	{
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
@@ -513,9 +514,9 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
 
-	
+
+
 
 
 	/*-------------------------------------------------------------------------------------------------- */
@@ -678,7 +679,7 @@ public class RotondAndesTM {
 		}
 		return usuarios;
 	}
-	
+
 	public List<UsuarioClientePref> darUsuarioPreferencias() throws Exception{
 		List<UsuarioClientePref> usuarios;
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -1216,7 +1217,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public List<Producto> darPoductosMasOfrecidos() throws Exception{
 		List<Producto> ofrecidos;
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
@@ -1248,7 +1249,7 @@ public class RotondAndesTM {
 		}
 		return ofrecidos;
 	}
-	
+
 	public void addPedido(Pedido pedido) throws Exception {
 		DAOProductosIngredientes daoProductos = new DAOProductosIngredientes();
 		try 
@@ -1278,7 +1279,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void servirPedido(Servido servido, Long id) throws Exception{
 		DAOServidos daoServidos = new DAOServidos();
 		DAOUsuarios daoUsuario = new DAOUsuarios();
@@ -1308,6 +1309,35 @@ public class RotondAndesTM {
 			try {
 				daoServidos.cerrarRecursos();
 				daoUsuario.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+
+	public void cancelarPedido(Long id, Cancelado cancelado) throws Exception {
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn);
+			daoUsuarios.cancelarPedido(id, cancelado);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
