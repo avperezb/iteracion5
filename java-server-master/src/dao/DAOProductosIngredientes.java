@@ -14,6 +14,7 @@ import vos.Ingrediente;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
+import vos.Servido;
 import vos.Video;
 
 public class DAOProductosIngredientes {
@@ -410,7 +411,7 @@ public class DAOProductosIngredientes {
 					sql2 += pedido.getId()+",";
 					sql2 += aa.get(0) + ",";
 					sql2 += pedido.getIdUsuario()+",";
-					sql2 += pedido.getCantidad()+")";
+					sql2 += pedido.getCantidad()+",'N')";
 
 //					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<6");
 					PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
@@ -454,7 +455,7 @@ public class DAOProductosIngredientes {
 					sqlInsertarMenu += pedido.getIdUsuario()+",";
 					sqlInsertarMenu += pedido.getId() + ",";
 					sqlInsertarMenu += pedido.getIdMenu()+",";
-					sqlInsertarMenu += pedido.getCantidad()+")";
+					sqlInsertarMenu += pedido.getCantidad()+",'N')";
 
 					PreparedStatement prepStmtInsertarMenu = conn.prepareStatement(sqlInsertarMenu);
 					recursos.add(prepStmtInsertarMenu);
@@ -492,8 +493,6 @@ public class DAOProductosIngredientes {
 			throw new Exception("No está enviando productos ni menús para pedir");
 		}
 	}
-
-	
 	//-------------------------------------------------------
 	//--------RF15
 	
@@ -514,6 +513,5 @@ public class DAOProductosIngredientes {
 	
 	//--------------------------------------------------------------
 	//-------RFC8
-	
 	
 }

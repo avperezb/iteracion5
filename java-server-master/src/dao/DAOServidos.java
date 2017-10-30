@@ -106,13 +106,13 @@ public class DAOServidos {
 //	}
 	
 	public void servirPedido(Servido servido)throws SQLException {
-		String sqlBorrarProd = "DELETE FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO=" + servido.getId();
+		String sqlBorrarProd = "UPDATE USUARIO_PEDIDO_PRODUCTOS SET SERVIDO='S' WHERE ID_PEDIDO = "+servido.getId();
 		
 		PreparedStatement prepStmt1 = conn.prepareStatement(sqlBorrarProd);
 		recursos.add(prepStmt1);
 		prepStmt1.executeQuery();
 		
-		String sqlBorrarMenu = "DELETE FROM USUARIO_PEDIDOS_MENUS WHERE ID_PEDIDO=" + servido.getId();
+		String sqlBorrarMenu = "UPDATE USUARIO_PEDIDOS_MENUS SET SERVIDO='S' WHERE ID_PEDIDO = "+servido.getId();
 		
 		PreparedStatement prepStmt2 = conn.prepareStatement(sqlBorrarMenu);
 		recursos.add(prepStmt2);
@@ -127,5 +127,12 @@ public class DAOServidos {
 //		String sqlInsertarServido = "INSERT INTO SERVIDOS VALUES (";
 //			sqlInsertarServido += servido.getId() + ",";
 //			sqlInsertarServido += servido.get	
+	}
+	
+	public void servirMesa(Servido servidoMesa) throws SQLException{
+		for(int i=0;i<5;i++) {
+			Servido nuevo = new Servido(servidoMesa.getId()+i, servidoMesa.getUsuarioID(), servidoMesa.getRestauranteID());
+			servirPedido(nuevo);
+		}
 	}
 }
