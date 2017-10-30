@@ -15,6 +15,7 @@ import javax.ws.rs.core.Response;
 import tm.RotondAndesTM;
 import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
+import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
@@ -277,5 +278,19 @@ public class ProductosResource extends RotondAndesServices{
 		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
+	}
+	
+	@GET
+	@Path("/usuarios/{id: \\d+}/infoVentas")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response getInfoVentas(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<ConsultaPedidos> info;
+		try {
+			info = tm.darInfoVentas(id);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(info).build();
 	}
 }
