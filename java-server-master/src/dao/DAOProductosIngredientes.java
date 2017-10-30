@@ -345,7 +345,7 @@ public class DAOProductosIngredientes {
 			menuJson = true;
 
 		if(productoJson || menuJson) {
-			boolean existePedido = true;
+			boolean existePedido = false;
 			
 			String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getId();
 
@@ -356,11 +356,11 @@ public class DAOProductosIngredientes {
 			while (rsconsulta.next()) {
 				
 				Long id = rsconsulta.getLong("ID");
-				existePedido = (id == null);
+				existePedido = (id != null);
 			}
 			
 			
-			if (existePedido)
+			if (!existePedido)
 			{
 				String sql = "INSERT INTO PEDIDOS VALUES (";
 				sql += pedido.getId() + ",";
@@ -505,6 +505,9 @@ public class DAOProductosIngredientes {
 			addPedido(pedido);
 		}
 	}
+	
+	//--------------------------------------------------------------
+	//-------RFC8
 	
 	
 }
