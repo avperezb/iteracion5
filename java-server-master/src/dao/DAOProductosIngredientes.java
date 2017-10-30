@@ -344,33 +344,38 @@ public class DAOProductosIngredientes {
 		if(pedido.getIdMenu()!=null)
 			menuJson = true;
 
+		boolean tansaccionCancelada = false;
+		boolean existePedido = false;
+		
+		String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getId();
+
+
+		PreparedStatement prepStmtConsulta = conn.prepareStatement(sqlExiste);
+		recursos.add(prepStmtConsulta);
+		ResultSet rsconsulta = prepStmtConsulta.executeQuery();
+		while (rsconsulta.next()) {
+			
+			Long id = rsconsulta.getLong("ID");
+			existePedido = (id != null);
+		}
+		
+		
+		if (!existePedido)
+		{
+			String sql = "INSERT INTO PEDIDOS VALUES (";
+			sql += pedido.getId() + ",";
+			sql += "SYSDATE,";
+			sql += "'N')";
+			
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			prepStmt.executeQuery();
+			
+			tansaccionCancelada = true;
+		}
+		
 		if(productoJson || menuJson) {
-			boolean existePedido = false;
 			
-			String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getId();
-
-
-			PreparedStatement prepStmtConsulta = conn.prepareStatement(sqlExiste);
-			recursos.add(prepStmtConsulta);
-			ResultSet rsconsulta = prepStmtConsulta.executeQuery();
-			while (rsconsulta.next()) {
-				
-				Long id = rsconsulta.getLong("ID");
-				existePedido = (id != null);
-			}
-			
-			
-			if (!existePedido)
-			{
-				String sql = "INSERT INTO PEDIDOS VALUES (";
-				sql += pedido.getId() + ",";
-				sql += "SYSDATE,";
-				sql += "'N')";
-				
-				PreparedStatement prepStmt = conn.prepareStatement(sql);
-				recursos.add(prepStmt);
-				prepStmt.executeQuery();
-			}
 				
 			if(productoJson) {
 //				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2");
@@ -422,10 +427,7 @@ public class DAOProductosIngredientes {
 				}
 				else {
 					// elimina el pedido que se creó en vano
-					String sqlEliminarPedido = "ROLLBACK;";
-					PreparedStatement prepStmtDelete = conn.prepareStatement(sqlEliminarPedido);
-					recursos.add(prepStmtDelete);
-					prepStmtDelete.executeQuery();
+					throw new Exception("no hay productos suficientes");
 //					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<9");
 				}
 			}
@@ -475,14 +477,18 @@ public class DAOProductosIngredientes {
 //					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
 
 					// elimina el pedido que se creó en vano
-					String sqlEliminarPedidoMenu = "DELETE FROM PEDIDOS WHERE ID= " + pedido.getId();
-					PreparedStatement prepStmtDeleteMenu = conn.prepareStatement(sqlEliminarPedidoMenu);
-					recursos.add(prepStmtDeleteMenu);
-					prepStmtDeleteMenu.executeQuery();
+					throw new Exception("no hay menus suficientes");
 				}
 			}
 		}
 		else {
+			if (tansaccionCancelada)
+			{
+				String sqlRollback = "ROLLBACK";
+				PreparedStatement prepStmtRollback = conn.prepareStatement(sqlRollback);
+				recursos.add(prepStmtRollback);
+				prepStmtRollback.executeQuery();
+			}
 			throw new Exception("No está enviando productos ni menús para pedir");
 		}
 	}
