@@ -28,6 +28,7 @@ import dao.DAOServidos;
 import dao.DAOUsuarios;
 import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
+import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
@@ -1376,16 +1377,95 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+		
 	}
+//<<<<<<< HEAD
+//	
+//	public void servirMesa(Servido servidaMesa) throws Exception{
+//		DAOServidos daoServidos = new DAOServidos();
+//=======
+//
+//	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
+//		List<ConsultaPedidos> infoVentas;
+//		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
+//		DAOUsuarios daoUsuarios = new DAOUsuarios();
+//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+//		try 
+//		{
+//			//////transaccion
+//			this.conn = darConexion();
+//<<<<<<< HEAD
+//			daoServidos.setConn(conn);
+//			daoServidos.servirMesa(servidaMesa);
+//=======
+//			daoVentas.setConn(conn);					
+//			daoUsuarios.setConnection(conn);
+//			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+//			if(encargado.getRol().equals("Restaurante") || encargado.getRol().equals("Admin"))
+//			{
+//				infoVentas = daoVentas.consultarVentas(id, encargado.getRol());
+//				conn.commit();				
+//			}
+//			else 
+//			{
+//				throw new Exception("el usuario no tiene permisos");
+//			}
+//
+//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+//		} catch (SQLException e) {
+//			System.err.println("SQLException:" + e.getMessage());
+//			e.printStackTrace();
+//			throw e;
+//		} catch (Exception e) {
+//			System.err.println("GeneralException:" + e.getMessage());
+//			e.printStackTrace();
+//			throw e;
+//		} finally {
+//			try {
+//<<<<<<< HEAD
+//				daoServidos.cerrarRecursos();
+//=======
+//				daoVentas.cerrarRecursos();
+//				daoUsuarios.cerrarRecursos();
+//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+//				if(this.conn!=null)
+//					this.conn.close();
+//			} catch (SQLException exception) {
+//				System.err.println("SQLException closing resources:" + exception.getMessage());
+//				exception.printStackTrace();
+//				throw exception;
+//			}
+//		}
+//<<<<<<< HEAD
+//	}
+//=======
+//		return infoVentas;
+//	}
+//	
+//	
+//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
 	
-	public void servirMesa(Servido servidaMesa) throws Exception{
-		DAOServidos daoServidos = new DAOServidos();
+	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
+		List<ConsultaPedidos> infoVentas;
+		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		try 
 		{
 			//////transaccion
 			this.conn = darConexion();
-			daoServidos.setConn(conn);
-			daoServidos.servirMesa(servidaMesa);
+			daoVentas.setConn(conn);					
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if(encargado.getRol().equals("Restaurante") || encargado.getRol().equals("Admin"))
+			{
+				infoVentas = daoVentas.consultarVentas(id, encargado.getRol());
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1396,7 +1476,8 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daoServidos.cerrarRecursos();
+				daoVentas.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1405,5 +1486,6 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
+		return infoVentas;
 	}
 }
