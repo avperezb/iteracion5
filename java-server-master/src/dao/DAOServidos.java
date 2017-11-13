@@ -130,7 +130,7 @@ public class DAOServidos {
 	}
 	
 	public void servirMesa(Servido servidoMesa) throws SQLException{
-		for(int i=0;i<5;i++) {
+		for(int i=0;i<3;i++) {
 			Servido nuevo = new Servido(servidoMesa.getId()+i, servidoMesa.getUsuarioID(), servidoMesa.getRestauranteID());
 			servirPedido(nuevo);
 		}

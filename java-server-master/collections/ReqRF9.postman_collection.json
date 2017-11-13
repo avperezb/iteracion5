@@ -1,0 +1,42 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ReqRF9",
+		"_postman_id": "e23f5c29-bd17-25a8-9279-b44c8fb9770f",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/pedidos",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"]=responseCode.code==200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/pedidos",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\t{\r\n\t\t\"id\": 16,\r\n\t\t\"idRestaurante\": 4,\r\n\t\t\"idUsuario\": 6,\r\n\t\t\"idProducto\": 8,\r\n\t\t\"idMenu\": 2,\r\n\t\t\"cantidad\": 2\r\n\t}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

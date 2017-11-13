@@ -15,11 +15,8 @@ import vos.Ingrediente;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
-<<<<<<< HEAD
 import vos.Servido;
-=======
 import vos.Usuario;
->>>>>>> 6b44196e60af644e67d8864b937087101e445462
 import vos.Video;
 
 public class DAOProductosIngredientes {
@@ -498,11 +495,7 @@ public class DAOProductosIngredientes {
 			throw new Exception("No está enviando productos ni menús para pedir");
 		}
 	}
-<<<<<<< HEAD
-=======
 
-
->>>>>>> 6b44196e60af644e67d8864b937087101e445462
 	//-------------------------------------------------------
 	//--------RF15
 
@@ -523,9 +516,6 @@ public class DAOProductosIngredientes {
 
 	//--------------------------------------------------------------
 	//-------RFC8
-<<<<<<< HEAD
-	
-=======
 
 	public ArrayList<ConsultaPedidos> consultarVentas(Long id, String cargo) throws SQLException, Exception
 	{
@@ -617,5 +607,4 @@ public class DAOProductosIngredientes {
 	}
 
 
->>>>>>> 6b44196e60af644e67d8864b937087101e445462
 }

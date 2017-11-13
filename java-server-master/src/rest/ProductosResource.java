@@ -281,22 +281,22 @@ public class ProductosResource extends RotondAndesServices{
 	}
 	
 
-//	@POST
-//	@Path("/pedidos/mesa/servir")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Response servirMesa(Servido servidaMesa) {
-//		RotondAndesTM tm = new RotondAndesTM(getPath());
-//		try 
-//		{
-//			tm.servirMesa(servidaMesa);
-//			return Response.status( 200 ).entity( servidaMesa ).build( );			
-//		} 
-//		catch (Exception e)
-//		{	
-//			return Response.status(500).entity(doErrorMessage(e)).build();
-//		}
-//	}
+	@POST
+	@Path("/pedidos/mesa/servir")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response servirMesa(Servido servidaMesa) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		try 
+		{
+			tm.servirMesa(servidaMesa);
+			return Response.status( 200 ).entity( servidaMesa ).build( );			
+		} 
+		catch (Exception e)
+		{	
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+	}
 	
 	@GET
 	@Path("/usuarios/{id: \\d+}/infoVentas")

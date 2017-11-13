@@ -1,0 +1,42 @@
+{
+	"variables": [],
+	"info": {
+		"name": "ReqRF11",
+		"_postman_id": "f10a4f18-7ff3-3549-79cc-d5d6e60ae7f9",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/VideoAndes/rest/servicios/pedidos/3",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							"tests[\"Status code is 200\"]=responseCode.code==200;"
+						]
+					}
+				}
+			],
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/usuarios/3/ingredientes/equivalencia",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\t{\r\n\t\t\"idIngrediente\": 3,\r\n\t\t\"idEquiIngrediente\": 6\r\n\t}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}
