@@ -38,6 +38,7 @@ import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
+import vos.RFC11;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.Video;
@@ -1349,7 +1350,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public void addPedidoMesa(PedidoMesa pedidoMesa) throws Exception{
 		DAOProductosIngredientes daoProductosIngredientes = new DAOProductosIngredientes();
 		try 
@@ -1377,74 +1378,74 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-		
+
 	}
-//<<<<<<< HEAD
-//	
-//	public void servirMesa(Servido servidaMesa) throws Exception{
-//		DAOServidos daoServidos = new DAOServidos();
-//=======
-//
-//	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
-//		List<ConsultaPedidos> infoVentas;
-//		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
-//		DAOUsuarios daoUsuarios = new DAOUsuarios();
-//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-//		try 
-//		{
-//			//////transaccion
-//			this.conn = darConexion();
-//<<<<<<< HEAD
-//			daoServidos.setConn(conn);
-//			daoServidos.servirMesa(servidaMesa);
-//=======
-//			daoVentas.setConn(conn);					
-//			daoUsuarios.setConnection(conn);
-//			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
-//			if(encargado.getRol().equals("Restaurante") || encargado.getRol().equals("Admin"))
-//			{
-//				infoVentas = daoVentas.consultarVentas(id, encargado.getRol());
-//				conn.commit();				
-//			}
-//			else 
-//			{
-//				throw new Exception("el usuario no tiene permisos");
-//			}
-//
-//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-//		} catch (SQLException e) {
-//			System.err.println("SQLException:" + e.getMessage());
-//			e.printStackTrace();
-//			throw e;
-//		} catch (Exception e) {
-//			System.err.println("GeneralException:" + e.getMessage());
-//			e.printStackTrace();
-//			throw e;
-//		} finally {
-//			try {
-//<<<<<<< HEAD
-//				daoServidos.cerrarRecursos();
-//=======
-//				daoVentas.cerrarRecursos();
-//				daoUsuarios.cerrarRecursos();
-//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-//				if(this.conn!=null)
-//					this.conn.close();
-//			} catch (SQLException exception) {
-//				System.err.println("SQLException closing resources:" + exception.getMessage());
-//				exception.printStackTrace();
-//				throw exception;
-//			}
-//		}
-//<<<<<<< HEAD
-//	}
-//=======
-//		return infoVentas;
-//	}
-//	
-//	
-//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-	
+	//<<<<<<< HEAD
+	//	
+	//	public void servirMesa(Servido servidaMesa) throws Exception{
+	//		DAOServidos daoServidos = new DAOServidos();
+	//=======
+	//
+	//	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
+	//		List<ConsultaPedidos> infoVentas;
+	//		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
+	//		DAOUsuarios daoUsuarios = new DAOUsuarios();
+	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+	//		try 
+	//		{
+	//			//////transaccion
+	//			this.conn = darConexion();
+	//<<<<<<< HEAD
+	//			daoServidos.setConn(conn);
+	//			daoServidos.servirMesa(servidaMesa);
+	//=======
+	//			daoVentas.setConn(conn);					
+	//			daoUsuarios.setConnection(conn);
+	//			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+	//			if(encargado.getRol().equals("Restaurante") || encargado.getRol().equals("Admin"))
+	//			{
+	//				infoVentas = daoVentas.consultarVentas(id, encargado.getRol());
+	//				conn.commit();				
+	//			}
+	//			else 
+	//			{
+	//				throw new Exception("el usuario no tiene permisos");
+	//			}
+	//
+	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+	//		} catch (SQLException e) {
+	//			System.err.println("SQLException:" + e.getMessage());
+	//			e.printStackTrace();
+	//			throw e;
+	//		} catch (Exception e) {
+	//			System.err.println("GeneralException:" + e.getMessage());
+	//			e.printStackTrace();
+	//			throw e;
+	//		} finally {
+	//			try {
+	//<<<<<<< HEAD
+	//				daoServidos.cerrarRecursos();
+	//=======
+	//				daoVentas.cerrarRecursos();
+	//				daoUsuarios.cerrarRecursos();
+	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+	//				if(this.conn!=null)
+	//					this.conn.close();
+	//			} catch (SQLException exception) {
+	//				System.err.println("SQLException closing resources:" + exception.getMessage());
+	//				exception.printStackTrace();
+	//				throw exception;
+	//			}
+	//		}
+	//<<<<<<< HEAD
+	//	}
+	//=======
+	//		return infoVentas;
+	//	}
+	//	
+	//	
+	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+
 	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
 		List<ConsultaPedidos> infoVentas;
 		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
@@ -1488,8 +1489,52 @@ public class RotondAndesTM {
 		}
 		return infoVentas;
 	}
+	public List<RFC11> darFuncionamiento(Long id) throws Exception {
+		List<RFC11> infoFuncionamiento;
+		DAORestaurantesZona daoRestaurantes = new DAORestaurantesZona(); 
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRestaurantes.setConn(conn);					
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if( encargado.getRol().equals("Admin"))
+			{
+				infoFuncionamiento = daoRestaurantes.darInfoRFC11(); 
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRestaurantes.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return infoFuncionamiento;
+	}
 	
-	
+
+
 	public void servirMesa(Servido servidaMesa) throws Exception{
 		DAOServidos daoProductosIngredientes = new DAOServidos();
 		try 
@@ -1518,4 +1563,6 @@ public class RotondAndesTM {
 			}
 		}
 	}
+
+
 }

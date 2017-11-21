@@ -6,7 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import vos.Ingrediente;
+import vos.RFC11;
 import vos.Restaurante;
 import vos.Video;
 import vos.Zona;
@@ -14,13 +17,13 @@ import vos.Zona;
 public class DAORestaurantesZona {
 
 	private ArrayList<Object> recursos;
-	
+
 	private Connection conn; 
-	
+
 	public DAORestaurantesZona(){
 		recursos = new ArrayList<Object>(); 
 	}
-	
+
 	public void cerrarRecursos() {
 		for(Object ob : recursos){
 			if(ob instanceof PreparedStatement)
@@ -31,7 +34,7 @@ public class DAORestaurantesZona {
 				}
 		}
 	}
-	
+
 	public void setConn(Connection con){
 		this.conn = con;
 	}
@@ -59,7 +62,7 @@ public class DAORestaurantesZona {
 		}
 		return restaurantes;
 	}
-	
+
 	/**
 	 * GET por id de un Restaurante
 	 * @param id
@@ -87,8 +90,8 @@ public class DAORestaurantesZona {
 		}
 		return restaurante;
 	}
-	
-	
+
+
 	/**
 	 * POST Restaurante
 	 * @param restaurante
@@ -164,7 +167,7 @@ public class DAORestaurantesZona {
 	 * @throws SQLException
 	 * @throws Exception
 	 */
-	
+
 	public void addZona(Zona zona) throws SQLException, Exception {
 
 		String sql = "INSERT INTO ZONA(ID, CAPACIDAD_PERSNAS, HANDICAP, CONDICIONES_TECNICAS) VALUES (";
@@ -178,6 +181,53 @@ public class DAORestaurantesZona {
 		prepStmt.executeQuery();
 
 	}
-	
-	
+	public ArrayList<RFC11> darInfoRFC11() throws SQLException{
+		ArrayList<RFC11> listica = new ArrayList<>(); 
+
+		String sql = "SELECT * FROM (select DIA, max(CANTIDAD) as maxi, max(NOMBRE) keep (dense_rank first order by CANTIDAD desc) as producto from (SELECT  NOMBRE, count(PRODUCTOS.ID)as CANTIDAD, TO_CHAR(FECHA,'DAY') as DIA FROM ((PEDIDOS INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON  PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) INNER JOIN PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = PRODUCTOS.ID group by PRODUCTOS.NOMBRE, TO_CHAR(FECHA,'DAY'))group by DIA) A INNER JOIN(select DIA, MIN(CANTIDAD) as MINI, MIN(NOMBRE) keep (dense_rank first order by CANTIDAD ASC) as producto from (SELECT NOMBRE, count(PRODUCTOS.ID)as CANTIDAD, TO_CHAR(FECHA,'DAY') as DIA FROM ((PEDIDOS INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON  PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) INNER JOIN PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = PRODUCTOS.ID group by PRODUCTOS.NOMBRE, TO_CHAR(FECHA,'DAY'))group by DIA) B ON A.DIA = B.DIA";
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		
+		
+		while(rs.next() ){
+			
+			String diaDeLaSemana = rs.getString("DIA"); 
+			String nombreProductoMasConsumido = rs.getString("PRODUCTO"); 
+			String nombreProductoMenosConsumido = rs.getString(6); 
+			int cantidadMaximaProducto = rs.getInt("MAXI"); 
+			int cantidadMinimaProducto = rs.getInt("MINI"); 
+			listica.add(new RFC11(diaDeLaSemana, nombreProductoMasConsumido, nombreProductoMenosConsumido, cantidadMaximaProducto, cantidadMinimaProducto, null, null)); 
+			
+		}
+		
+
+		String sql2 = "SELECT * FROM (select DIA, max(CANTIDAD) as maxi, max(NOMBRE) keep (dense_rank first order by CANTIDAD desc) as RESTAURANTE "
+				+ "from (SELECT  NOMBRE, count(RESTAURANTES.ID)as CANTIDAD, TO_CHAR(FECHA,'DAY') as DIA FROM ((PEDIDOS "
+				+ "INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON  PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) "
+				+ "INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) "
+				+ "INNER JOIN RESTAURANTES ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = RESTAURANTES.ID group by RESTAURANTES.NOMBRE, TO_CHAR(FECHA,'DAY'))"
+				+ "group by DIA) A "
+				+ "INNER JOIN "
+				+ "(select DIA, MIN(CANTIDAD) as MINI, MIN(NOMBRE) keep (dense_rank first order by CANTIDAD ASC) as RESTAURANTE "
+				+ "from (SELECT NOMBRE, count(RESTAURANTES.ID)as CANTIDAD, TO_CHAR(FECHA,'DAY') as DIA FROM ((PEDIDOS "
+				+ "INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON  PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) "
+				+ "INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) "
+				+ "INNER JOIN RESTAURANTES ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = RESTAURANTES.ID group by RESTAURANTES.NOMBRE, TO_CHAR(FECHA,'DAY'))"
+				+ "group by DIA) B ON A.DIA = B.DIA"; 
+		PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
+		recursos.add(prepStmt2);
+		ResultSet rs2 = prepStmt2.executeQuery();
+		int c = 0; 
+		while(rs2.next()){
+			String nombreRestMasFrec = rs2.getString("RESTAURANTE"); 
+			String nombreRestMenosFrec = rs2.getString(6); 
+			listica.get(c).setNombreRestMasFrec(nombreRestMasFrec);
+			listica.get(c).setNombreRestMenosFrec(nombreRestMenosFrec);
+			c++; 
+		}
+		return listica; 
+
+	}
+
 }

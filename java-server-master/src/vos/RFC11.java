@@ -10,6 +10,10 @@ public class RFC11 {
 	@JsonProperty(value = "nombreProductoMasConsumido")
 	private String nombreProductoMasConsumido; 
 	
+	
+	@JsonProperty(value = "nombreProductoMenosConsumido")
+	private String nombreProductoMenosConsumido; 
+	
 	@JsonProperty(value = "cantidadMaximaProducto")
 	private int cantidadMaximaProducto; 
 	
@@ -24,7 +28,7 @@ public class RFC11 {
 
 	
 	
-	public RFC11(@JsonProperty(value = "diaDeLaSemana") String diaDeLaSemana, @JsonProperty(value = "nombreProductoMasConsumido") String nombreProductoMasConsumido,@JsonProperty(value = "cantidadMaximaProducto") int cantidadMaximaProducto,
+	public RFC11(@JsonProperty(value = "diaDeLaSemana") String diaDeLaSemana, @JsonProperty(value = "nombreProductoMasConsumido") String nombreProductoMasConsumido,@JsonProperty(value = "nombreProductoMenosConsumido") String nombreProductoMenosConsumido ,@JsonProperty(value = "cantidadMaximaProducto") int cantidadMaximaProducto,
 			@JsonProperty(value = "cantidadMinimaProducto") int cantidadMinimaProducto, @JsonProperty(value = "nombreRestMasFrec") String nombreRestMasFrec,@JsonProperty(value = "nombreRestMenosFrec") String nombreRestMenosFrec) {
 		
 		this.diaDeLaSemana = diaDeLaSemana;
@@ -33,6 +37,7 @@ public class RFC11 {
 		this.cantidadMinimaProducto = cantidadMinimaProducto;
 		this.nombreRestMasFrec = nombreRestMasFrec;
 		this.nombreRestMenosFrec = nombreRestMenosFrec;
+		this.nombreProductoMenosConsumido = nombreProductoMenosConsumido; 
 	}
 
 
@@ -92,11 +97,17 @@ public class RFC11 {
 
 	public void setNombreRestMenosFrec(String nombreRestMenosFrec) {
 		this.nombreRestMenosFrec = nombreRestMenosFrec;
+	}
+
+
+	public String getNombreProductoMenosConsumido() {
+		return nombreProductoMenosConsumido;
+	}
+
+
+	public void setNombreProductoMenosConsumido(String nombreProductoMenosConsumido) {
+		this.nombreProductoMenosConsumido = nombreProductoMenosConsumido;
 	} 
 	
 	
-	
-	
-	
-
 }
