@@ -1565,7 +1565,7 @@ public class RotondAndesTM {
 		}
 	}
 
-	public List<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas) throws Exception{
+	public List<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, RestauranteRangoFechas restauranteRangoFechas) throws Exception{
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		List<InfoUsuarioReqRFC9> resp = null;
 		try 
@@ -1575,9 +1575,9 @@ public class RotondAndesTM {
 			daoUsuarios.setConnection(conn);
 			Usuario act = daoUsuarios.buscarUsuarioPorID(id);
 			if(act.getRol().equals("Admin")) {
-				resp = daoUsuarios.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas, "admin");
+				resp = daoUsuarios.consultarConsumoV1(id,restauranteRangoFechas, "admin");
 			}else if(act.getRol().equals("Cliente")) {
-				resp = daoUsuarios.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas, "cliente");
+				resp = daoUsuarios.consultarConsumoV1(id,restauranteRangoFechas, "cliente");
 			}
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
@@ -1601,7 +1601,7 @@ public class RotondAndesTM {
 		return resp;
 	}
 	
-	public List<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas) throws Exception{
+	public List<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, RestauranteRangoFechas restauranteRangoFechas) throws Exception{
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		List<InfoUsuarioReqRFC9> resp = null;
 		try 
@@ -1611,9 +1611,9 @@ public class RotondAndesTM {
 			daoUsuarios.setConnection(conn);
 			Usuario act = daoUsuarios.buscarUsuarioPorID(id);
 			if(act.getRol().equals("Admin")) {
-				resp = daoUsuarios.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas, "admin");
+				resp = daoUsuarios.consultarConsumoV2(id, restauranteRangoFechas, "admin");
 			}else if(act.getRol().equals("Cliente")) {
-				resp = daoUsuarios.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas, "cliente");
+				resp = daoUsuarios.consultarConsumoV2(id, restauranteRangoFechas, "cliente");
 			}
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());

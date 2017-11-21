@@ -10,14 +10,18 @@ public class RestauranteRangoFechas {
 	private String fechaInicial; 
 	@JsonProperty(value = "fechaFinal")
 	private String fechaFinal;
+	@JsonProperty(value = "ordAgrup")
+	private String ordAgrup;
 
 	public RestauranteRangoFechas(
 			@JsonProperty(value = "idRestaurante") Long idRestaurante,
 			@JsonProperty(value= "fechaInicial") String fechaInicial,
-			@JsonProperty(value = "fechaFinal") String fechaFinal){
+			@JsonProperty(value = "fechaFinal") String fechaFinal,
+			@JsonProperty(value = "ordAgrup") String ordAgrup){
 		this.idRestaurante = idRestaurante; 
 		this.fechaInicial = fechaInicial; 
 		this.fechaFinal = fechaFinal;
+		this.ordAgrup = ordAgrup;
 	}
 
 	public Long getIdRestaurante() {
@@ -44,5 +48,11 @@ public class RestauranteRangoFechas {
 		this.fechaFinal = fechaFinal;
 	}
 
-	
+	public String getOrdAgrup() {
+		return ordAgrup;
+	}
+
+	public void setOrdAgrup(String ordAgrup) {
+		this.ordAgrup = ordAgrup;
+	}
 }

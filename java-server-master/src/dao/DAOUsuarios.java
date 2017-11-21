@@ -253,7 +253,7 @@ public class DAOUsuarios {
 		}
 	}
 	
-	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
+	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
 		//agrupamientos y ordenamientos
 		/**
 		 * 1=ordenamiento por datos del cliente
@@ -261,11 +261,11 @@ public class DAOUsuarios {
 		 * 3=ordenamiento por tipo de producto
 		 */
 		String ordenamiento="";
-		if(ordAgrup=='1') {
+		if(restauranteRangoFechas.getOrdAgrup().equals("1")) {
 			ordenamiento=" ORDER BY ID_USUARIO";
-		}else if(ordAgrup=='2') {
+		}else if(restauranteRangoFechas.getOrdAgrup().equals("2")) {
 			ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
-		}else if(ordAgrup=='3') {
+		}else if(restauranteRangoFechas.getOrdAgrup().equals("3")) {
 			ordenamiento=" ORDER BY CLASIFICACION";
 		}
 		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
@@ -273,8 +273,8 @@ public class DAOUsuarios {
 				"INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE)\r\n" + 
 				"INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO\r\n" + 
 				"WHERE RESTAURANTES_PRODUCTOS.ID_RESTAURANTE ="+ restauranteRangoFechas.getIdRestaurante() +"AND \r\n" + 
-				"FECHA > to_date('01/01/2017', 'DD/MM/YYYY') \r\n" + 
-				"AND FECHA < to_date('01/08/2017', 'DD/MM/YYYY')\r\n" + 
+				"FECHA > to_date('"+restauranteRangoFechas.getFechaInicial()+"', 'DD/MM/YYYY') \r\n" + 
+				"AND FECHA < to_date('"+restauranteRangoFechas.getFechaFinal()+"', 'DD/MM/YYYY')\r\n" + 
 				ordenamiento;
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
@@ -292,7 +292,7 @@ public class DAOUsuarios {
 		return resp;
 	}
 	
-	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
+	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
 		//agrupamientos y ordenamientos
 		/**
 		 * 1=ordenamiento por datos del cliente
@@ -300,20 +300,20 @@ public class DAOUsuarios {
 		 * 3=ordenamiento por tipo de producto
 		 */
 		String ordenamiento="";
-		if(ordAgrup=='1') {
+		if(restauranteRangoFechas.getOrdAgrup().equals("1")) {
 			ordenamiento=" ORDER BY ID_USUARIO";
-		}else if(ordAgrup=='2') {
+		}else if(restauranteRangoFechas.getOrdAgrup().equals("2")) {
 			ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
-		}else if(ordAgrup=='3') {
+		}else if(restauranteRangoFechas.getOrdAgrup().equals("3")) {
 			ordenamiento=" ORDER BY CLASIFICACION";
 		}
 		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
-		----String sql = "SELECT USUARIO.ID AS ID_USUARIO, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
+		String sql = "SELECT USUARIO.ID AS ID_USUARIO, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
 				"INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE)\r\n" + 
 				"INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO\r\n" + 
-				"WHERE RESTAURANTES_PRODUCTOS.ID_RESTAURANTE ="+ restauranteRangoFechas.getIdRestaurante() +"AND \r\n" + 
-				"FECHA > to_date('01/01/2017', 'DD/MM/YYYY') \r\n" + 
-				"AND FECHA < to_date('01/08/2017', 'DD/MM/YYYY')\r\n" + 
+				"WHERE RESTAURANTES_PRODUCTOS.ID_RESTAURANTE !="+ restauranteRangoFechas.getIdRestaurante() +"AND \r\n" + 
+				"FECHA > to_date('"+restauranteRangoFechas.getFechaInicial()+"', 'DD/MM/YYYY') \r\n" + 
+				"AND FECHA < to_date('"+restauranteRangoFechas.getFechaFinal()+"', 'DD/MM/YYYY')\r\n" + 
 				ordenamiento;
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
