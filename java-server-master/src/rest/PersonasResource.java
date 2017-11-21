@@ -13,8 +13,10 @@ import javax.ws.rs.core.Response;
 
 import tm.RotondAndesTM;
 import vos.Restaurante;
+import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
+import vos.InfoUsuarioReqRFC9;
 
 @Path("servicios")
 public class PersonasResource extends RotondAndesServices{
@@ -136,6 +138,40 @@ public class PersonasResource extends RotondAndesServices{
 		try
 		{
 			restaurantes = tm.darRestaurantes();
+			return Response.status( 200 ).entity( restaurantes ).build( );			
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@POST
+	@Path("/consultarConsumov1/{id: \\d+}/{ordAgrup: \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response consultarConsumoV1(@PathParam("id") Long id, @PathParam("ordAgrup") char ordAgrup, RestauranteRangoFechas restauranteRangoFechas){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<InfoUsuarioReqRFC9> restaurantes;
+		try
+		{
+			restaurantes = tm.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas);
+			return Response.status( 200 ).entity( restaurantes ).build( );			
+		}catch( Exception e )
+		{
+			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
+		}
+	}
+	
+	@POST
+	@Path("/consultarConsumov1/{id: \\d+}/{ordAgrup: \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response consultarConsumoV2(@PathParam("id") Long id, @PathParam("ordAgrup") char ordAgrup, RestauranteRangoFechas restauranteRangoFechas){
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<InfoUsuarioReqRFC9> restaurantes;
+		try
+		{
+			restaurantes = tm.consultarConsumoV1(id, ordAgrup, restauranteRangoFechas);
 			return Response.status( 200 ).entity( restaurantes ).build( );			
 		}catch( Exception e )
 		{

@@ -10,8 +10,10 @@ import java.util.List;
 import vos.Cancelado;
 import vos.Pedido;
 import vos.PedidoMesa;
+import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
+import vos.InfoUsuarioReqRFC9;
 
 public class DAOUsuarios {
 
@@ -249,5 +251,83 @@ public class DAOUsuarios {
 			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<16");
 			throw new Exception("Usuario sin permisos para cancelar pedido");
 		}
+	}
+	
+	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
+		//agrupamientos y ordenamientos
+		/**
+		 * 1=ordenamiento por datos del cliente
+		 * 2=ordenamiento por producto
+		 * 3=ordenamiento por tipo de producto
+		 */
+		String ordenamiento="";
+		if(ordAgrup=='1') {
+			ordenamiento=" ORDER BY ID_USUARIO";
+		}else if(ordAgrup=='2') {
+			ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
+		}else if(ordAgrup=='3') {
+			ordenamiento=" ORDER BY CLASIFICACION";
+		}
+		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
+		String sql = "SELECT USUARIO.ID AS ID_USUARIO, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
+				"INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE)\r\n" + 
+				"INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO\r\n" + 
+				"WHERE RESTAURANTES_PRODUCTOS.ID_RESTAURANTE ="+ restauranteRangoFechas.getIdRestaurante() +"AND \r\n" + 
+				"FECHA > to_date('01/01/2017', 'DD/MM/YYYY') \r\n" + 
+				"AND FECHA < to_date('01/08/2017', 'DD/MM/YYYY')\r\n" + 
+				ordenamiento;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while (rs.next()) {
+			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			String correo = rs.getString("CORREO");
+			String rol = rs.getString("ROL");
+			String nombre = rs.getString("USUARIO_NOMBRE");
+			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
+			String clasificacion = rs.getString("CLASIFICACION");
+
+			resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
+		}
+		return resp;
+	}
+	
+	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, char ordAgrup, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
+		//agrupamientos y ordenamientos
+		/**
+		 * 1=ordenamiento por datos del cliente
+		 * 2=ordenamiento por producto
+		 * 3=ordenamiento por tipo de producto
+		 */
+		String ordenamiento="";
+		if(ordAgrup=='1') {
+			ordenamiento=" ORDER BY ID_USUARIO";
+		}else if(ordAgrup=='2') {
+			ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
+		}else if(ordAgrup=='3') {
+			ordenamiento=" ORDER BY CLASIFICACION";
+		}
+		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
+		----String sql = "SELECT USUARIO.ID AS ID_USUARIO, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
+				"INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE)\r\n" + 
+				"INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO\r\n" + 
+				"WHERE RESTAURANTES_PRODUCTOS.ID_RESTAURANTE ="+ restauranteRangoFechas.getIdRestaurante() +"AND \r\n" + 
+				"FECHA > to_date('01/01/2017', 'DD/MM/YYYY') \r\n" + 
+				"AND FECHA < to_date('01/08/2017', 'DD/MM/YYYY')\r\n" + 
+				ordenamiento;
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while (rs.next()) {
+			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			String correo = rs.getString("CORREO");
+			String rol = rs.getString("ROL");
+			String nombre = rs.getString("USUARIO_NOMBRE");
+			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
+			String clasificacion = rs.getString("CLASIFICACION");
+
+			resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
+		}
+		return resp;
 	}
 }
