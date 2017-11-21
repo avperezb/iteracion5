@@ -38,6 +38,7 @@ import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
+import vos.RFC11;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.Video;
@@ -1491,6 +1492,49 @@ public class RotondAndesTM {
 		return infoVentas;
 	}
 
+	public List<RFC11> darFuncionamiento(Long id) throws Exception {
+		List<RFC11> infoFuncionamiento;
+		DAORestaurantesZona daoRestaurantes = new DAORestaurantesZona(); 
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoRestaurantes.setConn(conn);					
+			daoUsuarios.setConnection(conn);
+			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
+			if( encargado.getRol().equals("Admin"))
+			{
+				infoFuncionamiento = daoRestaurantes.darInfoRFC11(); 
+				conn.commit();				
+			}
+			else 
+			{
+				throw new Exception("el usuario no tiene permisos");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoRestaurantes.cerrarRecursos();
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return infoFuncionamiento;
+	}
 
 	public void servirMesa(Servido servidaMesa) throws Exception{
 		DAOServidos daoProductosIngredientes = new DAOServidos();

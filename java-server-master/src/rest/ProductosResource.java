@@ -2,6 +2,7 @@ package rest;
 
 import java.util.List;
 
+
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -23,6 +24,7 @@ import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
 import vos.Servido;
+import vos.RFC11;
 
 @Path("servicios")
 public class ProductosResource extends RotondAndesServices{
@@ -101,6 +103,19 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(productos).build();
+	}
+	@GET
+	@Path("/productos/funcionamiento/{id: \\d+}")
+	@Produces({ MediaType.APPLICATION_JSON })
+	public Response RFC11(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<RFC11> funcionamiento;
+		try {
+			funcionamiento = tm.darFuncionamiento(id);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(funcionamiento).build();
 	}
 	
 	@POST
