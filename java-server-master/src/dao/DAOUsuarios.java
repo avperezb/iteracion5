@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import vos.Cancelado;
@@ -327,6 +330,40 @@ public class DAOUsuarios {
 			String clasificacion = rs.getString("CLASIFICACION");
 
 			resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
+		}
+		return resp;
+	}
+	
+	public ArrayList<InfoUsuarioReqRFC9> getAnalisis(RestauranteRangoFechas restauranteRangoFechas) throws SQLException, Exception{
+		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
+		String sql = "SELECT USUARIO.ID AS ID_USUARIO, PEDIDOS.FECHA AS FECHA, RESTAURANTES_PRODUCTOS.ID_RESTAURANTE AS ID_RESTAURANTE, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
+				"				INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) \r\n" + 
+				"				INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO";
+				
+		PreparedStatement prepStmt = conn.prepareStatement(sql);
+		recursos.add(prepStmt);
+		ResultSet rs = prepStmt.executeQuery();
+		while (rs.next()) {
+			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			String fecha = rs.getString("FECHA");
+			Long idRestaurante = (Long) rs.getLong("ID_RESTAURANTE");
+			String correo = rs.getString("CORREO");
+			String rol = rs.getString("ROL");
+			String nombre = rs.getString("USUARIO_NOMBRE");
+			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
+			String clasificacion = rs.getString("CLASIFICACION");
+			
+			System.out.println(fecha+">>>>>>>>>>>>>>> FECHA");
+			
+			DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			Date dateOracle = format.parse(fecha);
+			Date dateInicio = format.parse(restauranteRangoFechas.getFechaInicial());
+			Date dateFinal = format.parse(restauranteRangoFechas.getFechaFinal());
+			
+			if(restauranteRangoFechas.getIdRestaurante()==idRestaurante && dateInicio.before(dateOracle)&&dateFinal.after(dateOracle)) {
+			resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
+			System.out.println(resp.size()+"TAMAÑO RESP");
+			}
 		}
 		return resp;
 	}

@@ -16,6 +16,7 @@ import vos.Restaurante;
 import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
+import vos.ConsultaPedidos;
 import vos.InfoUsuarioReqRFC9;
 
 @Path("servicios")
@@ -177,5 +178,20 @@ public class PersonasResource extends RotondAndesServices{
 		{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
+	}
+	
+	@POST
+	@Path("/analisis")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response getAnalisis(RestauranteRangoFechas restauranteRangoFechas) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<InfoUsuarioReqRFC9> resp;
+		try {
+			resp = tm.getAnalisis(restauranteRangoFechas);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(resp).build();
 	}
 }
