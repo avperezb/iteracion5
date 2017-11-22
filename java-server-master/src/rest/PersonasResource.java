@@ -21,7 +21,7 @@ import vos.InfoUsuarioReqRFC9;
 
 @Path("servicios")
 public class PersonasResource extends RotondAndesServices{
-	
+
 	@GET
 	@Path("/usuarios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -68,7 +68,7 @@ public class PersonasResource extends RotondAndesServices{
 		}
 		return Response.status(200).entity(usuario).build();
 	}
-	
+
 	@GET
 	@Path("/usuarios/administradores")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -85,7 +85,7 @@ public class PersonasResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@GET
 	@Path("/usuarios/{id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -102,7 +102,7 @@ public class PersonasResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/usuarios")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -116,7 +116,7 @@ public class PersonasResource extends RotondAndesServices{
 		}
 		return Response.status(200).entity(usuario).build();
 	}
-	
+
 	@Path("/usuarios/administradores/{id: \\d+}/restaurantes")
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -145,7 +145,7 @@ public class PersonasResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/consultarConsumov1/{id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -162,7 +162,7 @@ public class PersonasResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/consultarConsumov2/{id: \\d+}")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -179,7 +179,7 @@ public class PersonasResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@POST
 	@Path("/analisis")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -189,6 +189,20 @@ public class PersonasResource extends RotondAndesServices{
 		List<InfoUsuarioReqRFC9> resp;
 		try {
 			resp = tm.getAnalisis(restauranteRangoFechas);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(resp).build();
+	}
+
+	@GET
+	@Path("/punto12/{id: \\d+}")
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response buenosClientes(@PathParam("id") Long id) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<Usuario> resp=null;
+		try {
+			resp = tm.buenosClientes(id);
 		} catch (Exception e) {
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}

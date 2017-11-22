@@ -1600,7 +1600,7 @@ public class RotondAndesTM {
 		}
 		return resp;
 	}
-	
+
 	public List<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, RestauranteRangoFechas restauranteRangoFechas) throws Exception{
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		List<InfoUsuarioReqRFC9> resp = null;
@@ -1636,7 +1636,7 @@ public class RotondAndesTM {
 		}
 		return resp;
 	}
-	
+
 	public List<InfoUsuarioReqRFC9> getAnalisis(RestauranteRangoFechas restauranteRangoFechas) throws Exception{
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		List<InfoUsuarioReqRFC9> resp = null;
@@ -1645,7 +1645,37 @@ public class RotondAndesTM {
 			//////transaccion
 			this.conn = darConexion();
 			daoUsuarios.setConnection(conn);
-				resp = daoUsuarios.getAnalisis(restauranteRangoFechas);
+			resp = daoUsuarios.getAnalisis(restauranteRangoFechas);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return resp;
+	}
+	public List<Usuario> buenosClientes(Long id) throws Exception{
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		List<Usuario> resp = null;
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn);
+			resp = daoUsuarios.buenosClientes(id);
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();

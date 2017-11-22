@@ -155,21 +155,21 @@ public class DAOUsuarios {
 
 	public void cancelarPedido(Long id, Cancelado cancelado)throws SQLException, Exception {
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<1");
-//		int cantidadAReestablecer = 0;
-//		String menuOProd = "";
+		//		int cantidadAReestablecer = 0;
+		//		String menuOProd = "";
 		long idPedido = cancelado.getId();
 		String sqlBuscarUsuarioQuePidio1 = "SELECT ID_USUARIO, CANTIDAD FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO= "+idPedido;
 		PreparedStatement prepStmt1 = conn.prepareStatement(sqlBuscarUsuarioQuePidio1);
 		recursos.add(prepStmt1);
 		ResultSet rs1 = prepStmt1.executeQuery();
 		ArrayList a = new ArrayList();
-//		ArrayList b = new ArrayList();
+		//		ArrayList b = new ArrayList();
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<2");
 		while(rs1.next()) {
 			long idUsuario = rs1.getLong("ID_USUARIO");
 			int cantidad1= rs1.getInt("CANTIDAD");
 			a.add(idUsuario);
-//			b.add(cantidad1);
+			//			b.add(cantidad1);
 		}
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<3");
 		String sqlBuscarUsuarioQuePidio2 = "SELECT ID_USUARIO, CANTIDAD FROM USUARIO_PEDIDOS_MENUS WHERE ID_PEDIDO= "+idPedido;
@@ -177,16 +177,16 @@ public class DAOUsuarios {
 		recursos.add(prepStmt2);
 		ResultSet rs2 = prepStmt2.executeQuery();
 		ArrayList aa = new ArrayList();
-//		ArrayList bb = new ArrayList();
+		//		ArrayList bb = new ArrayList();
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<4");
 		while(rs2.next()) {
 			long idUsuario = rs2.getLong("ID_USUARIO");
 			int cantidad2 = rs2.getInt("CANTIDAD");
 			aa.add(idUsuario);
-//			bb.add(cantidad2);
+			//			bb.add(cantidad2);
 		}
-//		cantidadAReestablecer = (int) (b.get(0)!=null?b.get(0):bb.get(0));
-//		menuOProd = (String) (b.get(0)!=null?"M":"P");
+		//		cantidadAReestablecer = (int) (b.get(0)!=null?b.get(0):bb.get(0));
+		//		menuOProd = (String) (b.get(0)!=null?"M":"P");
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<5");
 		long idUsuario = (long) ((a.get(0)!=null) ? a.get(0):aa.get(0));
 		System.out.println("<<<<<<<<<<<<<<<<<<<<<<<usuario"+idUsuario);
@@ -206,7 +206,7 @@ public class DAOUsuarios {
 		if(idUsuario==id) {
 			System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<8");
 			if(aaaa.get(0).equals("N")) {
-				
+
 				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<9");
 				String sqlBorrarProd = "DELETE FROM USUARIO_PEDIDO_PRODUCTOS WHERE ID_PEDIDO=" + cancelado.getId();
 				System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<10");
@@ -225,9 +225,9 @@ public class DAOUsuarios {
 				PreparedStatement prepStmt5 = conn.prepareStatement(sqlActualizarCancelado);
 				recursos.add(prepStmt5);
 				prepStmt5.executeQuery();
-				
-			/**	//.-------------------sumar existencias
-				
+
+				/**	//.-------------------sumar existencias
+
 				if(menuOProd.equals("P")) {
 					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<15");
 
@@ -255,7 +255,7 @@ public class DAOUsuarios {
 			throw new Exception("Usuario sin permisos para cancelar pedido");
 		}
 	}
-	
+
 	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV1(Long id, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
 		//agrupamientos y ordenamientos
 		/**
@@ -294,7 +294,7 @@ public class DAOUsuarios {
 		}
 		return resp;
 	}
-	
+
 	public ArrayList<InfoUsuarioReqRFC9> consultarConsumoV2(Long id, RestauranteRangoFechas restauranteRangoFechas, String privacidad) throws SQLException, Exception{
 		//agrupamientos y ordenamientos
 		/**
@@ -333,13 +333,13 @@ public class DAOUsuarios {
 		}
 		return resp;
 	}
-	
+
 	public ArrayList<InfoUsuarioReqRFC9> getAnalisis(RestauranteRangoFechas restauranteRangoFechas) throws SQLException, Exception{
 		ArrayList<InfoUsuarioReqRFC9> resp = new ArrayList<>();
 		String sql = "SELECT USUARIO.ID AS ID_USUARIO, PEDIDOS.FECHA AS FECHA, RESTAURANTES_PRODUCTOS.ID_RESTAURANTE AS ID_RESTAURANTE, USUARIO.CORREO AS CORREO, USUARIO.ROL AS ROL, USUARIO.NOMBRE AS USUARIO_NOMBRE, PRODUCTOS.NOMBRE AS NOMBRE_PRODUCTO, PRODUCTOS.CLASIFICACION AS CLASIFICACION FROM (((USUARIO INNER JOIN USUARIO_PEDIDO_PRODUCTOS ON USUARIO.ID = USUARIO_PEDIDO_PRODUCTOS.ID_USUARIO) \r\n" + 
 				"				INNER JOIN RESTAURANTES_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) \r\n" + 
 				"				INNER JOIN PEDIDOS ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO) INNER JOIN PRODUCTOS ON PRODUCTOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO";
-				
+
 		PreparedStatement prepStmt = conn.prepareStatement(sql);
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
@@ -352,17 +352,39 @@ public class DAOUsuarios {
 			String nombre = rs.getString("USUARIO_NOMBRE");
 			String nombreProducto = rs.getString("NOMBRE_PRODUCTO");
 			String clasificacion = rs.getString("CLASIFICACION");
-			
+
 			System.out.println(fecha+">>>>>>>>>>>>>>> FECHA");
-			
+
 			DateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 			Date dateOracle = format.parse(fecha);
 			Date dateInicio = format.parse(restauranteRangoFechas.getFechaInicial());
 			Date dateFinal = format.parse(restauranteRangoFechas.getFechaFinal());
-			
+
 			if(restauranteRangoFechas.getIdRestaurante()==idRestaurante && dateInicio.before(dateOracle)&&dateFinal.after(dateOracle)) {
-			resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
-			System.out.println(resp.size()+"TAMAÑO RESP");
+				resp.add(new InfoUsuarioReqRFC9(idUsuario, correo, rol, nombre, nombreProducto, clasificacion));
+				System.out.println(resp.size()+"TAMAÑO RESP");
+			}
+		}
+		return resp;
+	}
+
+	public ArrayList<Usuario> buenosClientes(Long id) throws SQLException, Exception{
+		ArrayList<Usuario> resp = new ArrayList<>();
+		if(id==1) {
+			String sql = "SELECT USU.NOMBRE ,ID_USUARIO, CORREO, ROL FROM (SELECT * FROM(SELECT * FROM \r\n" + 
+					"(SELECT * FROM PEDIDOS INNER JOIN USUARIO_PEDIDO_PRODUCTOS \r\n" + 
+					"ON PEDIDOS.ID = USUARIO_PEDIDO_PRODUCTOS.ID_PEDIDO ) A INNER JOIN RESTAURANTES_PRODUCTOS  ON RESTAURANTES_PRODUCTOS.ID = A.ID_PRODUCTO_RESTAURANTE WHERE RESTAURANTES_PRODUCTOS.PRECIO > 24000) B\r\n" + 
+					"INNER JOIN PRODUCTOS ON PRODUCTOS.ID = B.ID_PRODUCTO) C\r\n" + 
+					"INNER JOIN USUARIO USU ON C.ID_USUARIO = USU.ID";
+			PreparedStatement prepStmt = conn.prepareStatement(sql);
+			recursos.add(prepStmt);
+			ResultSet rs = prepStmt.executeQuery();
+			while (rs.next()) {
+				Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+				String correo = rs.getString("CORREO");
+				String rol = rs.getString("ROL");
+				String nombre = rs.getString("NOMBRE");			
+				resp.add(new Usuario(idUsuario, correo, rol, null, nombre));
 			}
 		}
 		return resp;
