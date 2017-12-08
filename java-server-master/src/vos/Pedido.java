@@ -1,7 +1,5 @@
 package vos;
 
-import java.util.Date;
-
 import org.codehaus.jackson.annotate.JsonProperty;
 
 public class Pedido {
@@ -43,6 +41,10 @@ public class Pedido {
 	@JsonProperty(value = "cantidad")
 	private Integer cantidad;
 	
+	@JsonProperty(value="numMesa")
+	private int numMesa;
+
+	
 	public Pedido(
 			@JsonProperty(value = "id") Long id, 
 //			@JsonProperty(value = "fecha") Date fecha,
@@ -50,21 +52,23 @@ public class Pedido {
 			@JsonProperty(value = "idUsuario") Long idUsuario, 
 			@JsonProperty(value = "cantidad") int cantidad, 
 			@JsonProperty(value = "idProducto") Long idProducto, 
-			@JsonProperty(value = "idMenu") Long idMenu){
+			@JsonProperty(value = "idMenu") Long idMenu, @JsonProperty(value="numMesa") int mesa)
+{
 		this.id = id; 
 //		this.fecha = fecha;
 		this.idRestaurante = idRestaurante;
 		this.idUsuario = idUsuario;
 		this.cantidad = cantidad;
 		this.idProducto = idProducto;
+		this.numMesa = mesa;
 		this.idMenu = idMenu;
 	}
 
-	public Long getId() {
+	public Long getIdPedido() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setIdPedido(Long id) {
 		this.id = id;
 	}
 
@@ -115,6 +119,15 @@ public class Pedido {
 	public void setIdMenu(Long idMenu) {
 		this.idMenu = idMenu;
 	}
+	public int getNumMesa() {
+		return numMesa;
+	}
+
+
+	public void setNumMesa(int numMesa) {
+		this.numMesa = numMesa;
+	}	
+
 	
 	
 }

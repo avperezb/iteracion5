@@ -17,7 +17,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Properties;
 
@@ -25,6 +24,7 @@ import dao.DAOPreferencias;
 import dao.DAOProductosIngredientes;
 import dao.DAORestaurantesZona;
 import dao.DAOServidos;
+import dao.DAOTablaMesa;
 import dao.DAOUsuarios;
 import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
@@ -32,6 +32,7 @@ import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
+import vos.Mesa;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.PreferenciaUsuarioCategoria;
@@ -41,7 +42,6 @@ import vos.Producto;
 import vos.RFC11;
 import vos.Usuario;
 import vos.UsuarioClientePref;
-import vos.Video;
 import vos.Zona;
 import vos.Restaurante;
 import vos.RestauranteRangoFechas;
@@ -1324,6 +1324,132 @@ public class RotondAndesTM {
 		}
 	}
 
+	public void addMesa(Long idUsuario, Mesa mesa) throws SQLException, Exception {
+
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		DAOTablaMesa daoMesas = new DAOTablaMesa();
+		DAORestaurantesZona daoZ = new DAORestaurantesZona();
+		try 
+		{		
+			Usuario user;
+
+			if(idUsuario.equals("0")) 
+			{
+				throw new Exception("Sólo un usuario 'usuarioRestaurante' puede agregar mesas.");
+			}
+			else {
+				this.conn = darConexion();
+				daoUsuarios.setConnection(conn);
+				user = daoUsuarios.buscarUsuarioPorID(idUsuario);		
+
+				if(!user.getRol().equals("UsuarioRestaurante")) {
+					throw new Exception("El identificador " +idUsuario+" no corresponde a un usuario 'usuarioRestaurante'.");
+				}
+			}
+			
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			if (daoMesas.darMesaPorId(mesa.getNumMesa())!= null)
+			{
+				throw new Exception("Ya existe una mesa con ese número.");
+			}
+			this.conn = darConexion();
+			daoZ.setConn(conn);
+			if(daoZ.buscarZonaPorId(mesa.getIdZona())!= null)
+			{
+			//////transaccion
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			Zona z = buscarZonaPorId(mesa.getIdZona());
+			List <Mesa> mesaz = darMesas();
+			int capacidadActual = 0;
+
+			for (int i = 0; i < mesaz.size(); i++) {
+
+				if (mesaz.get(i).getIdZona() == z.getId())
+				{
+					capacidadActual += mesaz.get(i).getCapacidad();
+				}
+			}
+
+			if (capacidadActual>= z.getCapacidadPersonas())
+			{
+				throw new Exception("La zona no puede agregar esta mesa.");
+			}
+			}
+			else
+			{
+				throw new Exception("La zona indicada no existe.");
+			}
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			daoMesas.addMesa(mesa);
+			conn.commit();
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:"+ e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMesas.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}	
+	}
+	
+	public void deleteMesa(Long idUsuario, Mesa mesa) throws SQLException, Exception {
+
+		DAOTablaMesa daoMesas = new DAOTablaMesa();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		try 
+		{			
+			Usuario x;
+			if(!idUsuario.equals("0")) 
+			{
+				this.conn=darConexion();
+				daoUsuarios.setConnection(conn);
+				x=daoUsuarios.buscarUsuarioPorID(idUsuario);			
+				if(!x.getRol().equals("UsuarioRestaurante")) {
+					throw new Exception("El identificador "+idUsuario+" no corresponde a un usuarioRestaurante");
+				}
+			}
+			//////transaccion
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			daoMesas.deleteMesa(mesa);
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMesas.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+
+	}
+
 	public void cancelarPedido(Long id, Cancelado cancelado) throws Exception {
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
 		try 
@@ -1352,15 +1478,100 @@ public class RotondAndesTM {
 			}
 		}
 	}
+	public void RF15(String idUsuario, List<Pedido> listaPedidos) throws Exception {
+		// TODO Auto-generated method stub
 
-	public void addPedidoMesa(PedidoMesa pedidoMesa) throws Exception{
-		DAOProductosIngredientes daoProductosIngredientes = new DAOProductosIngredientes();
-		try 
+		Mesa mesa = null;
+
+		if (listaPedidos.size()== 0)
 		{
+			throw new Exception("No se ingresó ningún pedido.");
+		}
+
+		for (Pedido p:listaPedidos) {
+
+			if (p==null)
+			{
+				throw new Exception("No se ingresó ningún pedido");
+			}
+			Pedido pe = p;
+			mesa = darMesaPorId(pe.getNumMesa());
+
+			/*if (darMesaPorId(p.getNumMesa())!=null)
+			{
+				if (pedidosPorMesa(p.getNumMesa()).size() == mesa.getCapacidad() )
+				{
+					throw new Exception("La cantidad máxima de pedidos para esta mesa ha sido alcanzada.");
+			 */
+
+
+		}
+		addPedido2(listaPedidos);
+
+	}
+
+	public void addPedido2 (List<Pedido> Pedidos) throws Exception {
+
+		DAOProductosIngredientes daoPedidos = new DAOProductosIngredientes();
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+
+		try 
+		{			
 			//////transaccion
+
+			for (int i = 0; i <Pedidos.size(); i++) {
+
+				if(Pedidos.get(i).getIdUsuario()!=null)
+				{
+					this.conn=darConexion();
+					daoUsuarios.setConnection(conn);
+					Usuario u = daoUsuarios.buscarUsuarioPorID(Pedidos.get(i).getIdUsuario());
+					if(!u.getRol().equals("Cliente"))
+						throw new Exception("El identificador "+Pedidos.get(i).getIdUsuario()+" no corresponde a un cliente");
+				}
+
+				if (darMesaPorId(Pedidos.get(i).getNumMesa()) == null) {
+
+					throw new Exception("La mesa asignada al pedido con id" + Pedidos.get(i).getIdPedido()+ " no existe");
+				}
+
+			} 
 			this.conn = darConexion();
-			daoProductosIngredientes.setConn(conn);
-			daoProductosIngredientes.addPedidoMesa(pedidoMesa);
+			daoPedidos.setConn(conn);
+			daoPedidos.RF15((ArrayList)Pedidos);
+			conn.commit();
+		}
+		catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage()+"Error prueba 1");
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage()+ "Error prueba2");
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoPedidos.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+	}
+	
+	public List<Mesa> darMesas() throws SQLException, Exception {
+
+		List<Mesa> mesas;
+		DAOTablaMesa daoMesas = new DAOTablaMesa();
+		try 
+		{			
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			mesas = daoMesas.darMesas();
+
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();
@@ -1371,7 +1582,7 @@ public class RotondAndesTM {
 			throw e;
 		} finally {
 			try {
-				daoProductosIngredientes.cerrarRecursos();
+				daoMesas.cerrarRecursos();
 				if(this.conn!=null)
 					this.conn.close();
 			} catch (SQLException exception) {
@@ -1380,73 +1591,51 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-
+		return mesas;
 	}
-	//<<<<<<< HEAD
-	//	
-	//	public void servirMesa(Servido servidaMesa) throws Exception{
-	//		DAOServidos daoServidos = new DAOServidos();
-	//=======
-	//
-	//	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
-	//		List<ConsultaPedidos> infoVentas;
-	//		DAOProductosIngredientes daoVentas = new DAOProductosIngredientes();
-	//		DAOUsuarios daoUsuarios = new DAOUsuarios();
-	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-	//		try 
-	//		{
-	//			//////transaccion
-	//			this.conn = darConexion();
-	//<<<<<<< HEAD
-	//			daoServidos.setConn(conn);
-	//			daoServidos.servirMesa(servidaMesa);
-	//=======
-	//			daoVentas.setConn(conn);					
-	//			daoUsuarios.setConnection(conn);
-	//			Usuario encargado = daoUsuarios.buscarUsuarioPorID(id);
-	//			if(encargado.getRol().equals("Restaurante") || encargado.getRol().equals("Admin"))
-	//			{
-	//				infoVentas = daoVentas.consultarVentas(id, encargado.getRol());
-	//				conn.commit();				
-	//			}
-	//			else 
-	//			{
-	//				throw new Exception("el usuario no tiene permisos");
-	//			}
-	//
-	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-	//		} catch (SQLException e) {
-	//			System.err.println("SQLException:" + e.getMessage());
-	//			e.printStackTrace();
-	//			throw e;
-	//		} catch (Exception e) {
-	//			System.err.println("GeneralException:" + e.getMessage());
-	//			e.printStackTrace();
-	//			throw e;
-	//		} finally {
-	//			try {
-	//<<<<<<< HEAD
-	//				daoServidos.cerrarRecursos();
-	//=======
-	//				daoVentas.cerrarRecursos();
-	//				daoUsuarios.cerrarRecursos();
-	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
-	//				if(this.conn!=null)
-	//					this.conn.close();
-	//			} catch (SQLException exception) {
-	//				System.err.println("SQLException closing resources:" + exception.getMessage());
-	//				exception.printStackTrace();
-	//				throw exception;
-	//			}
-	//		}
-	//<<<<<<< HEAD
-	//	}
-	//=======
-	//		return infoVentas;
-	//	}
-	//	
-	//	
-	//>>>>>>> 6b44196e60af644e67d8864b937087101e445462
+
+	
+	public Mesa darMesaPorId(int numMesa) throws SQLException, Exception {
+		// TODO Auto-generated method stub
+
+		Mesa mesa;
+		DAOTablaMesa daoMesas = new DAOTablaMesa();
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoMesas.setConn(conn);
+			if(daoMesas.darMesaPorId(numMesa)!=null)
+			{
+				mesa = daoMesas.darMesaPorId(numMesa);
+			}
+			else
+			{
+				throw new Exception ("La mesa "+ numMesa+ " no existe.");
+			}
+
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoMesas.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return mesa;
+	}
+
 
 	public List<ConsultaPedidos> darInfoVentas(Long id) throws Exception {
 		List<ConsultaPedidos> infoVentas;

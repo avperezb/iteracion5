@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import jdk.net.NetworkPermission;
 import vos.CantidadProductoRestaurante;
 import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
@@ -15,9 +14,6 @@ import vos.Ingrediente;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
-import vos.Servido;
-import vos.Usuario;
-import vos.Video;
 
 public class DAOProductosIngredientes {
 
@@ -350,7 +346,7 @@ public class DAOProductosIngredientes {
 		boolean tansaccionCancelada = false;
 		boolean existePedido = false;
 
-		String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getId();
+		String sqlExiste = "SELECT ID FROM PEDIDOS WHERE ID = "+ pedido.getIdPedido();
 
 
 		PreparedStatement prepStmtConsulta = conn.prepareStatement(sqlExiste);
@@ -366,7 +362,7 @@ public class DAOProductosIngredientes {
 		if (!existePedido)
 		{
 			String sql = "INSERT INTO PEDIDOS VALUES (";
-			sql += pedido.getId() + ",";
+			sql += pedido.getIdPedido() + ",";
 			sql += "SYSDATE,";
 			sql += "'N')";
 
@@ -410,7 +406,7 @@ public class DAOProductosIngredientes {
 					//------------------------------
 					// Inserta el pedido del producto
 					String sql2 = "INSERT INTO USUARIO_PEDIDO_PRODUCTOS VALUES(";
-					sql2 += pedido.getId()+",";
+					sql2 += pedido.getIdPedido()+",";
 					sql2 += aa.get(0) + ",";
 					sql2 += pedido.getIdUsuario()+",";
 					sql2 += pedido.getCantidad()+",'N')";
@@ -455,7 +451,7 @@ public class DAOProductosIngredientes {
 					// Inserta el pedido del producto
 					String sqlInsertarMenu = "INSERT INTO USUARIO_PEDIDOS_MENUS VALUES(";
 					sqlInsertarMenu += pedido.getIdUsuario()+",";
-					sqlInsertarMenu += pedido.getId() + ",";
+					sqlInsertarMenu += pedido.getIdPedido() + ",";
 					sqlInsertarMenu += pedido.getIdMenu()+",";
 					sqlInsertarMenu += pedido.getCantidad()+",'N')";
 
@@ -499,20 +495,20 @@ public class DAOProductosIngredientes {
 	//-------------------------------------------------------
 	//--------RF15
 
-	public void addPedidoMesa(PedidoMesa pedidoMesa)throws SQLException, Exception {
-		int tamañoArray = pedidoMesa.getIdsProductos().size();
-		ArrayList<Long> arrayProductos = pedidoMesa.getIdsProductos();
-		ArrayList<Integer> arrayCantidades = pedidoMesa.getCantidades();
-		ArrayList<Long> arrayMenus = pedidoMesa.getIdsMenus();
-		Long idInicial = pedidoMesa.getId();
-		Long idRestaurante = pedidoMesa.getIdRestaurante();
-		Long idUsuario = pedidoMesa.getIdUsuario();
-
-		for(int i=0; i<tamañoArray; i++) {
-			Pedido pedido = new Pedido(idInicial+i, idRestaurante, idUsuario, arrayCantidades.get(i), arrayProductos.get(i), arrayMenus.get(i));
-			addPedido(pedido);
-		}
-	}
+//	public void addPedidoMesa(PedidoMesa pedidoMesa)throws SQLException, Exception {
+//		int tamañoArray = pedidoMesa.getIdsProductos().size();
+//		ArrayList<Long> arrayProductos = pedidoMesa.getIdsProductos();
+//		ArrayList<Integer> arrayCantidades = pedidoMesa.getCantidades();
+//		ArrayList<Long> arrayMenus = pedidoMesa.getIdsMenus();
+//		Long idInicial = pedidoMesa.getId();
+//		Long idRestaurante = pedidoMesa.getIdRestaurante();
+//		Long idUsuario = pedidoMesa.getIdUsuario();
+//
+//		for(int i=0; i<tamañoArray; i++) {
+//			Pedido pedido = new Pedido(idInicial+i, idRestaurante, idUsuario, arrayCantidades.get(i), arrayProductos.get(i), arrayMenus.get(i));
+//			addPedido(pedido);
+//		}
+//	}
 
 	//--------------------------------------------------------------
 	//-------RFC8
@@ -606,5 +602,12 @@ public class DAOProductosIngredientes {
 
 	}
 
+		public void RF15(ArrayList<Pedido> pedidosMesa) throws SQLException, Exception {
 
+			for (int i = 0; i < pedidosMesa.size(); i++) {
+
+				Pedido actual = pedidosMesa.get(i);
+				addPedido(actual);
+			}
+		}
 }

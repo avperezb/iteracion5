@@ -6,12 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import vos.Ingrediente;
 import vos.RFC11;
 import vos.Restaurante;
-import vos.Video;
 import vos.Zona;
 
 public class DAORestaurantesZona {

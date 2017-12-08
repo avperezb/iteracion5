@@ -16,7 +16,6 @@ import vos.Restaurante;
 import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
-import vos.ConsultaPedidos;
 import vos.InfoUsuarioReqRFC9;
 
 @Path("servicios")

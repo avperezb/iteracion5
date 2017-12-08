@@ -8,11 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-
 import vos.Cancelado;
-import vos.Pedido;
-import vos.PedidoMesa;
 import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
@@ -54,7 +50,7 @@ public class DAOUsuarios {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID");
+			Long idUsuario = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String infoRol = rs.getString("INFO_ROL");
@@ -64,6 +60,8 @@ public class DAOUsuarios {
 		}
 		return usuarios;
 	}
+	
+	
 
 	public ArrayList<UsuarioClientePref> darUsuarioPreferencias() throws SQLException, Exception{
 
@@ -76,12 +74,12 @@ public class DAOUsuarios {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID");
+			Long idUsuario = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String infoRol = rs.getString("INFO_ROL");
 			String nombre = rs.getString("NOMBRE");
-			Long preferencia = (Long) rs.getLong("PRECIO");
+			Long preferencia = rs.getLong("PRECIO");
 
 			usuarios.add(new UsuarioClientePref(idUsuario, correo, rol, infoRol, nombre, preferencia));
 		}
@@ -98,7 +96,7 @@ public class DAOUsuarios {
 		ResultSet rs = prepStmt.executeQuery();
 
 		if(rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID");
+			Long idUsuario = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String infoRol = rs.getString("INFO_ROL");
@@ -142,7 +140,7 @@ public class DAOUsuarios {
 		ResultSet rs = prepStmt.executeQuery();
 
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID");
+			Long idUsuario = rs.getLong("ID");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String infoRol = rs.getString("INFO_ROL");
@@ -283,7 +281,7 @@ public class DAOUsuarios {
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			Long idUsuario = rs.getLong("ID_USUARIO");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String nombre = rs.getString("USUARIO_NOMBRE");
@@ -322,7 +320,7 @@ public class DAOUsuarios {
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			Long idUsuario = rs.getLong("ID_USUARIO");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String nombre = rs.getString("USUARIO_NOMBRE");
@@ -344,9 +342,9 @@ public class DAOUsuarios {
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 		while (rs.next()) {
-			Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+			Long idUsuario = rs.getLong("ID_USUARIO");
 			String fecha = rs.getString("FECHA");
-			Long idRestaurante = (Long) rs.getLong("ID_RESTAURANTE");
+			Long idRestaurante = rs.getLong("ID_RESTAURANTE");
 			String correo = rs.getString("CORREO");
 			String rol = rs.getString("ROL");
 			String nombre = rs.getString("USUARIO_NOMBRE");
@@ -380,7 +378,7 @@ public class DAOUsuarios {
 			recursos.add(prepStmt);
 			ResultSet rs = prepStmt.executeQuery();
 			while (rs.next()) {
-				Long idUsuario = (Long) rs.getLong("ID_USUARIO");
+				Long idUsuario = rs.getLong("ID_USUARIO");
 				String correo = rs.getString("CORREO");
 				String rol = rs.getString("ROL");
 				String nombre = rs.getString("NOMBRE");			

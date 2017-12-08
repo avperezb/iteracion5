@@ -282,11 +282,11 @@ public class ProductosResource extends RotondAndesServices{
 	@Path("/pedidos/mesa")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addPedidoMesa(PedidoMesa pedidoMesa) {
+	public Response addPedidoMesa(List pedidoMesa) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try 
 		{
-			tm.addPedidoMesa(pedidoMesa);
+			tm.addPedido2(pedidoMesa);
 			return Response.status( 200 ).entity( pedidoMesa ).build( );			
 		} 
 		catch (Exception e)
