@@ -282,7 +282,7 @@ public class ProductosResource extends RotondAndesServices{
 	@Path("/pedidos/mesa")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response addPedidoMesa(List pedidoMesa) {
+	public Response addPedidoMesa(List<Pedido> pedidoMesa) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
 		try 
 		{

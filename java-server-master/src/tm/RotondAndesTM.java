@@ -1478,7 +1478,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	public void RF15(String idUsuario, List<Pedido> listaPedidos) throws Exception {
+	public void RF15(Long idUsuario, List<Pedido> listaPedidos) throws Exception {
 		// TODO Auto-generated method stub
 
 		Mesa mesa = null;
@@ -1510,7 +1510,7 @@ public class RotondAndesTM {
 
 	}
 
-	public void addPedido2 (List<Pedido> Pedidos) throws Exception {
+	public void addPedido2 (List<Pedido> listaPedidos) throws Exception {
 
 		DAOProductosIngredientes daoPedidos = new DAOProductosIngredientes();
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
@@ -1519,26 +1519,29 @@ public class RotondAndesTM {
 		{			
 			//////transaccion
 
-			for (int i = 0; i <Pedidos.size(); i++) {
+			for (int i = 0; i <listaPedidos.size(); i++) {
 
-				if(Pedidos.get(i).getIdUsuario()!=null)
+				System.out.println(listaPedidos.size());
+				System.out.println("HOLA, SOY EL PEDIDO"+ listaPedidos.get(i));
+				
+				if(((Pedido)listaPedidos.get(i)).getIdUsuario()!=null)
 				{
 					this.conn=darConexion();
 					daoUsuarios.setConnection(conn);
-					Usuario u = daoUsuarios.buscarUsuarioPorID(Pedidos.get(i).getIdUsuario());
+					Usuario u = daoUsuarios.buscarUsuarioPorID(listaPedidos.get(i).getIdUsuario());
 					if(!u.getRol().equals("Cliente"))
-						throw new Exception("El identificador "+Pedidos.get(i).getIdUsuario()+" no corresponde a un cliente");
+						throw new Exception("El identificador "+listaPedidos.get(i).getIdUsuario()+" no corresponde a un cliente");
 				}
 
-				if (darMesaPorId(Pedidos.get(i).getNumMesa()) == null) {
+				if (darMesaPorId(listaPedidos.get(i).getNumMesa()) == null) {
 
-					throw new Exception("La mesa asignada al pedido con id" + Pedidos.get(i).getIdPedido()+ " no existe");
+					throw new Exception("La mesa asignada al pedido con id" + listaPedidos.get(i).getIdPedido()+ " no existe");
 				}
 
 			} 
 			this.conn = darConexion();
 			daoPedidos.setConn(conn);
-			daoPedidos.RF15((ArrayList)Pedidos);
+			daoPedidos.RF15((ArrayList)listaPedidos);
 			conn.commit();
 		}
 		catch (SQLException e) {

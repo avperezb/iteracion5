@@ -34,7 +34,7 @@ public class Pedido {
 	 * id del menu
 	 */
 	@JsonProperty(value = "idMenu")
-	private Long idMenu; 
+	private Long idMenu;
 	/**
 	 * cantidad del pedido
 	 */
@@ -43,6 +43,9 @@ public class Pedido {
 	
 	@JsonProperty(value="numMesa")
 	private int numMesa;
+	
+	@JsonProperty(value="estadoPedido")
+	private String estadoPedido;
 
 	
 	public Pedido(
@@ -62,6 +65,20 @@ public class Pedido {
 		this.idProducto = idProducto;
 		this.numMesa = mesa;
 		this.idMenu = idMenu;
+		this.estadoPedido = null;
+		
+	}
+
+	public Pedido(Pedido pedido) {
+		
+		this.id = pedido.getIdPedido(); 
+//		this.fecha = fecha;
+		this.idRestaurante = pedido.getIdRestaurante();
+		this.idUsuario = pedido.getIdUsuario();
+		this.cantidad = pedido.getCantidad();
+		this.idProducto = pedido.getIdProducto();
+		this.numMesa = pedido.getNumMesa();
+		this.idMenu = pedido.getIdMenu();
 	}
 
 	public Long getIdPedido() {
@@ -122,7 +139,6 @@ public class Pedido {
 	public int getNumMesa() {
 		return numMesa;
 	}
-
 
 	public void setNumMesa(int numMesa) {
 		this.numMesa = numMesa;

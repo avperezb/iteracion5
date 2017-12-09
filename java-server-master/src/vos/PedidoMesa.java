@@ -8,8 +8,8 @@ public class PedidoMesa {
 	/**
 	 * id del pedido
 	 */
-	@JsonProperty(value = "id")
-	private Long id;
+	@JsonProperty(value = "idPedido")
+	private Long idPedido;
 	
 	/**
 	 * id del restaurante
@@ -23,30 +23,26 @@ public class PedidoMesa {
 	@JsonProperty(value = "idUsuario")
 	private Long idUsuario; 
 	
-	/**
-	 * lista de ids del producto
-	 */
-	@JsonProperty(value = "idsProductos")
-	private ArrayList<Long> idsProductos;
-	
-	/**
-	 * lista de cantidades correspondiente a la lisa de idsProductos
-	 */
-	@JsonProperty(value = "cantidades")
-	private ArrayList<Integer> cantidades;
-	
-	/**
-	 * lista de ids de los menus
-	 */
-	@JsonProperty(value = "idsMenus")
-	private ArrayList<Long> idsMenus;
+	@JsonProperty(value="numMesa")
+	private int numMesa;
 
+	public PedidoMesa(
+			@JsonProperty(value = "idPedido") Long idPedido,
+			@JsonProperty(value = "idRestaurante") Long idRestaurante,
+			@JsonProperty(value = "idUsuario") Long idUsuario, @JsonProperty(value="numMesa") int mesa)
+{
+		this.idPedido = idPedido; 
+		this.idRestaurante = idRestaurante;
+		this.idUsuario = idUsuario;
+		this.numMesa = mesa;
+	}
+	
 	public Long getId() {
-		return id;
+		return idPedido;
 	}
 
 	public void setId(Long id) {
-		this.id = id;
+		this.idPedido = id;
 	}
 
 	public Long getIdRestaurante() {
@@ -64,30 +60,12 @@ public class PedidoMesa {
 	public void setIdUsuario(Long idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-
-	public ArrayList<Long> getIdsProductos() {
-		return idsProductos;
+	public int getNumMesa() {
+		return numMesa;
 	}
 
-	public void setIdsProductos(ArrayList<Long> idsProductos) {
-		this.idsProductos = idsProductos;
-	}
-
-	public ArrayList<Integer> getCantidades() {
-		return cantidades;
-	}
-
-	public void setCantidades(ArrayList<Integer> cantidades) {
-		this.cantidades = cantidades;
-	}
-
-	public ArrayList<Long> getIdsMenus() {
-		return idsMenus;
-	}
-
-	public void setIdsMenus(ArrayList<Long> idsMenus) {
-		this.idsMenus = idsMenus;
-	}
-	
+	public void setNumMesa(int numMesa) {
+		this.numMesa = numMesa;
+	}	
 	
 }
