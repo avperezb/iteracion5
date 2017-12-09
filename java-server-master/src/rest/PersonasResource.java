@@ -17,6 +17,7 @@ import vos.RestauranteRangoFechas;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.InfoUsuarioReqRFC9;
+import vos.ListaProductos;
 
 @Path("servicios")
 public class PersonasResource extends RotondAndesServices{
@@ -134,7 +135,7 @@ public class PersonasResource extends RotondAndesServices{
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getRestaurantes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Restaurante> restaurantes;
+		ListaProductos restaurantes;
 		try
 		{
 			restaurantes = tm.darRestaurantes();

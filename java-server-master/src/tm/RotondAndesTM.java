@@ -26,15 +26,17 @@ import dao.DAORestaurantesZona;
 import dao.DAOServidos;
 import dao.DAOTablaMesa;
 import dao.DAOUsuarios;
+import dtm.RotondAndesDistributed;
+import jms.NonReplyException;
 import vos.Cancelado;
 import vos.CantidadProductoRestaurante;
 import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
+import vos.ListaProductos;
 import vos.Mesa;
 import vos.Pedido;
-import vos.PedidoMesa;
 import vos.PreferenciaUsuarioCategoria;
 import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
@@ -91,6 +93,8 @@ public class RotondAndesTM {
 	 */
 	private Connection conn;
 
+
+	private RotondAndesDistributed dtm;
 
 	/**
 	 * Metodo constructor de la clase VideoAndesMaster, esta clase modela y contiene cada una de las 
@@ -177,7 +181,7 @@ public class RotondAndesTM {
 		return ingredientes;
 	}
 
-	public List<Producto> darProductos() throws Exception {
+	public ListaProductos darProductosLocal() throws Exception {
 		List<Producto> productos;
 		DAOProductosIngredientes daoIngredientes = new DAOProductosIngredientes();
 		try 
@@ -206,7 +210,7 @@ public class RotondAndesTM {
 				throw exception;
 			}
 		}
-		return productos;
+		return new ListaProductos(productos);
 	}
 
 	public List<Producto> darProductosRestaurante(Long id) throws Exception {
@@ -619,6 +623,21 @@ public class RotondAndesTM {
 			}
 		}
 		return restaurantes;
+	}
+
+	public ListaProductos darProductos() throws Exception {
+		ListaProductos remL = darProductosLocal();
+		try
+		{
+			ListaProductos resp = dtm.getRemoteProductos();
+			System.out.println(resp.getProductos().size());
+			remL.getProductos().addAll(resp.getProductos());
+		}
+		catch(NonReplyException e)
+		{
+
+		}
+		return remL;
 	}
 
 	public void agregarUsuario(Usuario usuario) throws Exception{
@@ -1346,7 +1365,7 @@ public class RotondAndesTM {
 					throw new Exception("El identificador " +idUsuario+" no corresponde a un usuario 'usuarioRestaurante'.");
 				}
 			}
-			
+
 			this.conn = darConexion();
 			daoMesas.setConn(conn);
 			if (daoMesas.darMesaPorId(mesa.getNumMesa())!= null)
@@ -1357,25 +1376,25 @@ public class RotondAndesTM {
 			daoZ.setConn(conn);
 			if(daoZ.buscarZonaPorId(mesa.getIdZona())!= null)
 			{
-			//////transaccion
-			this.conn = darConexion();
-			daoMesas.setConn(conn);
-			Zona z = buscarZonaPorId(mesa.getIdZona());
-			List <Mesa> mesaz = darMesas();
-			int capacidadActual = 0;
+				//////transaccion
+				this.conn = darConexion();
+				daoMesas.setConn(conn);
+				Zona z = buscarZonaPorId(mesa.getIdZona());
+				List <Mesa> mesaz = darMesas();
+				int capacidadActual = 0;
 
-			for (int i = 0; i < mesaz.size(); i++) {
+				for (int i = 0; i < mesaz.size(); i++) {
 
-				if (mesaz.get(i).getIdZona() == z.getId())
-				{
-					capacidadActual += mesaz.get(i).getCapacidad();
+					if (mesaz.get(i).getIdZona() == z.getId())
+					{
+						capacidadActual += mesaz.get(i).getCapacidad();
+					}
 				}
-			}
 
-			if (capacidadActual>= z.getCapacidadPersonas())
-			{
-				throw new Exception("La zona no puede agregar esta mesa.");
-			}
+				if (capacidadActual>= z.getCapacidadPersonas())
+				{
+					throw new Exception("La zona no puede agregar esta mesa.");
+				}
 			}
 			else
 			{
@@ -1406,7 +1425,7 @@ public class RotondAndesTM {
 			}
 		}	
 	}
-	
+
 	public void deleteMesa(Long idUsuario, Mesa mesa) throws SQLException, Exception {
 
 		DAOTablaMesa daoMesas = new DAOTablaMesa();
@@ -1523,7 +1542,7 @@ public class RotondAndesTM {
 
 				System.out.println(listaPedidos.size());
 				System.out.println("HOLA, SOY EL PEDIDO"+ listaPedidos.get(i));
-				
+
 				if(((Pedido)listaPedidos.get(i)).getIdUsuario()!=null)
 				{
 					this.conn=darConexion();
@@ -1564,7 +1583,7 @@ public class RotondAndesTM {
 			}
 		}
 	}
-	
+
 	public List<Mesa> darMesas() throws SQLException, Exception {
 
 		List<Mesa> mesas;
@@ -1597,7 +1616,7 @@ public class RotondAndesTM {
 		return mesas;
 	}
 
-	
+
 	public Mesa darMesaPorId(int numMesa) throws SQLException, Exception {
 		// TODO Auto-generated method stub
 
