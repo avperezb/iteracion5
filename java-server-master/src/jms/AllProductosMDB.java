@@ -43,7 +43,7 @@ import vos.ListaProductos;
 import vos.Producto;
 import vos.Video;
 
-public class AllRestaurantsMDB  implements MessageListener, ExceptionListener {
+public class AllProductosMDB  implements MessageListener, ExceptionListener {
 
 	public final static int TIME_OUT = 5;
 	private final static String APP = "app1";
@@ -61,7 +61,7 @@ public class AllRestaurantsMDB  implements MessageListener, ExceptionListener {
 	
 	private List<Producto> answer = new ArrayList<Producto>();
 	
-	public AllRestaurantsMDB(TopicConnectionFactory factory, InitialContext ctx) throws JMSException, NamingException 
+	public AllProductosMDB(TopicConnectionFactory factory, InitialContext ctx) throws JMSException, NamingException 
 	{	
 		topicConnection = factory.createTopicConnection();
 		topicSession = topicConnection.createTopicSession(false, Session.AUTO_ACKNOWLEDGE);
@@ -116,7 +116,7 @@ public class AllRestaurantsMDB  implements MessageListener, ExceptionListener {
 	private void sendMessage(String payload, String status, Topic dest, String id) throws JMSException, JsonGenerationException, JsonMappingException, IOException	{
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(id);
-		ExchangeMsg msg = new ExchangeMsg("Productos.general.app1", APP, payload, status, id);
+		ExchangeMsg msg = new ExchangeMsg("productos.general.app1", APP, payload, status, id);
 		TopicPublisher topicPublisher = topicSession.createPublisher(dest);
 		topicPublisher.setDeliveryMode(DeliveryMode.PERSISTENT);
 		TextMessage txtMsg = topicSession.createTextMessage();

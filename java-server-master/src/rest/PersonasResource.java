@@ -135,7 +135,7 @@ public class PersonasResource extends RotondAndesServices{
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getRestaurantes() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		ListaProductos restaurantes;
+		List<Restaurante> restaurantes;
 		try
 		{
 			restaurantes = tm.darRestaurantes();

@@ -106,6 +106,7 @@ public class RotondAndesTM {
 	public RotondAndesTM(String contextPathP) {
 		connectionDataPath = contextPathP + CONNECTION_DATA_FILE_NAME_REMOTE;
 		initConnectionData();
+		dtm = RotondAndesDistributed.getInstance(this);
 	}
 
 	/**

@@ -14,6 +14,8 @@ import vos.Ingrediente;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
+import vos.RentabilidadRest;
+import vos.RestauranteRentabilidad;
 
 public class DAOProductosIngredientes {
 
@@ -95,16 +97,18 @@ public class DAOProductosIngredientes {
 		recursos.add(prepStmt);
 		ResultSet rs = prepStmt.executeQuery();
 
-		while (rs.next()) {
+		int n = 0;
+
+		while (rs.next() && n < 5) {
 			String name = rs.getString("NOMBRE");
 			Long id = rs.getLong("ID");
 			Long tiempoPreparacion = rs.getLong("TIEMPO_PREPARACIO");
 			String descipcionEsp = rs.getString("DESCRIPCION_ESP");			
 			String descripcionEng = rs.getString("DESCRIPCION_ENG");
 			Long clasificacion = rs.getLong("CLASIFICACION");
-			Long tipo = rs.getLong("TIPO");
-
+			Long tipo = rs.getLong("TIPO");	
 			productos.add(new Producto(id, name,tiempoPreparacion,descipcionEsp,descripcionEng,clasificacion,tipo));
+			n++;
 		}
 		return productos;
 	}
@@ -240,8 +244,8 @@ public class DAOProductosIngredientes {
 		sql += producto.getId() + ",'";
 		sql += producto.getNombre() + "',";
 		sql += producto.getTiempoPreparacion() + ",'";
-		sql += producto.getDecripcionEsp() + "','";
-		sql += producto.getDescripcionEng() + "',";
+		sql += producto.getDescripcion() + "','";
+		sql += producto.getTraduccion() + "',";
 		sql += producto.getClasificacion() + ",";
 		sql += producto.getTipo() + ")";
 
@@ -413,8 +417,8 @@ public class DAOProductosIngredientes {
 
 
 			if(productoJson) {
-				
-				
+
+
 				String sqlHallarCantidadDelProductoRestaurante ="select CANTIDAD from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
 				//--------------------------------------
 				// Hace consulta para saber las existencias del producto que quiere pedir
@@ -436,8 +440,8 @@ public class DAOProductosIngredientes {
 					while(rs1.next()) {
 						aa = rs1.getInt("ID");
 					}
-					
-					
+
+
 					//------------------------------
 					// Inserta el pedido del producto
 					String sql2 = "INSERT INTO USUARIO_PEDIDO_PRODUCTOS VALUES(";
@@ -447,7 +451,7 @@ public class DAOProductosIngredientes {
 					sql2 += pedido.getCantidad()+",'N',";
 					sql2 += pedido.getNumMesa()+",";
 					sql2 += "'ACEPTADO')";
-					
+
 					//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<6");
 					PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 					recursos.add(prepStmt2);
@@ -529,12 +533,12 @@ public class DAOProductosIngredientes {
 		}
 	}
 
-	
-	
+
+
 	//RF18 
-	
-	
-	
+
+
+
 	public void addPedidoTransaccionDistribuida(Pedido pedido)throws SQLException, Exception{
 
 		boolean productoJson = false;
@@ -578,8 +582,8 @@ public class DAOProductosIngredientes {
 
 
 			if(productoJson) {
-				
-				
+
+
 				String sqlHallarCantidadDelProductoRestaurante ="select CANTIDAD from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
 				//--------------------------------------
 				// Hace consulta para saber las existencias del producto que quiere pedir
@@ -601,8 +605,8 @@ public class DAOProductosIngredientes {
 					while(rs1.next()) {
 						aa = rs1.getInt("ID");
 					}
-					
-					
+
+
 					//------------------------------
 					// Inserta el pedido del producto
 					String sql2 = "INSERT INTO USUARIO_PEDIDO_PRODUCTOS VALUES(";
@@ -612,7 +616,7 @@ public class DAOProductosIngredientes {
 					sql2 += pedido.getCantidad()+",'N',";
 					sql2 += pedido.getNumMesa()+",";
 					sql2 += "'ACEPTADO')";
-					
+
 					//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<6");
 					PreparedStatement prepStmt2 = conn.prepareStatement(sql2);
 					recursos.add(prepStmt2);
@@ -694,9 +698,9 @@ public class DAOProductosIngredientes {
 		}
 	}
 
-	
-	
-	
+
+
+
 	//--------------------------------------------------------------
 	//-------RFC8
 
@@ -797,5 +801,5 @@ public class DAOProductosIngredientes {
 			addPedido(actual);
 		}
 	}
-
-}
+	
+	}

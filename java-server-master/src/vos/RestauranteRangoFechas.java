@@ -6,10 +6,10 @@ public class RestauranteRangoFechas {
 
 	@JsonProperty(value = "idRestaurante")
 	private Long idRestaurante;
-	@JsonProperty(value = "fechaInicial")
-	private String fechaInicial; 
-	@JsonProperty(value = "fechaFinal")
-	private String fechaFinal;
+		@JsonProperty(value = "fechaInicial")
+		private String fechaInicial; 
+		@JsonProperty(value = "fechaFinal")
+		private String fechaFinal;
 	@JsonProperty(value = "ordAgrup")
 	private String ordAgrup;
 

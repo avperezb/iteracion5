@@ -10,9 +10,11 @@ import java.util.ArrayList;
 import java.util.Date;
 import vos.Cancelado;
 import vos.RestauranteRangoFechas;
+import vos.RestauranteRentabilidad;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.InfoUsuarioReqRFC9;
+import vos.RentabilidadRest;
 
 public class DAOUsuarios {
 
@@ -60,8 +62,8 @@ public class DAOUsuarios {
 		}
 		return usuarios;
 	}
-	
-	
+
+
 
 	public ArrayList<UsuarioClientePref> darUsuarioPreferencias() throws SQLException, Exception{
 
@@ -387,4 +389,38 @@ public class DAOUsuarios {
 		}
 		return resp;
 	}
+
+	public ArrayList<RentabilidadRest> RFC14 (Long id, RestauranteRentabilidad renta) {
+
+		/**
+		 * 1 = zona
+		 * 2 = producto
+		 * 3 = categoria
+		 */
+
+		if (!buscarUsuarioPorID(id).getRol().equals("Admin")){
+			throw new Exception("Este usuario no está autorizado");
+		}
+		else {
+
+			String ordenamiento="";
+			if(RestauranteRentabilidad.getIdBusqueda.equals("1")) {
+				ordenamiento=" ORDER BY ID_USUARIO";
+			}else if(RestauranteRentabilidad.getIdBusqueda().equals("2")) {
+				ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
+			}else if(RestauranteRentabilidad.getIdBusqueda().equals("3")) {
+				ordenamiento=" ORDER BY CLASIFICACION";
+			}
+
+
+			String sql = "SELECT * FROM PEDIDOS LEFT JOIN (RESTAURANTES_PRODUCTOS LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) ON PEDIDOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO"
+					+ "WHERE USUARIO_PEDIDO_PRODUCTOS.ESTADO_PEDIDO ='ACEPTADO' AND PEDIDOS.FECHA BETWEEN";
+
+			'10-11-17' AND '30-12-18';
+			"FECHA > to_date('"+restauranteRangoFechas.getFechaInicial()+"', 'DD/MM/YYYY') \r\n" + 
+			"AND FECHA < to_date('"+restauranteRangoFechas.getFechaFinal()+"', 'DD/MM/YYYY')\r\n" + 
+		}
+	}
+
+
 }

@@ -14,7 +14,7 @@ import org.codehaus.jackson.map.JsonMappingException;
 
 import com.rabbitmq.jms.admin.RMQConnectionFactory;
 
-import jms.AllRestaurantsMDB;
+import jms.AllProductosMDB;
 import jms.NonReplyException;
 import tm.RotondAndesTM;
 import vos.ListaProductos;
@@ -32,7 +32,7 @@ public class RotondAndesDistributed {
 
 	private TopicConnectionFactory factory;
 
-	private AllRestaurantsMDB allRestMQ;
+	private AllProductosMDB allRestMQ;
 	
 	private static String path;
 	
@@ -41,7 +41,7 @@ public class RotondAndesDistributed {
 		
 		InitialContext ctx = new InitialContext();
 		factory = (RMQConnectionFactory) ctx.lookup(MQ_CONNECTION_NAME);
-		allRestMQ = new AllRestaurantsMDB(factory, ctx);
+		allRestMQ = new AllProductosMDB(factory, ctx);
 		
 		allRestMQ.start();
 	}

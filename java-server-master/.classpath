@@ -22,6 +22,5 @@
 	<classpathentry kind="lib" path="JARS/amqp-client-3.6.5.jar"/>
 	<classpathentry kind="lib" path="JARS/geronimo-jms_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="JARS/rabbitmq-jms-1.6.0-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="JARS/servlet-api.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
