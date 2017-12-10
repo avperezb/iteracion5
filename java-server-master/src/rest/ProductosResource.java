@@ -20,6 +20,7 @@ import vos.ConsultaPedidos;
 import vos.EquivalenciaIngrediente;
 import vos.EquivalenciaProducto;
 import vos.Ingrediente;
+import vos.ListaProductos;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
@@ -54,7 +55,7 @@ public class ProductosResource extends RotondAndesServices{
 	@Produces({ MediaType.APPLICATION_JSON })
 	public Response getProductos() {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<Producto> productos;
+		ListaProductos productos;
 		try {
 			productos = tm.darProductos();
 		} catch (Exception e) {

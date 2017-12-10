@@ -7,54 +7,69 @@ public class Producto {
 	/**
 	 * id de un producto
 	 */
-	@JsonProperty(value = "id")
 	private Long id; 
+	
 	/**
 	 * nombre de un producto
 	 */
 	@JsonProperty(value = "nombre")
 	private String nombre; 
+	
 	/**
 	 * tiempo de preparacion de un producto
 	 */
 	@JsonProperty(value = "tiempoPreparacion")
 	private Long tiempoPreparacion; 
+	
 	/**
 	 * descripcion del producto en espaniol
 	 */
-	@JsonProperty(value = "descripcionEsp")
-	private String decripcionEsp; 
+	@JsonProperty(value = "descripcion")
+	private String descripcion; 
+	
 	/**
 	 * descripcion del producto en ingles
 	 */
-	@JsonProperty(value = "descripcionEng")
-	private String descripcionEng; 
+	@JsonProperty(value = "traduccion")
+	private String traduccion; 
+	
 	/**
 	 * clasificacion de un producto
 	 */
-	@JsonProperty(value = "clasificacion")
 	private Long clasificacion; 
+	
 	/**
 	 * tipo de producto
 	 */
-	@JsonProperty(value = "tipo")
 	private Long tipo; 
 
 	public Producto(@JsonProperty(value = "id") Long id, 
 			@JsonProperty(value = "nombre") String nombre,
 			@JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion, 
-			@JsonProperty(value = "descripcionEsp") String descripcionEsp,
-			@JsonProperty(value = "descripcionEng") String descripcionEng, 
+			@JsonProperty(value = "descripcion") String descripcion,
+			@JsonProperty(value = "traduccion") String traduccion, 
 			@JsonProperty(value = "clasificacion") Long clasificacion,
 			@JsonProperty(value = "tipo") Long tipo){
 		this.id=id; 
 		this.nombre = nombre; 
 		this.tiempoPreparacion = tiempoPreparacion; 
-		this.decripcionEsp = descripcionEsp; 
-		this.descripcionEng = descripcionEng; 
+		this.descripcion = descripcion; 
+		this.traduccion = traduccion; 
 		this.clasificacion  = clasificacion; 
 		this.tipo = tipo; 
 
+	}
+	
+	public Producto (@JsonProperty(value = "nombre") String nombre,
+			@JsonProperty(value = "tiempoPreparacion") Long tiempoPreparacion, 
+			@JsonProperty(value = "descripcion") String descripcion,
+			@JsonProperty(value = "traduccion") String traduccion){
+		
+		this.nombre = nombre; 
+		this.tiempoPreparacion = tiempoPreparacion; 
+		this.descripcion = descripcion; 
+		this.traduccion = traduccion; 		
+		
 	}
 
 	public Long getId() {
@@ -81,20 +96,20 @@ public class Producto {
 		this.tiempoPreparacion = tiempoPreparacion;
 	}
 
-	public String getDecripcionEsp() {
-		return decripcionEsp;
+	public String getDescripcion() {
+		return descripcion;
 	}
 
-	public void setDecripcionEsp(String decripcionEsp) {
-		this.decripcionEsp = decripcionEsp;
+	public void setDescripcion(String descripcionn) {
+		this.descripcion = descripcionn;
 	}
 
-	public String getDescripcionEng() {
-		return descripcionEng;
+	public String getTraduccion() {
+		return traduccion;
 	}
 
-	public void setDescripcionEng(String descripcionEng) {
-		this.descripcionEng = descripcionEng;
+	public void setTraduccion(String traduccionn) {
+		this.traduccion = traduccionn;
 	}
 
 	public Long getClasificacion() {
