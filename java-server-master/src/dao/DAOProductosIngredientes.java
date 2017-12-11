@@ -14,7 +14,7 @@ import vos.Ingrediente;
 import vos.Pedido;
 import vos.PedidoMesa;
 import vos.Producto;
-import vos.RentabilidadRest;
+import vos.RentabilidadRestaurante;
 import vos.RestauranteRentabilidad;
 
 public class DAOProductosIngredientes {

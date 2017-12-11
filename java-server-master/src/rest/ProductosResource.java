@@ -26,7 +26,7 @@ import vos.PedidoMesa;
 import vos.Producto;
 import vos.Servido;
 import vos.RFC11;
-import vos.RentabilidadRest;
+import vos.RentabilidadRestaurante;
 import vos.RestauranteRentabilidad;
 
 @Path("servicios")
@@ -335,7 +335,7 @@ public class ProductosResource extends RotondAndesServices{
 	@Produces( MediaType.APPLICATION_JSON )
 	public Response RFC14(@PathParam("idPersona") Long idPersona, RestauranteRentabilidad renta, @PathParam("idBusqueda") Long idBusqueda) {
 		RotondAndesTM tm = new RotondAndesTM(getPath());
-		List<RentabilidadRest> rentabilidades;
+		List<RentabilidadRestaurante> rentabilidades;
 		try {
 			rentabilidades = tm.RFC14(idPersona, renta, idBusqueda);
 		} catch (Exception e) {

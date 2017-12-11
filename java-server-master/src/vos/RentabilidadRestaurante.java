@@ -2,7 +2,7 @@ package vos;
 
 import org.codehaus.jackson.annotate.JsonProperty;
 
-public class RentabilidadRest {
+public class RentabilidadRestaurante {
 
 	@JsonProperty(value = "restaurante")
 	private Long restaurante;
@@ -22,7 +22,7 @@ public class RentabilidadRest {
 	@JsonProperty(value = "fechaFinal")
 	private String fechaFinal;
 	
-	public RentabilidadRest(
+	public RentabilidadRestaurante(
 			@JsonProperty(value = "restaurante") Long restaurante, 
 			@JsonProperty(value = "cantidadesVendidas") Long cantidadesVendidas,
 			@JsonProperty(value = "costoTotal") Long costoTotal,

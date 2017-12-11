@@ -18,6 +18,7 @@ import jms.AllProductosMDB;
 import jms.NonReplyException;
 import tm.RotondAndesTM;
 import vos.ListaProductos;
+import vos.ListaRentabilidades;
 
 public class RotondAndesDistributed {
 
@@ -109,6 +110,11 @@ public class RotondAndesDistributed {
 	public ListaProductos getRemoteProductos() throws JsonGenerationException, JsonMappingException, JMSException, IOException, NonReplyException, InterruptedException, NoSuchAlgorithmException
 	{
 		return allRestMQ.getRemoteProductos();
+	}
+
+	public ListaRentabilidades getLocalRentabilidades(long parseLong, long parseLong2, String string, String string2) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 	

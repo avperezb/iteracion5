@@ -42,7 +42,7 @@ import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
 import vos.RFC11;
-import vos.RentabilidadRest;
+import vos.RentabilidadRestaurante;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.Zona;
@@ -1912,10 +1912,10 @@ public class RotondAndesTM {
 		return resp;
 	}
 
-	public List<RentabilidadRest> RFC14(Long idPersona, RestauranteRentabilidad renta, Long idBusqueda) throws Exception {
+	public List<RentabilidadRestaurante> RFC14(Long idPersona, RestauranteRentabilidad renta, Long idBusqueda) throws Exception {
 
 		DAOUsuarios daoUsuarios = new DAOUsuarios();
-		List<RentabilidadRest> resp = null;
+		List<RentabilidadRestaurante> resp = null;
 		try 
 		{
 			//////transaccion

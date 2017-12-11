@@ -89,7 +89,7 @@ public class AllProductosMDB  implements MessageListener, ExceptionListener {
 		String id = APP+""+System.currentTimeMillis();
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		id = DatatypeConverter.printHexBinary(md.digest(id.getBytes())).substring(0, 8);
-//		id = new String(md.digest(id.getBytes()));
+    	id = new String(md.digest(id.getBytes()));
 		
 		sendMessage("", REQUEST, globalTopic, id);
 		boolean waiting = true;

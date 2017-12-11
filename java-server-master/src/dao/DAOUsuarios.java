@@ -14,7 +14,7 @@ import vos.RestauranteRentabilidad;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.InfoUsuarioReqRFC9;
-import vos.RentabilidadRest;
+import vos.RentabilidadRestaurante;
 
 public class DAOUsuarios {
 
@@ -22,7 +22,7 @@ public class DAOUsuarios {
 
 	private Connection conn;
 
-	private ArrayList<RentabilidadRest> restaurantes;
+	private ArrayList<RentabilidadRestaurante> restaurantes;
 
 	public DAOUsuarios(){
 		recursos = new ArrayList<>();
@@ -393,7 +393,7 @@ public class DAOUsuarios {
 		return resp;
 	}
 
-	public ArrayList<RentabilidadRest> RFC14 (Long idPersona, RestauranteRentabilidad renta, Long idCosa) throws SQLException, Exception {
+	public ArrayList<RentabilidadRestaurante> RFC14 (Long idPersona, RestauranteRentabilidad renta, Long idCosa) throws SQLException, Exception {
 
 		/**
 		 * 1 = zona
@@ -401,7 +401,7 @@ public class DAOUsuarios {
 		 * 3 = categoria
 		 */
 
-		ArrayList<RentabilidadRest> restaurantes = new ArrayList<>();
+		ArrayList<RentabilidadRestaurante> restaurantes = new ArrayList<>();
 		Long sumaCantidades = (long) 0;
 		Long sumaCosto = (long) 0;
 		Long sumaPrecio = (long) 0;
@@ -428,7 +428,7 @@ public class DAOUsuarios {
 					sumaPrecio += rs.getLong("SUMPRECIO");
 					String fechaInicial = renta.getFechaInicial();
 					String fechaFinal = renta.getFechaFinal();
-					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+					restaurantes.add(new RentabilidadRestaurante(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
 
 				}
 			}			
@@ -448,7 +448,7 @@ public class DAOUsuarios {
 					sumaPrecio += rs.getLong("SUMPRECIO");
 					String fechaInicial = renta.getFechaInicial();
 					String fechaFinal = renta.getFechaFinal();
-					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+					restaurantes.add(new RentabilidadRestaurante(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
 
 				}
 			}
@@ -469,7 +469,7 @@ public class DAOUsuarios {
 					sumaPrecio += rs.getLong("SUMPRECIO");
 					String fechaInicial = renta.getFechaInicial();
 					String fechaFinal = renta.getFechaFinal();
-					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+					restaurantes.add(new RentabilidadRestaurante(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
 
 				}
 			}
@@ -477,10 +477,10 @@ public class DAOUsuarios {
 		return restaurantes;
 	}
 
-	public ArrayList<RentabilidadRest> auxiliar ( ArrayList<RentabilidadRest> restaurantes)
+	public ArrayList<RentabilidadRestaurante> auxiliar ( ArrayList<RentabilidadRestaurante> restaurantes)
 	{
 
-		ArrayList<RentabilidadRest> restaurantes2 = new ArrayList<>();
+		ArrayList<RentabilidadRestaurante> restaurantes2 = new ArrayList<>();
 
 		Long v1 = (long)0;
 		Long v2 = (long)0;
@@ -500,7 +500,7 @@ public class DAOUsuarios {
 					v3 += restaurantes.get(j).getValorFacturado();
 				}
 			}
-			restaurantes2.add(new RentabilidadRest(restaurantes.get(i).getRestaurante(), v1, v2, v3, restaurantes.get(i).getFechaInicial(), restaurantes.get(i).getFechaFinal()));
+			restaurantes2.add(new RentabilidadRestaurante(restaurantes.get(i).getRestaurante(), v1, v2, v3, restaurantes.get(i).getFechaInicial(), restaurantes.get(i).getFechaFinal()));
 		}
 		return restaurantes2;
 	}
