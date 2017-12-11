@@ -32,6 +32,7 @@ import com.rabbitmq.jms.admin.RMQDestination;
 import dtm.RotondAndesDistributed;
 import vos.ExchangeMsg;
 import vos.ListaProductos;
+import vos.Pedido;
 import vos.Producto;
 
 public class RegistrarProductoMesaMDB {
@@ -71,6 +72,33 @@ public class RegistrarProductoMesaMDB {
 		topicConnection.close();
 	}
 	
+	public void registrarProductoMesa(List<Pedido> pedidoMesa) throws JsonGenerationException, JsonMappingException, JMSException, IOException, NonReplyException, InterruptedException, NoSuchAlgorithmException
+	{
+		answer.clear();
+		String id = APP+""+System.currentTimeMillis();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		id = DatatypeConverter.printHexBinary(md.digest(id.getBytes())).substring(0, 8);
+//		id = new String(md.digest(id.getBytes()));
+		
+		sendMessage("", REQUEST, globalTopic, id);
+		boolean waiting = true;
+
+		int count = 0;
+		while(TIME_OUT != count){
+			TimeUnit.SECONDS.sleep(1);
+			count++;
+		}
+		if(count == TIME_OUT){
+			if(this.answer.isEmpty()){
+				waiting = false;
+				throw new NonReplyException("Time Out - No Reply");
+			}
+		}
+		waiting = false;
+		
+		if(answer.isEmpty())
+			throw new NonReplyException("Non Response");
+	}
 	private void sendMessage(String payload, String status, Topic dest, String id) throws JMSException, JsonGenerationException, JsonMappingException, IOException	{
 		ObjectMapper mapper = new ObjectMapper();
 		System.out.println(id);
@@ -105,7 +133,7 @@ public class RegistrarProductoMesaMDB {
 					RotondAndesDistributed dtm = RotondAndesDistributed.getInstance();
 					ListaProductos Productos = dtm.getLocalProductos();
 					String payload = mapper.writeValueAsString(Productos);
-					Topic t = new RMQDestination("", "videos.test", ex.getRoutingKey(), "", false);
+					Topic t = new RMQDestination("", "pedidos.test", ex.getRoutingKey(), "", false);
 					sendMessage(payload, REQUEST_ANSWER, t, id);
 				}
 				else if(ex.getStatus().equals(REQUEST_ANSWER))
