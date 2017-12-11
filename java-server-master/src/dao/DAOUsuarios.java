@@ -22,6 +22,8 @@ public class DAOUsuarios {
 
 	private Connection conn;
 
+	private ArrayList<RentabilidadRest> restaurantes;
+
 	public DAOUsuarios(){
 		recursos = new ArrayList<>();
 	}
@@ -370,6 +372,7 @@ public class DAOUsuarios {
 
 	public ArrayList<Usuario> buenosClientes(Long id) throws SQLException, Exception{
 		ArrayList<Usuario> resp = new ArrayList<>();
+		ArrayList<Usuario> restaurantes = new ArrayList<>();
 		if(id==1) {
 			String sql = "SELECT USU.NOMBRE ,ID_USUARIO, CORREO, ROL FROM (SELECT * FROM(SELECT * FROM \r\n" + 
 					"(SELECT * FROM PEDIDOS INNER JOIN USUARIO_PEDIDO_PRODUCTOS \r\n" + 
@@ -390,7 +393,7 @@ public class DAOUsuarios {
 		return resp;
 	}
 
-	public ArrayList<RentabilidadRest> RFC14 (Long id, RestauranteRentabilidad renta) {
+	public ArrayList<RentabilidadRest> RFC14 (Long idPersona, RestauranteRentabilidad renta, Long idCosa) throws SQLException, Exception {
 
 		/**
 		 * 1 = zona
@@ -398,29 +401,106 @@ public class DAOUsuarios {
 		 * 3 = categoria
 		 */
 
-		if (!buscarUsuarioPorID(id).getRol().equals("Admin")){
+		ArrayList<RentabilidadRest> restaurantes = new ArrayList<>();
+		Long sumaCantidades = (long) 0;
+		Long sumaCosto = (long) 0;
+		Long sumaPrecio = (long) 0;
+
+		if (!buscarUsuarioPorID(idPersona).getRol().equals("Admin")){
 			throw new Exception("Este usuario no está autorizado");
 		}
 		else {
 
-			String ordenamiento="";
-			if(RestauranteRentabilidad.getIdBusqueda.equals("1")) {
-				ordenamiento=" ORDER BY ID_USUARIO";
-			}else if(RestauranteRentabilidad.getIdBusqueda().equals("2")) {
-				ordenamiento=" ORDER BY NOMBRE_PRODUCTO";
-			}else if(RestauranteRentabilidad.getIdBusqueda().equals("3")) {
-				ordenamiento=" ORDER BY CLASIFICACION";
+			if(idCosa == 1) {
+
+				String sqlZONA = "SELECT RESTAURANTES_PRODUCTOS.ID_RESTAURANTE, SUM(USUARIO_PEDIDO_PRODUCTOS.CANTIDAD),SUM(COSTO) AS SUMCOSTO, SUM(PRECIO) AS SUMPRECIO FROM PEDIDOS LEFT JOIN ((RESTAURANTES_PRODUCTOS LEFT JOIN ZONA_RESTAURANTES ON RESTAURANTES_PRODUCTOS.ID_RESTAURANTE=ZONA_RESTAURANTES.ID_RESTAURANTE) LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) ON PEDIDOS.ID=RESTAURANTES_PRODUCTOS.ID_PRODUCTO WHERE USUARIO_PEDIDO_PRODUCTOS.ESTADO_PEDIDO ='ACEPTADO' AND ZONA_RESTAURANTES.ID_ZONA = " + renta.getIdBusqueda() + " AND PEDIDOS.FECHA BETWEEN to_date('"+renta.getFechaInicial()+"', 'DD/MM/YYYY') \r\n" 
+						+ "AND to_date('"+renta.getFechaFinal()+"','DD/MM/YYYY')\r\n"
+						+ "GROUP BY RESTAURANTES_PRODUCTOS.ID_RESTAURANTE"; 
+
+				PreparedStatement prepStmt = conn.prepareStatement(sqlZONA);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+
+					Long idRest = rs.getLong("ID_RESTAURANTE");
+					sumaCantidades += rs.getLong("SUM(USUARIO_PEDIDO_PRODUCTOS.CANTIDAD)");
+					sumaCosto += rs.getLong("SUMCOSTO");
+					sumaPrecio += rs.getLong("SUMPRECIO");
+					String fechaInicial = renta.getFechaInicial();
+					String fechaFinal = renta.getFechaFinal();
+					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+
+				}
+			}			
+			else if(idCosa == 2) {
+				String sqlPRODUCTO = "SELECT RESTAURANTES_PRODUCTOS.ID_RESTAURANTE, SUM(USUARIO_PEDIDO_PRODUCTOS.CANTIDAD),SUM(COSTO) AS SUMCOSTO, SUM(PRECIO) AS SUMPRECIO FROM PEDIDOS LEFT JOIN ((RESTAURANTES_PRODUCTOS LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = RESTAURANTES_PRODUCTOS.ID_PRODUCTO) LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) ON PEDIDOS.ID=RESTAURANTES_PRODUCTOS.ID_PRODUCTO WHERE USUARIO_PEDIDO_PRODUCTOS.ESTADO_PEDIDO ='ACEPTADO' AND USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE = " + renta.getIdBusqueda() +" AND PEDIDOS.FECHA BETWEEN to_date('"+renta.getFechaInicial()+"', 'DD/MM/YYYY') \r\n"
+						+"AND to_date('"+renta.getFechaFinal()+"','DD/MM/YYYY')\r\n"
+						+"GROUP BY RESTAURANTES_PRODUCTOS.ID_RESTAURANTE";
+
+				PreparedStatement prepStmt = conn.prepareStatement(sqlPRODUCTO);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
+
+					Long idRest = rs.getLong("ID_RESTAURANTE");
+					sumaCantidades += rs.getLong("SUM(USUARIO_PEDIDO_PRODUCTOS.CANTIDAD)");
+					sumaCosto += rs.getLong("SUMCOSTO");
+					sumaPrecio += rs.getLong("SUMPRECIO");
+					String fechaInicial = renta.getFechaInicial();
+					String fechaFinal = renta.getFechaFinal();
+					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+
+				}
 			}
+			else if (idCosa == 3) {
 
+				String sqlCATEGORIA = "SELECT * FROM PEDIDOS LEFT JOIN (RESTAURANTES_PRODUCTOS LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) ON PEDIDOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO"
+						+ "WHERE USUARIO_PEDIDO_PRODUCTOS.ESTADO_PEDIDO ='ACEPTADO' AND PEDIDOS.FECHA BETWEEN";
 
-			String sql = "SELECT * FROM PEDIDOS LEFT JOIN (RESTAURANTES_PRODUCTOS LEFT JOIN USUARIO_PEDIDO_PRODUCTOS ON RESTAURANTES_PRODUCTOS.ID_PRODUCTO = USUARIO_PEDIDO_PRODUCTOS.ID_PRODUCTO_RESTAURANTE) ON PEDIDOS.ID = RESTAURANTES_PRODUCTOS.ID_PRODUCTO"
-					+ "WHERE USUARIO_PEDIDO_PRODUCTOS.ESTADO_PEDIDO ='ACEPTADO' AND PEDIDOS.FECHA BETWEEN";
+				PreparedStatement prepStmt = conn.prepareStatement(sqlCATEGORIA);
+				recursos.add(prepStmt);
+				ResultSet rs = prepStmt.executeQuery();
+				while (rs.next()) {
 
-			'10-11-17' AND '30-12-18';
-			"FECHA > to_date('"+restauranteRangoFechas.getFechaInicial()+"', 'DD/MM/YYYY') \r\n" + 
-			"AND FECHA < to_date('"+restauranteRangoFechas.getFechaFinal()+"', 'DD/MM/YYYY')\r\n" + 
+					Long idRest = rs.getLong("ID_RESTAURANTE");
+					sumaCantidades += rs.getLong("SUM(USUARIO_PEDIDO_PRODUCTOS.CANTIDAD)");
+					sumaCosto += rs.getLong("SUMCOSTO");
+					sumaPrecio += rs.getLong("SUMPRECIO");
+					String fechaInicial = renta.getFechaInicial();
+					String fechaFinal = renta.getFechaFinal();
+					restaurantes.add(new RentabilidadRest(idRest, sumaCantidades, sumaCosto, sumaPrecio, fechaInicial, fechaFinal));
+
+				}
+			}
 		}
+		return restaurantes;
 	}
+	
+	public ArrayList<RentabilidadRest> auxiliar ( ArrayList<RentabilidadRest> restaurantes)
+	{
 
+		ArrayList<RentabilidadRest> restaurantes2 = new ArrayList<>();
 
+		Long v1 = (long)0;
+		Long v2 = (long)0;
+		Long v3 = (long)0;
+
+		for (int i = 0; i < restaurantes.size(); i++) {
+
+			v1 = restaurantes.get(i).getCantidadesVendidas();
+			v2 = restaurantes.get(i).getCostoTotal();
+			v3 = restaurantes.get(i).getValorFacturado();
+			for (int j = 1; j < restaurantes.size(); j++) {
+
+				if (restaurantes.get(i).getRestaurante() == restaurantes.get(j).getRestaurante()) {
+
+					v1 += restaurantes.get(j).getCantidadesVendidas();
+					v2 += restaurantes.get(j).getCostoTotal();
+					v3 += restaurantes.get(j).getValorFacturado();
+				}
+			}
+			restaurantes2.add(new RentabilidadRest(restaurantes.get(i).getRestaurante(), v1, v2, v3, restaurantes.get(i).getFechaInicial(), restaurantes.get(i).getFechaFinal()));
+		}
+		return restaurantes2;
+	}
 }

@@ -42,11 +42,13 @@ import vos.PreferenciaUsuarioPrecio;
 import vos.PreferenciaUsuarioZona;
 import vos.Producto;
 import vos.RFC11;
+import vos.RentabilidadRest;
 import vos.Usuario;
 import vos.UsuarioClientePref;
 import vos.Zona;
 import vos.Restaurante;
 import vos.RestauranteRangoFechas;
+import vos.RestauranteRentabilidad;
 import vos.Servido;
 import vos.InfoUsuarioReqRFC9;
 
@@ -1888,6 +1890,38 @@ public class RotondAndesTM {
 			this.conn = darConexion();
 			daoUsuarios.setConnection(conn);
 			resp = daoUsuarios.buenosClientes(id);
+		} catch (SQLException e) {
+			System.err.println("SQLException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} catch (Exception e) {
+			System.err.println("GeneralException:" + e.getMessage());
+			e.printStackTrace();
+			throw e;
+		} finally {
+			try {
+				daoUsuarios.cerrarRecursos();
+				if(this.conn!=null)
+					this.conn.close();
+			} catch (SQLException exception) {
+				System.err.println("SQLException closing resources:" + exception.getMessage());
+				exception.printStackTrace();
+				throw exception;
+			}
+		}
+		return resp;
+	}
+
+	public List<RentabilidadRest> RFC14(Long idPersona, RestauranteRentabilidad renta, Long idBusqueda) throws Exception {
+
+		DAOUsuarios daoUsuarios = new DAOUsuarios();
+		List<RentabilidadRest> resp = null;
+		try 
+		{
+			//////transaccion
+			this.conn = darConexion();
+			daoUsuarios.setConnection(conn);
+			resp = daoUsuarios.RFC14(idPersona, renta, idBusqueda);
 		} catch (SQLException e) {
 			System.err.println("SQLException:" + e.getMessage());
 			e.printStackTrace();

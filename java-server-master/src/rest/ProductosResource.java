@@ -26,10 +26,12 @@ import vos.PedidoMesa;
 import vos.Producto;
 import vos.Servido;
 import vos.RFC11;
+import vos.RentabilidadRest;
+import vos.RestauranteRentabilidad;
 
 @Path("servicios")
 public class ProductosResource extends RotondAndesServices{
-	
+
 	/**
 	 * Metodo que expone servicio REST usando GET que da todos los videos de la base de datos.
 	 * <b>URL: </b> http://"ip o nombre de host":8080/VideoAndes/rest/videos
@@ -63,7 +65,7 @@ public class ProductosResource extends RotondAndesServices{
 		}
 		return Response.status(200).entity(productos).build();
 	}
-	
+
 	@GET
 	@Path("/productos/restaurantes/{id: \\d+}")
 	@Produces({ MediaType.APPLICATION_JSON })
@@ -118,7 +120,7 @@ public class ProductosResource extends RotondAndesServices{
 		}
 		return Response.status(200).entity(funcionamiento).build();
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/ingredientes")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -136,7 +138,7 @@ public class ProductosResource extends RotondAndesServices{
 
 		return Response.status(200).entity(ingrediente).build();
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/ingredientes/equivalencia")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -154,7 +156,7 @@ public class ProductosResource extends RotondAndesServices{
 
 		return Response.status(200).entity(equi).build();
 	}
-	
+
 	@POST
 	@Path("/pedidos")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -169,10 +171,10 @@ public class ProductosResource extends RotondAndesServices{
 		{	
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
-		
+
 		return Response.status(200).entity(pedido).build();
 	}
-	
+
 	@POST
 	@Path("/pedidos/{id: \\d+}/")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -188,7 +190,7 @@ public class ProductosResource extends RotondAndesServices{
 		return Response.status(200).entity(servido).build();
 
 	}
-	
+
 
 	@POST
 	@Path("/usuarios/{id: \\d+}/productos")
@@ -207,7 +209,7 @@ public class ProductosResource extends RotondAndesServices{
 
 		return Response.status(200).entity(producto).build();
 	}
-	
+
 	@POST
 	@Path("/usuarios/{id: \\d+}/productos/equivalencia")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -225,7 +227,7 @@ public class ProductosResource extends RotondAndesServices{
 
 		return Response.status(200).entity(equi).build();
 	}
-	
+
 	@PUT
 	@Path("/usuarios/{id: \\d+}/productos/cantidad")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -243,7 +245,7 @@ public class ProductosResource extends RotondAndesServices{
 
 		return Response.status(200).entity(canti).build();
 	}
-	
+
 	@GET
 	@Path("/productos/mas-ofrecidos")
 	@Produces(MediaType.APPLICATION_JSON)
@@ -261,7 +263,7 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status( 500 ).entity( doErrorMessage( e ) ).build( );
 		}
 	}
-	
+
 	@PUT
 	@Path("/pedidos/cancelar/{id: \\d+}")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -278,7 +280,7 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 	@POST
 	@Path("/pedidos/mesa")
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -295,7 +297,7 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 
 	@POST
 	@Path("/pedidos/mesa/servir")
@@ -313,7 +315,7 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 	}
-	
+
 	@GET
 	@Path("/usuarios/{id: \\d+}/infoVentas")
 	@Produces( MediaType.APPLICATION_JSON )
@@ -326,5 +328,19 @@ public class ProductosResource extends RotondAndesServices{
 			return Response.status(500).entity(doErrorMessage(e)).build();
 		}
 		return Response.status(200).entity(info).build();
+	}
+
+	@POST
+	@Path("/{idPersona: \\d+}/{idBusqueda: \\d+}")
+	@Produces( MediaType.APPLICATION_JSON )
+	public Response RFC14(@PathParam("idPersona") Long idPersona, RestauranteRentabilidad renta, @PathParam("idBusqueda") Long idBusqueda) {
+		RotondAndesTM tm = new RotondAndesTM(getPath());
+		List<RentabilidadRest> rentabilidades;
+		try {
+			rentabilidades = tm.RFC14(idPersona, renta, idBusqueda);
+		} catch (Exception e) {
+			return Response.status(500).entity(doErrorMessage(e)).build();
+		}
+		return Response.status(200).entity(rentabilidades).build();
 	}
 }

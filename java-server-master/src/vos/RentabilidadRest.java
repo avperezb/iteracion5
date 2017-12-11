@@ -5,7 +5,7 @@ import org.codehaus.jackson.annotate.JsonProperty;
 public class RentabilidadRest {
 
 	@JsonProperty(value = "restaurante")
-	private String restaurante;
+	private Long restaurante;
 	
 	@JsonProperty(value = "cantidadesVendidas")
 	private Long cantidadesVendidas;
@@ -23,23 +23,26 @@ public class RentabilidadRest {
 	private String fechaFinal;
 	
 	public RentabilidadRest(
-			@JsonProperty(value = "restaurante") String restaurante, 
+			@JsonProperty(value = "restaurante") Long restaurante, 
 			@JsonProperty(value = "cantidadesVendidas") Long cantidadesVendidas,
 			@JsonProperty(value = "costoTotal") Long costoTotal,
-			@JsonProperty(value = "valorFacturado") Long valorFacturado) {
+			@JsonProperty(value = "valorFacturado") Long valorFacturado,
+			@JsonProperty(value = "fechaInicial") String fechaI,
+			@JsonProperty(value = "fechaFinal") String fechaF) {
 		
 		this.restaurante = restaurante;
 		this.cantidadesVendidas = cantidadesVendidas;
 		this.costoTotal = costoTotal;
-		this.valorFacturado = valorFacturado;	
-		
+		this.valorFacturado = valorFacturado;
+		this.fechaInicial = fechaI;
+		this.fechaFinal = fechaF;
 	}
 
-	public String getRestaurante() {
+	public Long getRestaurante() {
 		return restaurante;
 	}
 
-	public void setRestaurante(String restaurante) {
+	public void setRestaurante(Long restaurante) {
 		this.restaurante = restaurante;
 	}
 
