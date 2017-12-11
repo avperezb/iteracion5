@@ -1,0 +1,71 @@
+{
+	"variables": [],
+	"info": {
+		"name": "iteracion5",
+		"_postman_id": "24bb195b-4305-eafd-08b6-c97e12f594b8",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rfc14",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/4/1",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\t{\r\n\t\t\"idBusqueda\": 1,\r\n\t\t\"fechaInicial\": \"05/05/2017\",\r\n        \"fechaFinal\": \"31/10/2017\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rfc14-2",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/4/2",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\t{\r\n\t\t\"idBusqueda\": 1,\r\n\t\t\"fechaInicial\": \"05/05/2017\",\r\n        \"fechaFinal\": \"31/10/2017\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "rfc14-3",
+			"request": {
+				"url": "http://localhost:8080/VideoAndes/rest/servicios/4/2",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\t{\r\n\t\t\"idBusqueda\": 2,\r\n\t\t\"fechaInicial\": \"05/05/2017\",\r\n        \"fechaFinal\": \"31/10/2017\"\r\n}"
+				},
+				"description": ""
+			},
+			"response": []
+		}
+	]
+}

@@ -2,7 +2,7 @@
 	"variables": [],
 	"info": {
 		"name": "ReqRF15",
-		"_postman_id": "4c8c5766-7e78-c6c0-abe5-0c2c2c5e873f",
+		"_postman_id": "fdaea819-d8d9-4bcf-6c3c-b7db8a5bec8a",
 		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
 	},
@@ -32,7 +32,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "\t{\r\n\t\t\"id\": 22,\r\n\t\t\"idRestaurante\": 1,\r\n\t\t\"idUsuario\": 2,\r\n\t\t\"idsProductos\": [1, 2, 3],\r\n\t\t\"idsMenus\": [2, 4, 5],\r\n\t\t\"cantidades\": [1, 1, 2]\r\n\t}"
+					"raw": "\t[\t{\r\n\t\t\"id\": 16,\r\n\t\t\"idRestaurante\": 4,\r\n\t\t\"idUsuario\": 1,\r\n\t\t\"idProducto\": 8,\r\n\t\t\"idMenu\": 2,\r\n\t\t\"cantidad\": 2,\r\n\t\t\"numMesa\": 1\r\n\t},\r\n\t\t{\r\n\t\t\"id\": 16,\r\n\t\t\"idRestaurante\": 4,\r\n\t\t\"idUsuario\": 1,\r\n\t\t\"idProducto\": 8,\r\n\t\t\"idMenu\": 2,\r\n\t\t\"cantidad\": 2,\r\n\t\t\"numMesa\": 1\r\n\t}]"
 				},
 				"description": ""
 			},

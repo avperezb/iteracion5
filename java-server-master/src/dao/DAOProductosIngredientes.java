@@ -430,7 +430,7 @@ public class DAOProductosIngredientes {
 					a = rs.getInt("CANTIDAD");
 				}
 
-				if(a >= pedido.getCantidad()) { //compara si hay existencias suficientes
+				if(a <= pedido.getCantidad()) { //compara si hay existencias suficientes
 					//					System.out.println("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<4");
 					String sqlHallarIDDelProductoRestaurante ="select ID from RESTAURANTES_PRODUCTOS WHERE ID_RESTAURANTE="+pedido.getIdRestaurante()+" AND ID_PRODUCTO="+pedido.getIdProducto();
 					PreparedStatement prepStmt1 = conn.prepareStatement(sqlHallarIDDelProductoRestaurante);
